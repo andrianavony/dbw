@@ -7,10 +7,12 @@ package entite;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -44,8 +46,11 @@ public class Article implements Serializable {
     @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
     @ManyToOne
     private Stage idstage;
-    @JoinColumn(name = "IDVARIETY", referencedColumnName = "IDVARIETY")
-    @ManyToOne
+     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumns({
+        @JoinColumn( name="idvariety", referencedColumnName = "IDVARIETY", insertable = false, updatable = false, nullable = true),
+        @JoinColumn( name="idspecie", referencedColumnName = "IDSPECIE", insertable = false, updatable = false, nullable = true)
+    })
     private Variety idvariety;
 
     public Article() {
