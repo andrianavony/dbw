@@ -12,15 +12,34 @@
   <message name="helloResponse">
     <part name="parameters" element="tns:helloResponse"/>
   </message>
+  <message name="addArticle">
+    <part name="parameters" element="tns:addArticle"/>
+  </message>
+  <message name="addArticleResponse">
+    <part name="parameters" element="tns:addArticleResponse"/>
+  </message>
   <portType name="WS_TC">
     <operation name="hello">
       <input wsam:Action="http://tc.ws.dbw/WS_TC/helloRequest" message="tns:hello"/>
       <output wsam:Action="http://tc.ws.dbw/WS_TC/helloResponse" message="tns:helloResponse"/>
     </operation>
+    <operation name="addArticle">
+      <input wsam:Action="http://tc.ws.dbw/WS_TC/addArticleRequest" message="tns:addArticle"/>
+      <output wsam:Action="http://tc.ws.dbw/WS_TC/addArticleResponse" message="tns:addArticleResponse"/>
+    </operation>
   </portType>
   <binding name="WS_TCPortBinding" type="tns:WS_TC">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
     <operation name="hello">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="addArticle">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

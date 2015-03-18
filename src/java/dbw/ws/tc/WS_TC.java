@@ -9,6 +9,8 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
+import session.ejb.TC;
 
 /**
  *
@@ -18,11 +20,23 @@ import javax.ejb.Stateless;
 @Stateless()
 public class WS_TC {
 
+    @Inject 
+    TC tc ;
     /**
      * This is a sample web service operation
      */
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "addArticle")
+    public String addArticle(@WebParam(name = "idArticle") String idArticle) {
+        
+        tc.createOrUpdateArticle (idArticle);
+        return "OK";
     }
 }

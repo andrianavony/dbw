@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" targetNamespace="http://tc.ws.dbw/" xmlns:tns="http://tc.ws.dbw/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+  <xs:element name="addArticle" type="tns:addArticle"/>
+
+  <xs:element name="addArticleResponse" type="tns:addArticleResponse"/>
+
   <xs:element name="hello" type="tns:hello"/>
 
   <xs:element name="helloResponse" type="tns:helloResponse"/>
@@ -12,6 +16,18 @@
   </xs:complexType>
 
   <xs:complexType name="helloResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addArticle">
+    <xs:sequence>
+      <xs:element name="idArticle" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addArticleResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0"/>
     </xs:sequence>
