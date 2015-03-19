@@ -7,6 +7,7 @@ package session.ejb;
 
 import entite.Article;
 import entite.Generation;
+import entite.Specie;
 import entite.Stage;
 import entite.Variety;
 import javax.ejb.embeddable.EJBContainer;
@@ -23,6 +24,11 @@ import utilities.ForItem;
  * @author S.ANDRIANAVONY
  */
 public class TCNGTest {
+    Specie specie;
+    Variety variety;
+    Stage stage;
+    Generation generation;
+    Article expResult;
     
     public TCNGTest() {
     }
@@ -37,65 +43,95 @@ public class TCNGTest {
 
     @BeforeMethod
     public void setUpMethod() throws Exception {
+        specie=null;
+        variety=null;
+        stage=null;
+        generation=null;   
     }
 
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
+    public void initialisation(String idarticle){
+        specie = new Specie(ForItem.getIdSpecie(idarticle));
+        variety = new Variety(ForItem.getIdVariety(idarticle), ForItem.getIdSpecie(idarticle));
+        stage =new Stage(ForItem.getIdStage(idarticle));
+        generation = new Generation(ForItem.getIdGeneration(idarticle));
+        
+        expResult = new Article();
+        expResult.setIdarticle(idarticle);
+        
+        expResult.setIdspecie(specie);
+        expResult.setIdvariety(variety);
+        expResult.setIdstage(stage);
+        expResult.setIdgeneration(generation);
+        
+        
+    }
     /**
-     * Test of createOrUpdateArticle method, of class TC.
+     * Insertion du code article dans la base en utilisant le nom de l'article.
+     * On verifie que l'article, l'espece, la variété, le stade et génération sont crée dans la base
      */
     @Test
     public void testCreateOrUpdateArticle_String() throws Exception {
         System.out.println("createOrUpdateArticle");
-        String idarticle = "S0101S10096C04";
+        String idarticle = "S0101S10097C04";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         TC instance = (TC)container.getContext().lookup("java:global/classes/TC");
+        try {
         Article result = instance.createOrUpdateArticle(idarticle);
-        System.out.println("*********************************insertion faite");
-        Article expResult = new Article();
-        expResult.setIdarticle(idarticle);
-        //expResult.setIdspecie(ForItem.getIdSpecie(idarticle));
-        
-        //solofo expResult.setIdvariety(ForItem.getIdVariety(idarticle));
-        Variety variety = new Variety(ForItem.getIdVariety(idarticle), ForItem.getIdSpecie(idarticle));
-        expResult.setIdvariety(variety);//variety(ForItem.getIdVariety(idarticle));
 
-        expResult.setIdstage(new Stage(ForItem.getIdStage(idarticle)));
-        expResult.setIdgeneration(new Generation(ForItem.getIdStage(idarticle)));
-        
+        initialisation( idarticle);        
         assertEquals(result, expResult);
-        container.close();
+        assertEquals(specie, result.getIdspecie());
+        assertEquals(variety, result.getIdvariety());
+        assertEquals(stage, result.getIdstage());
+        assertEquals(generation, result.getIdgeneration());
+        }
+        finally {
+            container.close();
+        }
 
     }
 
-    /**
-     * Test of createOrUpdateArticle method, of class TC.
+     /**
+     * Insertion du code article dans la base en utilisant 
+     *      le nom de l'article.
+     *      l'espece
+     *      la variété
+     *      le stade 
+     *      et génération 
+     * On verifie que l'article, l'espece, la variété, le stade et génération sont crée dans la base
      */
     @Test 
     public void testCreateOrUpdateArticle_4args() throws Exception {
         System.out.println("createOrUpdateArticle args ");
         String idarticle = "S0101S10096C04_KG";
-        String idstage = "COM";
-        String idspecie = "S0101";
-        String idvariety = "S1009";
-        String idgeneration="C04";
+        
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         TC instance = (TC)container.getContext().lookup("java:global/classes/TC");
-        Article expResult = new Article();
-        expResult.setIdarticle(idarticle);
-        //expResult.setIdspecie(ForItem.getIdSpecie(idarticle));
-        //expResult.setIdvariety(ForItem.getIdVariety(idarticle));
-        Variety variety = new Variety(ForItem.getIdVariety(idarticle), ForItem.getIdSpecie(idarticle));
-        expResult.setIdvariety(variety);//variety(ForItem.getIdVariety(idarticle));
-
-        expResult.setIdstage(new Stage(ForItem.getIdStage(idarticle)));
-        expResult.setIdgeneration(new Generation(ForItem.getIdStage(idarticle)));
+        
+        try {
+        String idstage = "COM";
+        String idspecie = "S0101";
+        String idvariety = "S10096";
+        String idgeneration="C04";
+        
         Article result = instance.createOrUpdateArticle(idarticle, idstage, idspecie, idvariety,idgeneration);
+        
+        initialisation( idarticle);
+        
         assertEquals(result, expResult);
-        container.close();
+        assertEquals(specie, result.getIdspecie());
+        assertEquals(variety, result.getIdvariety());
+        assertEquals(stage, result.getIdstage());
+        assertEquals(generation, result.getIdgeneration());
+        }
+        finally {
+            container.close();
+        }
 
     }
     
