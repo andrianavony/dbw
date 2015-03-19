@@ -1,4 +1,5 @@
 START TRANSACTION;
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE IF NOT EXISTS `article` (
   `IDARTICLE` varchar(50) NULL,
