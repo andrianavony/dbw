@@ -40,7 +40,7 @@ public class Article implements Serializable {
     @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION")
     @ManyToOne
     private Generation idgeneration;
-    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = false, updatable = false)
     @ManyToOne
     private Specie idspecie;
     @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
@@ -48,8 +48,8 @@ public class Article implements Serializable {
     private Stage idstage;
      @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
-        @JoinColumn( name="idvariety", referencedColumnName = "IDVARIETY", insertable = false, updatable = false, nullable = true),
-        @JoinColumn( name="idspecie", referencedColumnName = "IDSPECIE", insertable = false, updatable = false, nullable = true)
+        @JoinColumn( name="idvariety", referencedColumnName = "IDVARIETY", insertable = true, updatable = false, nullable = true),
+        @JoinColumn( name="idspecie", referencedColumnName = "IDSPECIE", insertable = true, updatable = false, nullable = true)
     })
     private Variety idvariety;
 
