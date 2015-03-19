@@ -1,0 +1,13 @@
+START TRANSACTION;
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `company`;
+CREATE TABLE IF NOT EXISTS `company` (
+  `IDCOMPANY`   varchar(50) NULL ,
+  `COMPANYNAME` varchar(50) NULL,
+  `DESCRIPTION` varchar(50) NULL,
+PRIMARY KEY (`IDCOMPANY`) COMMENT 'KEY COMPANY'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='COMPANY';
+
+COMMIT;
+
+SET foreign_key_checks = 1;

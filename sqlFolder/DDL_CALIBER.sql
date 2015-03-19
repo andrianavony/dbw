@@ -1,0 +1,11 @@
+START TRANSACTION;
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `CALIBER`;
+CREATE TABLE IF NOT EXISTS `caliber` (
+  `IDCALIBER`   varchar(50) NULL ,
+  `CALIBERNAME` varchar(50) NULL,
+  `DESCRIPTION` varchar(50) NULL,
+PRIMARY KEY (`IDCALIBER`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+COMMIT;
+SET foreign_key_checks = 1;
