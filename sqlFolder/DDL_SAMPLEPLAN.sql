@@ -3,7 +3,7 @@ START TRANSACTION;
 SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `sampleplan`;
 CREATE TABLE IF NOT EXISTS `sampleplan` (
-  `IDSAMPLEPLAN`        bigint(20)  NULL,
+  `IDSAMPLEPLAN`        bigint(20)  NULL AUTO_INCREMENT,
   `SAMPLEPLANNAME`      varchar(50) NULL,
   `IDSAMPLEPLANGROUP`   bigint(20)  NULL,
   `DESCRIPTION`         varchar(50) NULL,

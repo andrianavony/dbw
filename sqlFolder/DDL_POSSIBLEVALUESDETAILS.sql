@@ -34,7 +34,9 @@ CREATE TABLE IF NOT EXISTS `possiblevaluesdetails` (
   `RAWRESULTS`              varchar(50) NULL,
   `POSSIBLEVALUENAME`       varchar(50) NULL,
   `DESCRIPTION`             varchar(50) NULL,
-  `DEFAULTSTATUS`           smallint(6) NULL
+  `DEFAULTSTATUS`           smallint(6) NULL,
+PRIMARY KEY (`IDMEASURE`,`IDPOSSIBLEVALUE`)
+,KEY `FK_POSS_VAL_Det_POSS_VALUE` (`IDPOSSIBLEVALUE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
@@ -42,14 +44,7 @@ COMMIT;
 -- Index pour les tables exportées
 --
 
---
--- Index pour la table `possiblevaluesdetails`
---
-START TRANSACTION;
-ALTER TABLE `possiblevaluesdetails`
-  ADD PRIMARY KEY (`IDMEASURE`,`IDPOSSIBLEVALUE`)
-, ADD KEY `FK_POSS_VAL_Det_POSS_VALUE` (`IDPOSSIBLEVALUE`);
-COMMIT;
+
 --
 -- Contraintes pour les tables exportées
 --

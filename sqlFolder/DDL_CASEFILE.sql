@@ -4,7 +4,7 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `casefile`;
 
 CREATE TABLE IF NOT EXISTS `casefile` (
-  `IDCASEFILE`      bigint(20)  NULL ,
+  `IDCASEFILE`      bigint(20)  NULL AUTO_INCREMENT,
   `IDBATCH`         bigint(20)  NULL,
   `DESCRIPTION`     varchar(50) NULL,
   `IDCASEFILELIMS`  varchar(50) NULL,

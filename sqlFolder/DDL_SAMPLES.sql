@@ -3,7 +3,7 @@ SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `SAMPLES`;
 CREATE TABLE IF NOT EXISTS `SAMPLES` (
-    `IDSAMPLES`     bigint(20)              NULL,
+    `IDSAMPLES`     bigint(20)              NULL AUTO_INCREMENT,
     `IDCASEFILE`    bigint(20)              NULL,
     `IDBATCH`       bigint(20)              NULL,
     `IDARTICLE`     varchar(50)             NULL,
