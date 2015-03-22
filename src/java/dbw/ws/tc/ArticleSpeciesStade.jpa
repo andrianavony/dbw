@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings jaxb-support="false" id="_1427038038487690" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:ns4="http://nbmodeler.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:entity class="Generation" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427038038487693">
+        <jpa:table name="generation"/>
+        <jpa:attributes>
+            <jpa:id name="idgeneration" attribute-type="java.lang.String" visibile="true" id="_1427038038487698">
+                <jpa:column name="IDGENERATION" unique="false" nullable="false" insertable="true" updatable="true" table="generation" length="50"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487699">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="generation" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="generationame" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487700">
+                <jpa:column name="GENERATIONAME" unique="false" nullable="true" insertable="true" updatable="true" table="generation" length="50"/>
+            </jpa:basic>
+            <jpa:one-to-many name="articleCollection" target-entity="Article" mapped-by="idgeneration" connected-entity-id="_1427038038487697" connected-attribute-id="_1427038038487723" visibile="true" id="_1427038038487701"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Specie" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427038038487694">
+        <jpa:table name="specie"/>
+        <jpa:attributes>
+            <jpa:id name="idspecie" attribute-type="java.lang.String" visibile="true" id="_1427038038487702">
+                <jpa:column name="IDSPECIE" unique="false" nullable="false" insertable="true" updatable="true" table="specie" length="50"/>
+            </jpa:id>
+            <jpa:basic name="speciename" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487703">
+                <jpa:column name="SPECIENAME" unique="false" nullable="true" insertable="true" updatable="true" table="specie" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="officialname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487704">
+                <jpa:column name="OFFICIALNAME" unique="false" nullable="true" insertable="true" updatable="true" table="specie" length="50"/>
+            </jpa:basic>
+            <jpa:one-to-many name="varietyCollection" target-entity="Variety" mapped-by="specie" connected-entity-id="_1427038038487696" connected-attribute-id="_1427038038487716" visibile="true" id="_1427038038487705"/>
+            <jpa:one-to-many name="articleCollection" target-entity="Article" mapped-by="idspecie" connected-entity-id="_1427038038487697" connected-attribute-id="_1427038038487724" visibile="true" id="_1427038038487706"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Stage" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427038038487695">
+        <jpa:table name="stage"/>
+        <jpa:attributes>
+            <jpa:id name="idstage" attribute-type="java.lang.String" visibile="true" id="_1427038038487707">
+                <jpa:column name="IDSTAGE" unique="false" nullable="false" insertable="true" updatable="true" table="stage" length="50"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487708">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="stage" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="stagename" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487709">
+                <jpa:column name="STAGENAME" unique="false" nullable="true" insertable="true" updatable="true" table="stage" length="50"/>
+            </jpa:basic>
+            <jpa:one-to-many name="articleCollection" target-entity="Article" mapped-by="idstage" connected-entity-id="_1427038038487697" connected-attribute-id="_1427038038487722" visibile="true" id="_1427038038487710"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Variety" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427038038487696">
+        <jpa:table name="variety"/>
+        <jpa:attributes>
+            <jpa:id name="idvariety" attribute-type="java.lang.String" visibile="true" id="_1427038038487711">
+                <jpa:column name="IDVARIETY" unique="false" nullable="false" insertable="true" updatable="true" table="variety" length="50"/>
+            </jpa:id>
+            <jpa:id name="idspecie" attribute-type="java.lang.String" visibile="true" id="_1427038038487712">
+                <jpa:column name="IDSPECIE" unique="false" nullable="false" insertable="true" updatable="true" table="variety" length="50"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487713">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="variety" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="varietyname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487714">
+                <jpa:column name="VARIETYNAME" unique="false" nullable="true" insertable="true" updatable="true" table="variety" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="officialname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487715">
+                <jpa:column name="OFFICIALNAME" unique="false" nullable="true" insertable="true" updatable="true" table="variety" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="specie" target-entity="Specie" optional="false" primaryKey="false" connected-entity-id="_1427038038487694" connected-attribute-id="_1427038038487705" visibile="true" id="_1427038038487716">
+                <jpa:join-column name="IDSPECIE" referenced-column-name="IDSPECIE" unique="false" nullable="true" insertable="false" updatable="false"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many name="articleCollection" target-entity="Article" mapped-by="idvariety" connected-entity-id="_1427038038487697" connected-attribute-id="_1427038038487725" visibile="true" id="_1427038038487717"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Article" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427038038487697">
+        <jpa:table name="article"/>
+        <jpa:attributes>
+            <jpa:id name="idarticle" attribute-type="java.lang.String" visibile="true" id="_1427038038487718">
+                <jpa:column name="IDARTICLE" unique="false" nullable="false" insertable="true" updatable="true" table="article" length="50"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487719">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="article" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="articlename" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487720">
+                <jpa:column name="ARTICLENAME" unique="false" nullable="true" insertable="true" updatable="true" table="article" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="officialname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427038038487721">
+                <jpa:column name="OFFICIALNAME" unique="false" nullable="true" insertable="true" updatable="true" table="article" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="idstage" target-entity="Stage" primaryKey="false" connected-entity-id="_1427038038487695" connected-attribute-id="_1427038038487710" visibile="true" id="_1427038038487722">
+                <jpa:join-column name="IDSTAGE" referenced-column-name="IDSTAGE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idgeneration" target-entity="Generation" primaryKey="false" connected-entity-id="_1427038038487693" connected-attribute-id="_1427038038487701" visibile="true" id="_1427038038487723">
+                <jpa:join-column name="IDGENERATION" referenced-column-name="IDGENERATION" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idspecie" target-entity="Specie" primaryKey="false" connected-entity-id="_1427038038487694" connected-attribute-id="_1427038038487706" visibile="true" id="_1427038038487724">
+                <jpa:join-column name="IDSPECIE" referenced-column-name="IDSPECIE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idvariety" target-entity="Variety" primaryKey="false" connected-entity-id="_1427038038487696" connected-attribute-id="_1427038038487717" visibile="true" id="_1427038038487725">
+                <jpa:join-column name="IDVARIETY" referenced-column-name="IDVARIETY" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram id="_1427038038487691">
+        <plane elementRef="_1427038038487690" id="_1427038038487692_p">
+            <shape elementRef="_1427038038487693" id="_1427038038487693_gui">
+                <Bounds x="20.0" y="217.0" width="158.0" height="147.0"/>
+            </shape>
+            <shape elementRef="_1427038038487694" id="_1427038038487694_gui">
+                <Bounds x="455.0" y="16.0" width="146.0" height="168.0"/>
+            </shape>
+            <shape elementRef="_1427038038487695" id="_1427038038487695_gui">
+                <Bounds x="47.0" y="16.0" width="145.0" height="147.0"/>
+            </shape>
+            <shape elementRef="_1427038038487696" id="_1427038038487696_gui">
+                <Bounds x="455.0" y="247.0" width="145.0" height="210.0"/>
+            </shape>
+            <shape elementRef="_1427038038487697" id="_1427038038487697_gui">
+                <Bounds x="235.0" y="16.0" width="133.0" height="231.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>

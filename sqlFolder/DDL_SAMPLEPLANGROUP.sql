@@ -1,0 +1,30 @@
+SET foreign_key_checks = 0;
+START TRANSACTION;
+DROP TABLE IF EXISTS `sampleplangroup`;
+CREATE TABLE IF NOT EXISTS `sampleplangroup` (
+  `IDSAMPLEPLANGROUP`               bigint(20) NULL  AUTO_INCREMENT,
+  `IDARTICLE`                       varchar(50) NULL,
+  `IDGROUPOFSAMPLEPLANGROUP`        bigint(20) NULL,
+  `SAMPLEPLANGROUPNAME`             varchar(50) NULL,  
+  `DESCRIPTION`                     varchar(50) NULL,
+PRIMARY KEY (`IDSAMPLEPLANGROUP`) COMMENT 'PK_SAMPLEPLANGROUP'
+, KEY `KEY_SAMPLEPLANGROUP_IDGROUPOFSAMPLEPLANGROUP` (`IDGROUPOFSAMPLEPLANGROUP`) 
+COMMENT 'PRODGROUP_OF_SAMPLE_PLAN'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+COMMIT;
+
+START TRANSACTION;
+ALTER TABLE                             `sampleplangroup`
+ADD CONSTRAINT `FK_SAMPLEPLANGROUP_IDGROUPOFSAMPLEPLANGROUP` 
+FOREIGN KEY                                               (`IDGROUPOFSAMPLEPLANGROUP`) 
+REFERENCES                              `groupofsampleplangroup` (`IDGROUPOFSAMPLEPLANGROUP`);
+COMMIT;
+
+START TRANSACTION;
+ALTER TABLE                             `sampleplangroup`
+ADD CONSTRAINT `FK_SAMPLEPLANGROUP_IDARTICLE` 
+FOREIGN KEY                             (`IDARTICLE`) 
+REFERENCES                    `article` (`IDARTICLE`);
+COMMIT;
+
+SET foreign_key_checks = 1;

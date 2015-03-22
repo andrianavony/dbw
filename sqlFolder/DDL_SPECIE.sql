@@ -1,0 +1,15 @@
+START TRANSACTION;
+SET foreign_key_checks = 0;
+
+DROP TABLE IF EXISTS `specie`;
+CREATE TABLE IF NOT EXISTS `specie` (
+  `IDSPECIE`        varchar(50) NULL,
+  `SPECIENAME`     varchar(50) NULL,
+  `OFFICIALNAME`     varchar(50) NULL,
+PRIMARY KEY ( IDSPECIE)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+COMMIT;
+
+
+
