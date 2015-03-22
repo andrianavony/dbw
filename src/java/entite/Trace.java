@@ -7,12 +7,14 @@ package entite;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -54,16 +56,19 @@ public class Trace implements Serializable {
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
+    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE", insertable = false, updatable = false)
     @ManyToOne
     private Batch idarticle1;
     @JoinColumn(name = "BATCHNAME", referencedColumnName = "BATCHNAME")
     @ManyToOne
     private Batch batchname;
-    @JoinColumn(name = "IDWO", referencedColumnName = "IDWO")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumns({
+        @JoinColumn(name = "IDWO", referencedColumnName = "IDWO"),
+        @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = true, updatable = true)    
+    })
     private Wo idwo;
-    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY")
+    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)
     @ManyToOne
     private Company idcompany;
 

@@ -66,7 +66,7 @@ public class Article implements Serializable {
     @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION")
     @ManyToOne
     private Generation idgeneration;
-    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = false, updatable = false)
     @ManyToOne
     private Specie idspecie;
     @ManyToOne(cascade = CascadeType.PERSIST)

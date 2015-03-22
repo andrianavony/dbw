@@ -60,7 +60,7 @@ public class Measures implements Serializable {
     private List<Methoddetails> methoddetailsList;
     @JoinColumns({
         @JoinColumn(name = "IDPOSSIBLEVALUE",referencedColumnName = "IDPOSSIBLEVALUE"),
-        @JoinColumn(name = "IDMEASURE"      ,referencedColumnName = "IDMEASURE")
+        @JoinColumn(name = "IDMEASURE"      ,referencedColumnName = "IDMEASURE", insertable = false, updatable = false)
     })
     @ManyToOne
     private Possiblevaluesdetails idpossiblevalue;

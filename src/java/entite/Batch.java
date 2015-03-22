@@ -9,12 +9,14 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -112,11 +114,15 @@ public class Batch implements Serializable {
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY")
+    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)
     @ManyToOne
     private Company idcompany;
-    @JoinColumn(name = "IDWO", referencedColumnName = "IDWO")
-    @ManyToOne
+    
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumns({
+        @JoinColumn(name = "IDWO", referencedColumnName = "IDWO"),
+        @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = true, updatable = true)    
+    })
     private Wo idwo;
     @JoinColumn(name = "IDTREATEMENT", referencedColumnName = "IDTREATEMENT")
     @ManyToOne
