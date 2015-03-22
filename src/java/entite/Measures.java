@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,7 +58,10 @@ public class Measures implements Serializable {
     private String printname;
     @OneToMany(mappedBy = "idmeasure")
     private List<Methoddetails> methoddetailsList;
-    @JoinColumn(name = "IDPOSSIBLEVALUE", referencedColumnName = "IDPOSSIBLEVALUE")
+    @JoinColumns({
+        @JoinColumn(name = "IDPOSSIBLEVALUE",referencedColumnName = "IDPOSSIBLEVALUE"),
+        @JoinColumn(name = "IDMEASURE"      ,referencedColumnName = "IDMEASURE")
+    })
     @ManyToOne
     private Possiblevaluesdetails idpossiblevalue;
     @OneToMany(mappedBy = "idmeasure")
