@@ -8,12 +8,14 @@ package entite;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,10 +26,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "specie")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Specie.findAll", query = "SELECT s FROM Specie s"),
-    @NamedQuery(name = "Specie.findByIdspecie", query = "SELECT s FROM Specie s WHERE s.idspecie = :idspecie")})
+    @NamedQuery(name = "Specie.findByIdspecie", query = "SELECT s FROM Specie s WHERE s.idspecie = :idspecie"),
+    @NamedQuery(name = "Specie.findBySpeciename", query = "SELECT s FROM Specie s WHERE s.speciename = :speciename"),
+    @NamedQuery(name = "Specie.findByOfficialname", query = "SELECT s FROM Specie s WHERE s.officialname = :officialname")})
 public class Specie implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,6 +41,16 @@ public class Specie implements Serializable {
     @Size(min = 1, max = 50)
     @Column(nullable = false, length = 50)
     private String idspecie;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String speciename;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String officialname;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "specie")
+    private List<Variety> varietyList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "specie")
+    private List<Heritagebyspecieorigin> heritagebyspecieoriginList;
     @OneToMany(mappedBy = "idspecie")
     private List<Article> articleList;
 
@@ -52,6 +67,40 @@ public class Specie implements Serializable {
 
     public void setIdspecie(String idspecie) {
         this.idspecie = idspecie;
+    }
+
+    public String getSpeciename() {
+        return speciename;
+    }
+
+    public void setSpeciename(String speciename) {
+        this.speciename = speciename;
+    }
+
+    public String getOfficialname() {
+        return officialname;
+    }
+
+    public void setOfficialname(String officialname) {
+        this.officialname = officialname;
+    }
+
+    @XmlTransient
+    public List<Variety> getVarietyList() {
+        return varietyList;
+    }
+
+    public void setVarietyList(List<Variety> varietyList) {
+        this.varietyList = varietyList;
+    }
+
+    @XmlTransient
+    public List<Heritagebyspecieorigin> getHeritagebyspecieoriginList() {
+        return heritagebyspecieoriginList;
+    }
+
+    public void setHeritagebyspecieoriginList(List<Heritagebyspecieorigin> heritagebyspecieoriginList) {
+        this.heritagebyspecieoriginList = heritagebyspecieoriginList;
     }
 
     @XmlTransient

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,11 +25,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "generation")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Generation.findAll", query = "SELECT g FROM Generation g"),
     @NamedQuery(name = "Generation.findByIdgeneration", query = "SELECT g FROM Generation g WHERE g.idgeneration = :idgeneration"),
-    @NamedQuery(name = "Generation.findByDescription", query = "SELECT g FROM Generation g WHERE g.description = :description")})
+    @NamedQuery(name = "Generation.findByDescription", query = "SELECT g FROM Generation g WHERE g.description = :description"),
+    @NamedQuery(name = "Generation.findByGenerationame", query = "SELECT g FROM Generation g WHERE g.generationame = :generationame")})
 public class Generation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,6 +43,9 @@ public class Generation implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String description;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String generationame;
     @OneToMany(mappedBy = "idgeneration")
     private List<Article> articleList;
 
@@ -64,6 +70,14 @@ public class Generation implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGenerationame() {
+        return generationame;
+    }
+
+    public void setGenerationame(String generationame) {
+        this.generationame = generationame;
     }
 
     @XmlTransient

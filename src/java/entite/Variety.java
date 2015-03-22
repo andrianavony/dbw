@@ -7,11 +7,16 @@ package entite;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -20,15 +25,31 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "variety")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Variety.findAll", query = "SELECT v FROM Variety v"),
     @NamedQuery(name = "Variety.findByIdvariety", query = "SELECT v FROM Variety v WHERE v.varietyPK.idvariety = :idvariety"),
-    @NamedQuery(name = "Variety.findByIdspecie", query = "SELECT v FROM Variety v WHERE v.varietyPK.idspecie = :idspecie")})
+    @NamedQuery(name = "Variety.findByIdspecie", query = "SELECT v FROM Variety v WHERE v.varietyPK.idspecie = :idspecie"),
+    @NamedQuery(name = "Variety.findByDescription", query = "SELECT v FROM Variety v WHERE v.description = :description"),
+    @NamedQuery(name = "Variety.findByVarietyname", query = "SELECT v FROM Variety v WHERE v.varietyname = :varietyname"),
+    @NamedQuery(name = "Variety.findByOfficialname", query = "SELECT v FROM Variety v WHERE v.officialname = :officialname")})
 public class Variety implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected VarietyPK varietyPK;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String description;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String varietyname;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String officialname;
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Specie specie;
     @OneToMany(mappedBy = "idvariety")
     private List<Article> articleList;
 
@@ -49,6 +70,38 @@ public class Variety implements Serializable {
 
     public void setVarietyPK(VarietyPK varietyPK) {
         this.varietyPK = varietyPK;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVarietyname() {
+        return varietyname;
+    }
+
+    public void setVarietyname(String varietyname) {
+        this.varietyname = varietyname;
+    }
+
+    public String getOfficialname() {
+        return officialname;
+    }
+
+    public void setOfficialname(String officialname) {
+        this.officialname = officialname;
+    }
+
+    public Specie getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(Specie specie) {
+        this.specie = specie;
     }
 
     @XmlTransient
