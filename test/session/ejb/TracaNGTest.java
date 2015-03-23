@@ -60,13 +60,66 @@ public class TracaNGTest {
         String Batch_Number="FR63AL11S01010002";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         Traca instance = (Traca)container.getContext().lookup("java:global/classes/Traca");
-        try {
+        
+        instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
+        instance.createTraca();
+        
+                
+        MGR_Unit_Quantity=-40606.06;
+        MGV_Unit_Quantity=-36545.45;
+        KG_Unit_Quantity=-2680.00;
+        Batch_Number="FR63AL11S01010004";
+        
+        
             instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
             instance.createTraca();
-        }
-        finally {
+        
+        
+        MGR_Unit_Quantity=-37575.76;
+        MGV_Unit_Quantity=-33818.18;
+        KG_Unit_Quantity=-2480.00;
+        Batch_Number="FR63AL11S01010005";
+        
+        
+            instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
+            instance.createTraca();
+        
+        MGR_Unit_Quantity=-40606.06;
+        MGV_Unit_Quantity=-36545.45;
+        KG_Unit_Quantity=-3440.00;
+        Batch_Number="FR63AL11S01010006";
+        
+        
+            instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
+            instance.createTraca();
+        
+        
+        MGR_Unit_Quantity=-40606.06;
+        MGV_Unit_Quantity=-36545.45;
+        KG_Unit_Quantity=-1280.00;
+        Batch_Number="FR63AL11S01010026";
+        
+        
+            instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
+            instance.createTraca();
+        
+            MGR_Unit_Quantity=-40606.06;
+        MGV_Unit_Quantity=-36545.45;
+        KG_Unit_Quantity=11072.00;
+        Transaction_Type ="Production";
+        
+        Batch_Number="NEK000990NZ";
+        
+        
+            instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
+            instance.createTraca();
+            
             container.close();
-        }
+        
+        
+        
+        
+        
 
     }
     
