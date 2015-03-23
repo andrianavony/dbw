@@ -49,7 +49,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Batch.findByQuantity", query = "SELECT b FROM Batch b WHERE b.quantity = :quantity"),
     @NamedQuery(name = "Batch.findByUnits", query = "SELECT b FROM Batch b WHERE b.units = :units"),
     @NamedQuery(name = "Batch.findByIdbatchlims", query = "SELECT b FROM Batch b WHERE b.idbatchlims = :idbatchlims"),
-    @NamedQuery(name = "Batch.findByContract", query = "SELECT b FROM Batch b WHERE b.contract = :contract")})
+    @NamedQuery(name = "Batch.findByContract", query = "SELECT b FROM Batch b WHERE b.contract = :contract"),
+    @NamedQuery(name = "Batch.findByFoldernolims", query = "SELECT b FROM Batch b WHERE b.foldernolims = :foldernolims"),
+    @NamedQuery(name = "Batch.findByIdarticleBatchname", query = "SELECT b "
+            + " FROM Batch b "
+            + " WHERE b.batchname = :batchname "
+            + " and b.idarticle = :idarticle "),    
+})
+
 public class Batch implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -131,6 +138,9 @@ public class Batch implements Serializable {
     private List<Analysis> analysisList;
     @OneToMany(mappedBy = "idbatch")
     private List<Samples> samplesList;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String foldernolims;
 
     public Batch() {
     }
@@ -275,6 +285,14 @@ public class Batch implements Serializable {
         this.contract = contract;
     }
 
+        public String getFoldernolims() {
+        return foldernolims;
+    }
+
+    public void setFoldernolims(String foldernolims) {
+        this.foldernolims = foldernolims;
+    }
+    
     @XmlTransient
     public List<Trace> getTraceList() {
         return traceList;

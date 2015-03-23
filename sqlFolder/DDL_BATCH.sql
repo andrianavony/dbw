@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `batch` (
   `IDCOMPANY`       varchar(50) NULL,
   `CONTRACT`        varchar(50) NULL,
   `IDTREATEMENT`    varchar(50) NULL,
+  `FOLDERNOLIMS`    varchar(50) NULL,
 PRIMARY KEY (`IDBATCH`) COMMENT 'identifiant du lot',
     KEY `IDITEM`            (`IDARTICLE`), 
     KEY `I_stade`           (`IDSTAGE`)         COMMENT 'pour faire la jointure avec Stade', 

@@ -135,5 +135,48 @@ public class TCNGTest {
 
     }
     
+    /**
+     * Insertion du code article dans la base en utilisant 
+     *      le nom de l'article.
+     *      l'espece
+     *      la variété
+     *      le stade 
+     *      et génération 
+     * On verifie que l'article, l'espece, la variété, le stade et génération sont crée dans la base
+     */
+    @Test 
+    public void testMAJNomVariete() throws Exception {
+        
+        
+        
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        TC instance = (TC)container.getContext().lookup("java:global/classes/TC");
+        
+        try {
+            instance.SetInfo(null, null, null,"Unevariete", null, null, "S0101S10032C04_C", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, Double.NaN, Double.MIN_NORMAL, Double.MIN_NORMAL, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, "E00063389004", null, null, null);
+            instance.process();
+         
+        /*    
+        String idstage = "COM";
+        String idspecie = "S0101";
+        String idvariety = "S10096";
+        String idgeneration="C04";
+        
+        Article result = instance.createOrUpdateArticle(idarticle, idstage, idspecie, idvariety,idgeneration);
+        
+        initialisation( idarticle);
+        
+        assertEquals(result, expResult);
+        assertEquals(specie, result.getIdspecie());
+        assertEquals(variety, result.getIdvariety());
+        assertEquals(stage, result.getIdstage());
+        assertEquals(generation, result.getIdgeneration());
+        */
+        }
+        finally {
+            container.close();
+        }
+
+    }
     
 }
