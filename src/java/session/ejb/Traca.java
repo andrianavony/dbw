@@ -38,6 +38,7 @@ public class Traca {
     String Bassin;
     String Producteur;
     String Contract;
+    
 
     @PersistenceContext
     protected EntityManager em;
@@ -79,7 +80,7 @@ public class Traca {
         this.MGV_Unit_Quantity=MGV_Unit_Quantity ;
         this.KG_Unit_Quantity= KG_Unit_Quantity; 
         this.Item_Number= Item_Number;
-        System.err.println("Article $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+this.Item_Number);
+        System.out.println("Article $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+this.Item_Number);
         this.Batch_Number= Batch_Number;
         this.Year= Year; 
         this.Bassin= Bassin;
@@ -95,7 +96,7 @@ public class Traca {
         
         
         trace = new Trace();
-        
+        trace.setWarehouse(Warehouse_Id);
         trace.setIdarticle(idarticle);
         Company company = new Company(CompanyId);
         trace.setIdcompany(company);
