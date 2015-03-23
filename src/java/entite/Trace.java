@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Trace.findByTracetype", query = "SELECT t FROM Trace t WHERE t.tracetype = :tracetype"),
     @NamedQuery(name = "Trace.findByQuantity", query = "SELECT t FROM Trace t WHERE t.quantity = :quantity"),
     @NamedQuery(name = "Trace.findByUnits", query = "SELECT t FROM Trace t WHERE t.units = :units"),
-    @NamedQuery(name = "Trace.findByDescription", query = "SELECT t FROM Trace t WHERE t.description = :description")})
+    @NamedQuery(name = "Trace_1.findByDescription", query = "SELECT t FROM Trace_1 t WHERE t.description = :description"),
+    @NamedQuery(name = "Trace_1.findByWarehouse", query = "SELECT t FROM Trace_1 t WHERE t.warehouse = :warehouse")})
 public class Trace implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,6 +73,10 @@ public class Trace implements Serializable {
     @ManyToOne
     private Company idcompany;
 
+    @Size(max = 50)
+    @Column(length = 50)
+    private String warehouse;
+    
     public Trace() {
     }
 
@@ -159,6 +164,14 @@ public class Trace implements Serializable {
         this.idcompany = idcompany;
     }
 
+    public String getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(String warehouse) {
+        this.warehouse = warehouse;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

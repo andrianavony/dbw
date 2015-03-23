@@ -49,7 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByApporvedby", query = "SELECT a FROM Analysis a WHERE a.apporvedby = :apporvedby"),
     @NamedQuery(name = "Analysis.findByApporveddate", query = "SELECT a FROM Analysis a WHERE a.apporveddate = :apporveddate"),
     @NamedQuery(name = "Analysis.findByHerited", query = "SELECT a FROM Analysis a WHERE a.herited = :herited"),
-    @NamedQuery(name = "Analysis.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered")})
+    @NamedQuery(name = "Analysis_1.findByConsidered", query = "SELECT a FROM Analysis_1 a WHERE a.considered = :considered"),
+    @NamedQuery(name = "Analysis_1.findByAnalysisname", query = "SELECT a FROM Analysis_1 a WHERE a.analysisname = :analysisname"),
+    @NamedQuery(name = "Analysis_1.findByMethodname", query = "SELECT a FROM Analysis_1 a WHERE a.methodname = :methodname")})
 public class Analysis implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,6 +83,12 @@ public class Analysis implements Serializable {
     private Date apporveddate;
     private Boolean herited;
     private Boolean considered;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String analysisname;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String methodname;
     @OneToMany(mappedBy = "idanalysis")
     private List<Results> resultsList;
     @JoinColumn(name = "IDMETHOD", referencedColumnName = "IDMETHOD")
@@ -237,6 +245,22 @@ public class Analysis implements Serializable {
 
     public void setConsidered(Boolean considered) {
         this.considered = considered;
+    }
+
+    public String getAnalysisname() {
+        return analysisname;
+    }
+
+    public void setAnalysisname(String analysisname) {
+        this.analysisname = analysisname;
+    }
+
+    public String getMethodname() {
+        return methodname;
+    }
+
+    public void setMethodname(String methodname) {
+        this.methodname = methodname;
     }
 
     @XmlTransient
