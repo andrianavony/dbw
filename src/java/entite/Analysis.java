@@ -49,9 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByApporvedby", query = "SELECT a FROM Analysis a WHERE a.apporvedby = :apporvedby"),
     @NamedQuery(name = "Analysis.findByApporveddate", query = "SELECT a FROM Analysis a WHERE a.apporveddate = :apporveddate"),
     @NamedQuery(name = "Analysis.findByHerited", query = "SELECT a FROM Analysis a WHERE a.herited = :herited"),
-    @NamedQuery(name = "Analysis_1.findByConsidered", query = "SELECT a FROM Analysis_1 a WHERE a.considered = :considered"),
-    @NamedQuery(name = "Analysis_1.findByAnalysisname", query = "SELECT a FROM Analysis_1 a WHERE a.analysisname = :analysisname"),
-    @NamedQuery(name = "Analysis_1.findByMethodname", query = "SELECT a FROM Analysis_1 a WHERE a.methodname = :methodname")})
+    @NamedQuery(name = "Analysis_1.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered"),
+    @NamedQuery(name = "Analysis_1.findByAnalysisname", query = "SELECT a FROM Analysis a WHERE a.analysisname = :analysisname"),
+    @NamedQuery(name = "Analysis_1.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")})
 public class Analysis implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

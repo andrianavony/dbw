@@ -54,11 +54,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Results.findByApporved", query = "SELECT r FROM Results r WHERE r.apporved = :apporved"),
     @NamedQuery(name = "Results.findByApporveddate", query = "SELECT r FROM Results r WHERE r.apporveddate = :apporveddate"),
     @NamedQuery(name = "Results.findByApporvedby", query = "SELECT r FROM Results r WHERE r.apporvedby = :apporvedby"),
-    @NamedQuery(name = "Results_1.findByDateofentry", query = "SELECT r FROM Results_1 r WHERE r.dateofentry = :dateofentry"),
-    @NamedQuery(name = "Results_1.findByHerited", query = "SELECT r FROM Results_1 r WHERE r.herited = :herited"),
-    @NamedQuery(name = "Results_1.findByMeasurename", query = "SELECT r FROM Results_1 r WHERE r.measurename = :measurename"),
-    @NamedQuery(name = "Results_1.findByAnalysisname", query = "SELECT r FROM Results_1 r WHERE r.analysisname = :analysisname"),
-    @NamedQuery(name = "Results_1.findByMethodname", query = "SELECT r FROM Results_1 r WHERE r.methodname = :methodname")})
+    @NamedQuery(name = "Results_1.findByDateofentry", query = "SELECT r FROM Results r WHERE r.dateofentry = :dateofentry"),
+    @NamedQuery(name = "Results_1.findByHerited", query = "SELECT r FROM Results r WHERE r.herited = :herited"),
+    @NamedQuery(name = "Results_1.findByMeasurename", query = "SELECT r FROM Results r WHERE r.measurename = :measurename"),
+    @NamedQuery(name = "Results_1.findByAnalysisname", query = "SELECT r FROM Results r WHERE r.analysisname = :analysisname"),
+    @NamedQuery(name = "Results_1.findByMethodname", query = "SELECT r FROM Results r WHERE r.methodname = :methodname")})
 public class Results implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
