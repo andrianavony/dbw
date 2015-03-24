@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `trace` (
   `IDWO`        varchar(50) NULL,
   `IDCOMPANY`   varchar(50) NULL ,
   `TRACETYPE`   varchar(50) NULL,
-  `QUANTITY`    double      NULL,
+  `QUANTITY`    varchar(50) NULL,
   `UNITS`       varchar(50) NULL,
   `IDARTICLE`   varchar(50) NULL,
   `BATCHNAME`   varchar(50) NULL,
