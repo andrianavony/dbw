@@ -11,12 +11,16 @@ import entite.Company;
 import entite.Trace;
 import entite.Wo;
 import entite.WoPK;
+import entite.Traca;
+import java.util.Iterator;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -24,7 +28,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @LocalBean
-public class Traca {
+public class TracaBean {
     String CompanyId;
     String Warehouse_Id;
     String Reference_Id;
@@ -46,15 +50,17 @@ public class Traca {
     @Inject
     CreateOrUpdateArticle createOrUpdateArticle;
     
+    
+    
     Trace trace;
 
      Wo wo;
     
-    public Traca() {
+    public TracaBean() {
         
     }
 
-    public Traca(String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
+    public TracaBean(String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
         this.CompanyId = CompanyId;
         this.Warehouse_Id = Warehouse_Id;
         this.Reference_Id = Reference_Id;
@@ -71,6 +77,8 @@ public class Traca {
     }
     
     
+    
+    
     public void setInfo(String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
         this.CompanyId=CompanyId ;
         this.Warehouse_Id=Warehouse_Id ;
@@ -80,7 +88,6 @@ public class Traca {
         this.MGV_Unit_Quantity=MGV_Unit_Quantity ;
         this.KG_Unit_Quantity= KG_Unit_Quantity; 
         this.Item_Number= Item_Number;
-        System.out.println("Article $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"+this.Item_Number);
         this.Batch_Number= Batch_Number;
         this.Year= Year; 
         this.Bassin= Bassin;
@@ -92,6 +99,8 @@ public class Traca {
         //createOrUpdateArticle.createOrUpdateArticle("S0101S10031C04_C");
         
         //createOrUpdateArticle = new  CreateOrUpdateArticle();
+        System.out.println(" dans create Traca "+createOrUpdateArticle);
+        System.out.println(" dans create Traca this.Item_Number ============================================= "+this.Item_Number);
         Article idarticle = createOrUpdateArticle.createOrUpdateArticle(this.Item_Number);
         
         
@@ -108,6 +117,7 @@ public class Traca {
         
         setTraceQuantity();
         em.merge(trace);
+        
     }
 
     private Wo createWo(){//String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
@@ -133,6 +143,34 @@ public class Traca {
         //return trace;
     }
 
+    
 
+    
+    public void setInfo(Traca traca ) {
+        this.CompanyId = traca.getIdcompany();
+        this.Warehouse_Id = traca.getWarehouse();
+        this.Reference_Id = traca.getIdwo();
+        this.Transaction_Type = traca.getTracetype();
+        String mgr = traca.getMgrquantity();
+        if (mgr!=null){
+            this.MGR_Unit_Quantity = Double.parseDouble(traca.getMgrquantity());
+        }
+        String mgv = traca.getMgvquantity();
+        if (mgv!=null){
+            this.MGV_Unit_Quantity = Double.parseDouble(traca.getMgvquantity());
+        }
+        String kg = traca.getKgquantity();
+        if (kg!=null){
+            this.KG_Unit_Quantity = Double.parseDouble(traca.getKgquantity());
+        }
+        
+        this.Item_Number = traca.getIdarticle();
+        System.out.println("dans création TracaBean(Traca ************************************************ "+this.Item_Number );
+        this.Batch_Number = traca.getBatchname();
+        this.Year = traca.getYear();
+        this.Bassin = traca.getBassin();
+        this.Producteur = traca.getProducteur();
+        this.Contract = traca.getContrat();
+    }
     
 }

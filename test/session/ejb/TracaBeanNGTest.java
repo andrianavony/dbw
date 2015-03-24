@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
  *
  * @author S.ANDRIANAVONY
  */
-public class TracaNGTest {
+public class TracaBeanNGTest {
     String CompanyId="LMG";
     String Warehouse_Id="NZAT63";
     String Reference_Id="P02_012719";
@@ -28,7 +28,7 @@ public class TracaNGTest {
     String Bassin="LIMAGNE";
     String Producteur="GAEC DELOCHE LEMEE";
     String Contract="0353 1 L00408";
-    public TracaNGTest() {
+    public TracaBeanNGTest() {
     }
 
     @BeforeClass
@@ -48,7 +48,7 @@ public class TracaNGTest {
     }
 
     /**
-     * Test of createTraca method, of class Traca.
+     * Test of createTraca method, of class TracaBean.
      */
     @Test
     public void testCreateTraca() throws NamingException {
@@ -59,7 +59,7 @@ public class TracaNGTest {
         Double KG_Unit_Quantity=-2370.00;
         String Batch_Number="FR63AL11S01010002";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        Traca instance = (Traca)container.getContext().lookup("java:global/classes/Traca");
+        TracaBean instance = (TracaBean)container.getContext().lookup("java:global/classes/Traca");
         
         instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
         instance.createTraca();
