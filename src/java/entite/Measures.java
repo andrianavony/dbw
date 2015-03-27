@@ -6,6 +6,7 @@
 package entite;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,21 +31,28 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "measures")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Measures.findAll", query = "SELECT m FROM Measures m"),
     @NamedQuery(name = "Measures.findByIdmeasure", query = "SELECT m FROM Measures m WHERE m.idmeasure = :idmeasure"),
+    @NamedQuery(name = "Measures.findByLimsmeasureid", query = "SELECT m FROM Measures m WHERE m.limsmeasureid = :limsmeasureid"),
+    @NamedQuery(name = "Measures.findByLimsanalysisid", query = "SELECT m FROM Measures m WHERE m.limsanalysisid = :limsanalysisid"),
     @NamedQuery(name = "Measures.findByMeasurename", query = "SELECT m FROM Measures m WHERE m.measurename = :measurename"),
     @NamedQuery(name = "Measures.findByDescription", query = "SELECT m FROM Measures m WHERE m.description = :description"),
     @NamedQuery(name = "Measures.findByOfficialname", query = "SELECT m FROM Measures m WHERE m.officialname = :officialname"),
-    @NamedQuery(name = "Measures.findByPrintname", query = "SELECT m FROM Measures m WHERE m.printname = :printname")})
+    @NamedQuery(name = "Measures.findByPrintname", query = "SELECT m FROM Measures m WHERE m.printname = :printname"),
+    @NamedQuery(name = "Measures.findByIsprintable", query = "SELECT m FROM Measures m WHERE m.isprintable = :isprintable"),
+    @NamedQuery(name = "Measures.findByDefaultvalue", query = "SELECT m FROM Measures m WHERE m.defaultvalue = :defaultvalue")})
 public class Measures implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idmeasure;
+    private BigInteger idmeasure;
+    private BigInteger limsmeasureid;
+    private BigInteger limsanalysisid;
     @Size(max = 50)
     @Column(length = 50)
     private String measurename;
@@ -56,6 +65,10 @@ public class Measures implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String printname;
+    private Boolean isprintable;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String defaultvalue;
     @OneToMany(mappedBy = "idmeasure")
     private List<Methoddetails> methoddetailsList;
     @JoinColumns({
@@ -70,21 +83,38 @@ public class Measures implements Serializable {
     private List<Specificationdetails> specificationdetailsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "measures")
     private List<Possiblevaluesdetails> possiblevaluesdetailsList;
-
+   
     public Measures() {
     }
 
-    public Measures(Long idmeasure) {
+    public Measures(BigInteger idmeasure) {
         this.idmeasure = idmeasure;
     }
 
-    public Long getIdmeasure() {
+    public BigInteger getIdmeasure() {
         return idmeasure;
     }
 
-    public void setIdmeasure(Long idmeasure) {
+    public void setIdmeasure(BigInteger idmeasure) {
         this.idmeasure = idmeasure;
     }
+    
+     public BigInteger getLimsmeasureid() {
+        return limsmeasureid;
+    }
+
+    public void setLimsmeasureid(BigInteger limsmeasureid) {
+        this.limsmeasureid = limsmeasureid;
+    }
+
+    public BigInteger getLimsanalysisid() {
+        return limsanalysisid;
+    }
+
+    public void setLimsanalysisid(BigInteger limsanalysisid) {
+        this.limsanalysisid = limsanalysisid;
+    }
+
 
     public String getMeasurename() {
         return measurename;
@@ -108,6 +138,25 @@ public class Measures implements Serializable {
 
     public void setOfficialname(String officialname) {
         this.officialname = officialname;
+    }
+    
+    public Boolean getIsprintable() {
+        return isprintable;
+    }
+
+    public String getDefaultvalue() {
+        return defaultvalue;
+    }
+
+
+
+    public void setDefaultvalue(String defaultvalue) {
+        this.defaultvalue = defaultvalue;
+    }
+
+
+    public void setIsprintable(Boolean isprintable) {
+        this.isprintable = isprintable;
     }
 
     public String getPrintname() {

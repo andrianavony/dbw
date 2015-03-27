@@ -4,15 +4,24 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `SAMPLES`;
 CREATE TABLE IF NOT EXISTS `SAMPLES` (
     `IDSAMPLES`     bigint(20)              NULL AUTO_INCREMENT,
+    `LIMSID` bigint(20) NULL ,
+    `LIMSSAMPLEID`       varchar(50) NULL,
     `IDCASEFILE`    bigint(20)              NULL,
     `IDBATCH`       bigint(20)              NULL,
+    `LIMSBATCHID` bigint(20) NULL,
+    `LIMSFOLDERNO`       varchar(50) NULL,
+    `BATCHNAME`       varchar(50) NULL,
     `IDARTICLE`     varchar(50)             NULL,
     `IDSAMPLESTYPE` bigint(20)              NULL,
-    `BATCHNAME`     varchar(50)             NULL,
+
     `DESCRIPTION`   varchar(50) NULL,
     `CREATIONDATE`  datetime NULL,
 
-    `IDSTATUS` smallint(6) NULL,
+    `IDSTATUS` tinyint(1) NULL,
+`STATUSLABEL`       varchar(50) NULL,
+`IDAPPROBATIONSTATUS` tinyint(1) NULL,
+`APPROBATIONSTATUSLABEL`       varchar(50) NULL,
+
     `APPORVED` smallint(6) NULL,
     `APPORVEDBY` varchar(50) NULL,
     `APPORVEDDATE` datetime NULL,

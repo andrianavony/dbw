@@ -6,6 +6,7 @@
 package entite;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -26,25 +28,31 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "modelanalysis")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Modelanalysis.findAll", query = "SELECT m FROM Modelanalysis m"),
     @NamedQuery(name = "Modelanalysis.findByIdmodelanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.idmodelanalysis = :idmodelanalysis"),
+    @NamedQuery(name = "Modelanalysis.findByIdmotheranalysis", query = "SELECT m FROM Modelanalysis m WHERE m.idmotheranalysis = :idmotheranalysis"),
     @NamedQuery(name = "Modelanalysis.findByIdlims", query = "SELECT m FROM Modelanalysis m WHERE m.idlims = :idlims"),
     @NamedQuery(name = "Modelanalysis.findByCategory", query = "SELECT m FROM Modelanalysis m WHERE m.category = :category"),
     @NamedQuery(name = "Modelanalysis.findByDescription", query = "SELECT m FROM Modelanalysis m WHERE m.description = :description"),
     @NamedQuery(name = "Modelanalysis.findByAnalysisname", query = "SELECT m FROM Modelanalysis m WHERE m.analysisname = :analysisname"),
+    @NamedQuery(name = "Modelanalysis.findByReportname", query = "SELECT m FROM Modelanalysis m WHERE m.reportname = :reportname"),
     @NamedQuery(name = "Modelanalysis.findByOfficialname", query = "SELECT m FROM Modelanalysis m WHERE m.officialname = :officialname"),
     @NamedQuery(name = "Modelanalysis.findByGroupmeasures", query = "SELECT m FROM Modelanalysis m WHERE m.groupmeasures = :groupmeasures"),
+    @NamedQuery(name = "Modelanalysis.findByGroupalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.groupalanalysis = :groupalanalysis"),
     @NamedQuery(name = "Modelanalysis.findByOfficialanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.officialanalysis = :officialanalysis"),
     @NamedQuery(name = "Modelanalysis.findByInternalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.internalanalysis = :internalanalysis")})
+
 public class Modelanalysis implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idmodelanalysis;
+    private BigInteger idmodelanalysis;
+    private BigInteger idmotheranalysis;
     @Size(max = 50)
     @Column(length = 50)
     private String idlims;
@@ -59,10 +67,16 @@ public class Modelanalysis implements Serializable {
     private String analysisname;
     @Size(max = 50)
     @Column(length = 50)
+    private String reportname;
+    @Size(max = 50)
+    @Column(length = 50)
     private String officialname;
     @Size(max = 50)
     @Column(length = 50)
     private String groupmeasures;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String groupalanalysis;
     private Boolean officialanalysis;
     private Boolean internalanalysis;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modelanalysis")
@@ -75,21 +89,32 @@ public class Modelanalysis implements Serializable {
     private List<Method> methodList;
     @OneToMany(mappedBy = "idmodelanalysis")
     private List<Analysis> analysisList;
+    
+    private List<Heritagebytransformation> heritagebytransformationList;
 
     public Modelanalysis() {
     }
 
-    public Modelanalysis(Long idmodelanalysis) {
+    public Modelanalysis(BigInteger idmodelanalysis) {
         this.idmodelanalysis = idmodelanalysis;
     }
 
-    public Long getIdmodelanalysis() {
+    public BigInteger getIdmodelanalysis() {
         return idmodelanalysis;
     }
 
-    public void setIdmodelanalysis(Long idmodelanalysis) {
+    public void setIdmodelanalysis(BigInteger idmodelanalysis) {
         this.idmodelanalysis = idmodelanalysis;
     }
+    
+        public BigInteger getIdmotheranalysis() {
+        return idmotheranalysis;
+    }
+
+    public void setIdmotheranalysis(BigInteger idmotheranalysis) {
+        this.idmotheranalysis = idmotheranalysis;
+    }
+
 
     public String getIdlims() {
         return idlims;
@@ -123,6 +148,14 @@ public class Modelanalysis implements Serializable {
         this.analysisname = analysisname;
     }
 
+    public String getReportname() {
+        return reportname;
+    }
+
+    public void setReportname(String reportname) {
+        this.reportname = reportname;
+    }
+
     public String getOfficialname() {
         return officialname;
     }
@@ -138,6 +171,15 @@ public class Modelanalysis implements Serializable {
     public void setGroupmeasures(String groupmeasures) {
         this.groupmeasures = groupmeasures;
     }
+    
+    public String getGroupalanalysis() {
+        return groupalanalysis;
+    }
+
+    public void setGroupalanalysis(String groupalanalysis) {
+        this.groupalanalysis = groupalanalysis;
+    }
+
 
     public Boolean getOfficialanalysis() {
         return officialanalysis;
@@ -199,6 +241,16 @@ public class Modelanalysis implements Serializable {
     public void setAnalysisList(List<Analysis> analysisList) {
         this.analysisList = analysisList;
     }
+    
+     public List<Heritagebytransformation> getHeritagebytransformationList() {
+        return heritagebytransformationList;
+    }
+
+
+
+    public void setHeritagebytransformationList(List<Heritagebytransformation> heritagebytransformationList) {
+        this.heritagebytransformationList = heritagebytransformationList;
+    }
 
     @Override
     public int hashCode() {
@@ -224,5 +276,5 @@ public class Modelanalysis implements Serializable {
     public String toString() {
         return "entite.Modelanalysis[ idmodelanalysis=" + idmodelanalysis + " ]";
     }
-    
+
 }

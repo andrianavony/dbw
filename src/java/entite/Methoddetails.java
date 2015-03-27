@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -22,18 +23,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "methoddetails")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Methoddetails.findAll", query = "SELECT m FROM Methoddetails m"),
     @NamedQuery(name = "Methoddetails.findByIdmethoddetails", query = "SELECT m FROM Methoddetails m WHERE m.methoddetailsPK.idmethoddetails = :idmethoddetails"),
     @NamedQuery(name = "Methoddetails.findByIdmethod", query = "SELECT m FROM Methoddetails m WHERE m.methoddetailsPK.idmethod = :idmethod"),
+    @NamedQuery(name = "Methoddetails.findByLimsmethodname", query = "SELECT m FROM Methoddetails m WHERE m.limsmethodname = :limsmethodname"),
+    @NamedQuery(name = "Methoddetails.findByLimsmethodid", query = "SELECT m FROM Methoddetails m WHERE m.limsmethodid = :limsmethodid"),
+    @NamedQuery(name = "Methoddetails.findByLimsanalysisid", query = "SELECT m FROM Methoddetails m WHERE m.limsanalysisid = :limsanalysisid"),
+    @NamedQuery(name = "Methoddetails.findByLimsmeasureid", query = "SELECT m FROM Methoddetails m WHERE m.limsmeasureid = :limsmeasureid"),
     @NamedQuery(name = "Methoddetails.findByDescription", query = "SELECT m FROM Methoddetails m WHERE m.description = :description"),
     @NamedQuery(name = "Methoddetails.findByDeleted", query = "SELECT m FROM Methoddetails m WHERE m.deleted = :deleted"),
     @NamedQuery(name = "Methoddetails.findByMaingroup", query = "SELECT m FROM Methoddetails m WHERE m.maingroup = :maingroup"),
     @NamedQuery(name = "Methoddetails.findBySubgroup", query = "SELECT m FROM Methoddetails m WHERE m.subgroup = :subgroup"),
     @NamedQuery(name = "Methoddetails.findByIdmodelanalysis", query = "SELECT m FROM Methoddetails m WHERE m.idmodelanalysis = :idmodelanalysis"),
     @NamedQuery(name = "Methoddetails.findByMeasuremaster", query = "SELECT m FROM Methoddetails m WHERE m.measuremaster = :measuremaster"),
-    @NamedQuery(name = "Methoddetails.findByIsresults", query = "SELECT m FROM Methoddetails m WHERE m.isresults = :isresults"),
     @NamedQuery(name = "Methoddetails.findByIsrequired", query = "SELECT m FROM Methoddetails m WHERE m.isrequired = :isrequired"),
     @NamedQuery(name = "Methoddetails.findByDefaultvalue", query = "SELECT m FROM Methoddetails m WHERE m.defaultvalue = :defaultvalue"),
     @NamedQuery(name = "Methoddetails.findByIsvirtual", query = "SELECT m FROM Methoddetails m WHERE m.isvirtual = :isvirtual"),
@@ -42,11 +47,25 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Methoddetails.findByValuemax", query = "SELECT m FROM Methoddetails m WHERE m.valuemax = :valuemax"),
     @NamedQuery(name = "Methoddetails.findByValid", query = "SELECT m FROM Methoddetails m WHERE m.valid = :valid"),
     @NamedQuery(name = "Methoddetails.findByRepetition", query = "SELECT m FROM Methoddetails m WHERE m.repetition = :repetition"),
-    @NamedQuery(name = "Methoddetails.findBySubrepetition", query = "SELECT m FROM Methoddetails m WHERE m.subrepetition = :subrepetition")})
+    @NamedQuery(name = "Methoddetails.findBySubrepetition", query = "SELECT m FROM Methoddetails m WHERE m.subrepetition = :subrepetition"),
+    @NamedQuery(name = "Methoddetails.findByPrintname", query = "SELECT m FROM Methoddetails m WHERE m.printname = :printname"),
+    @NamedQuery(name = "Methoddetails.findByIsprintable", query = "SELECT m FROM Methoddetails m WHERE m.isprintable = :isprintable")})
 public class Methoddetails implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected MethoddetailsPK methoddetailsPK;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsmethodname;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsmethodid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsanalysisid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsmeasureid;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
@@ -79,6 +98,10 @@ public class Methoddetails implements Serializable {
     private Boolean valid;
     private Short repetition;
     private Short subrepetition;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String printname;
+    private Boolean isprintable;
     @JoinColumn(name = "IDMEASURE", referencedColumnName = "IDMEASURE")
     @ManyToOne
     private Measures idmeasure;
@@ -109,6 +132,38 @@ public class Methoddetails implements Serializable {
 
     public void setMethoddetailsPK(MethoddetailsPK methoddetailsPK) {
         this.methoddetailsPK = methoddetailsPK;
+    }
+    
+        public String getLimsmethodname() {
+        return limsmethodname;
+    }
+
+    public void setLimsmethodname(String limsmethodname) {
+        this.limsmethodname = limsmethodname;
+    }
+
+    public String getLimsmethodid() {
+        return limsmethodid;
+    }
+
+    public void setLimsmethodid(String limsmethodid) {
+        this.limsmethodid = limsmethodid;
+    }
+
+    public String getLimsanalysisid() {
+        return limsanalysisid;
+    }
+
+    public void setLimsanalysisid(String limsanalysisid) {
+        this.limsanalysisid = limsanalysisid;
+    }
+
+    public String getLimsmeasureid() {
+        return limsmeasureid;
+    }
+
+    public void setLimsmeasureid(String limsmeasureid) {
+        this.limsmeasureid = limsmeasureid;
     }
 
     public String getDescription() {
@@ -237,6 +292,22 @@ public class Methoddetails implements Serializable {
 
     public void setSubrepetition(Short subrepetition) {
         this.subrepetition = subrepetition;
+    }
+    
+    public String getPrintname() {
+        return printname;
+    }
+
+    public void setPrintname(String printname) {
+        this.printname = printname;
+    }
+
+    public Boolean getIsprintable() {
+        return isprintable;
+    }
+
+    public void setIsprintable(Boolean isprintable) {
+        this.isprintable = isprintable;
     }
 
     public Measures getIdmeasure() {

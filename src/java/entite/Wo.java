@@ -39,6 +39,9 @@ public class Wo implements Serializable {
     private String description;
     @OneToMany(mappedBy = "idwo")
     private List<Trace> traceList;
+    @JoinColumn(name = "IDTRANSFORMATION", referencedColumnName = "IDTRANSFORMATION")
+    @ManyToOne
+    private Transformation idtransformation;
     @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Company company;
@@ -82,6 +85,16 @@ public class Wo implements Serializable {
 
     public void setTraceList(List<Trace> traceList) {
         this.traceList = traceList;
+    }
+    
+    public Transformation getIdtransformation() {
+        return idtransformation;
+    }
+
+
+
+    public void setIdtransformation(Transformation idtransformation) {
+        this.idtransformation = idtransformation;
     }
 
     public Company getCompany() {

@@ -18,13 +18,14 @@ CREATE TABLE IF NOT EXISTS `batch` (
   `IDDIAGRAM`       varchar(50) NULL,
   `IDCALIBER`       varchar(50) NULL,
   `IDWO`            varchar(50) NULL,
+  `IDTRACE`          bigint(20)  NULL,
   `QUANTITY`        double      NULL,
   `UNITS`           varchar(50) NULL,
-  `IDBATCHLIMS`     bigint(20)  NULL,
+  `LIMSBATCHID`     bigint(20)  NULL,
   `IDCOMPANY`       varchar(50) NULL,
   `CONTRACT`        varchar(50) NULL,
   `IDTREATEMENT`    varchar(50) NULL,
-  `FOLDERNOLIMS`    varchar(50) NULL,
+  `LIMSFOLDERNO`    varchar(50) NULL,
 PRIMARY KEY (`IDBATCH`) COMMENT 'identifiant du lot',
     KEY `IDITEM`            (`IDARTICLE`), 
     KEY `I_stade`           (`IDSTAGE`)         COMMENT 'pour faire la jointure avec Stade', 
@@ -64,6 +65,15 @@ START TRANSACTION;
     REFERENCES `wo`                 (`IDWO`)
     ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
+
+START TRANSACTION;
+    ALTER TABLE `batch`
+    ADD CONSTRAINT `FK_BATCH_TRACE` 
+    FOREIGN KEY                        (`IDTRACE`) 
+    REFERENCES `trace`                 (`IDTRACE`)
+    ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
+
 
 START TRANSACTION;
 ALTER TABLE `batch` 

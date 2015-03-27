@@ -21,3 +21,9 @@ SELECT * FROM `table_constraints` WHERE `CONSTRAINT_TYPE`='PRIMARY KEY'
 */
 
 
+
+select measures.`MEASURENAME`, resultstemp.* from resultstemp
+inner join measures on measures.`LIMSMEASUREID` = resultstemp.`LIMSMEASUREID` 
+where `LIMSSAMPLEID` = 'E00087867004' --and `LIMSANALYSISID` = 275
+
+

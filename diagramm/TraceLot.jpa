@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings jaxb-support="false" id="_1427465199024272" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:ns4="http://nbmodeler.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:entity class="Trace" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427465199024275">
+        <jpa:table name="trace"/>
+        <jpa:attributes>
+            <jpa:id name="idtrace" attribute-type="java.lang.Long" visibile="true" id="_1427465199024280">
+                <jpa:column name="IDTRACE" unique="false" nullable="false" insertable="true" updatable="true" table="trace"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="tracetype" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024281">
+                <jpa:column name="TRACETYPE" unique="false" nullable="true" insertable="true" updatable="true" table="trace" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="quantity" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024282">
+                <jpa:column name="QUANTITY" unique="false" nullable="true" insertable="true" updatable="true" table="trace" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="units" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024283">
+                <jpa:column name="UNITS" unique="false" nullable="true" insertable="true" updatable="true" table="trace" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024284">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="trace" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="warehouse" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024285">
+                <jpa:column name="WAREHOUSE" unique="false" nullable="true" insertable="true" updatable="true" table="trace" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="idarticle" target-entity="Batch" primaryKey="false" connected-entity-id="_1427465199024277" connected-attribute-id="_1427465199024314" visibile="true" id="_1427465199024286">
+                <jpa:join-column name="IDARTICLE" referenced-column-name="IDARTICLE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="batchname" target-entity="Batch" primaryKey="false" connected-entity-id="_1427465199024277" connected-attribute-id="_1427465199024315" visibile="true" id="_1427465199024287">
+                <jpa:join-column name="BATCHNAME" referenced-column-name="BATCHNAME" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idwo" target-entity="Wo" primaryKey="false" connected-entity-id="_1427465199024278" connected-attribute-id="_1427465199024321" visibile="true" id="_1427465199024288">
+                <jpa:join-column name="IDWO" referenced-column-name="IDWO" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many name="batchCollection" target-entity="Batch" mapped-by="idtrace" connected-entity-id="_1427465199024277" connected-attribute-id="_1427465199024316" visibile="true" id="_1427465199024289"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Heritagebytransformation" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427465199024276">
+        <jpa:table name="heritagebytransformation"/>
+        <jpa:attributes>
+            <jpa:id name="idtransformationdep" attribute-type="long" visibile="true" id="_1427465199024290">
+                <jpa:column name="IDTRANSFORMATIONDEP" unique="false" nullable="false" insertable="true" updatable="true" table="heritagebytransformation"/>
+            </jpa:id>
+            <jpa:id name="idtransformationarr" attribute-type="long" visibile="true" id="_1427465199024291">
+                <jpa:column name="IDTRANSFORMATIONARR" unique="false" nullable="false" insertable="true" updatable="true" table="heritagebytransformation"/>
+            </jpa:id>
+            <jpa:id name="idmodelanalysis" attribute-type="long" visibile="true" id="_1427465199024292">
+                <jpa:column name="IDMODELANALYSIS" unique="false" nullable="false" insertable="true" updatable="true" table="heritagebytransformation"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024293">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="heritagebytransformation" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="transformation" target-entity="Transformation" optional="false" primaryKey="false" connected-entity-id="_1427465199024279" connected-attribute-id="_1427465199024327" visibile="true" id="_1427465199024294">
+                <jpa:join-column name="IDTRANSFORMATIONARR" referenced-column-name="IDTRANSFORMATION" unique="false" nullable="true" insertable="false" updatable="false"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="transformation1" target-entity="Transformation" optional="false" primaryKey="false" connected-entity-id="_1427465199024279" connected-attribute-id="_1427465199024328" visibile="true" id="_1427465199024295">
+                <jpa:join-column name="IDTRANSFORMATIONDEP" referenced-column-name="IDTRANSFORMATION" unique="false" nullable="true" insertable="false" updatable="false"/>
+            </jpa:many-to-one>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Batch" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427465199024277">
+        <jpa:table name="batch"/>
+        <jpa:attributes>
+            <jpa:id name="idbatch" attribute-type="java.lang.Long" visibile="true" id="_1427465199024296">
+                <jpa:column name="IDBATCH" unique="false" nullable="false" insertable="true" updatable="true" table="batch"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="batchname" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024297">
+                <jpa:column name="BATCHNAME" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024298">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idstage" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024299">
+                <jpa:column name="IDSTAGE" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idspecie" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024300">
+                <jpa:column name="IDSPECIE" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idvariety" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024301">
+                <jpa:column name="IDVARIETY" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idgeneration" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024302">
+                <jpa:column name="IDGENERATION" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="prodgroup" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024303">
+                <jpa:column name="PRODGROUP" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idpea" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024304">
+                <jpa:column name="IDPEA" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="origin1" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024305">
+                <jpa:column name="ORIGIN1" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="origin2" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024306">
+                <jpa:column name="ORIGIN2" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="iddiagram" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024307">
+                <jpa:column name="IDDIAGRAM" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="idcaliber" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024308">
+                <jpa:column name="IDCALIBER" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="quantity" optional="true" attribute-type="java.lang.Double" visibile="true" id="_1427465199024309">
+                <jpa:column name="QUANTITY" unique="false" nullable="true" insertable="true" updatable="true" table="batch" precision="22"/>
+            </jpa:basic>
+            <jpa:basic name="units" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024310">
+                <jpa:column name="UNITS" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="limsbatchid" optional="true" attribute-type="java.math.BigInteger" visibile="true" id="_1427465199024311">
+                <jpa:column name="LIMSBATCHID" unique="false" nullable="true" insertable="true" updatable="true" table="batch"/>
+            </jpa:basic>
+            <jpa:basic name="contract" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024312">
+                <jpa:column name="CONTRACT" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="limsfolderno" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024313">
+                <jpa:column name="LIMSFOLDERNO" unique="false" nullable="true" insertable="true" updatable="true" table="batch" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="idtrace" target-entity="Trace" primaryKey="false" connected-entity-id="_1427465199024275" connected-attribute-id="_1427465199024289" visibile="true" id="_1427465199024316">
+                <jpa:join-column name="IDTRACE" referenced-column-name="IDTRACE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idwo" target-entity="Wo" primaryKey="false" connected-entity-id="_1427465199024278" connected-attribute-id="_1427465199024322" visibile="true" id="_1427465199024317">
+                <jpa:join-column name="IDWO" referenced-column-name="IDWO" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many name="traceCollection" target-entity="Trace" mapped-by="idarticle" connected-entity-id="_1427465199024275" connected-attribute-id="_1427465199024286" visibile="true" id="_1427465199024314"/>
+            <jpa:one-to-many name="traceCollection1" target-entity="Trace" mapped-by="batchname" connected-entity-id="_1427465199024275" connected-attribute-id="_1427465199024287" visibile="true" id="_1427465199024315"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Wo" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427465199024278">
+        <jpa:table name="wo"/>
+        <jpa:attributes>
+            <jpa:id name="idwo" attribute-type="java.lang.String" visibile="true" id="_1427465199024318">
+                <jpa:column name="IDWO" unique="false" nullable="false" insertable="true" updatable="true" table="wo" length="50"/>
+            </jpa:id>
+            <jpa:id name="idcompany" attribute-type="java.lang.String" visibile="true" id="_1427465199024319">
+                <jpa:column name="IDCOMPANY" unique="false" nullable="false" insertable="true" updatable="true" table="wo" length="50"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024320">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="wo" length="50"/>
+            </jpa:basic>
+            <jpa:many-to-one name="idtransformation" target-entity="Transformation" primaryKey="false" connected-entity-id="_1427465199024279" connected-attribute-id="_1427465199024329" visibile="true" id="_1427465199024323">
+                <jpa:join-column name="IDTRANSFORMATION" referenced-column-name="IDTRANSFORMATION" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many name="traceCollection" target-entity="Trace" mapped-by="idwo" connected-entity-id="_1427465199024275" connected-attribute-id="_1427465199024288" visibile="true" id="_1427465199024321"/>
+            <jpa:one-to-many name="batchCollection" target-entity="Batch" mapped-by="idwo" connected-entity-id="_1427465199024277" connected-attribute-id="_1427465199024317" visibile="true" id="_1427465199024322"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Transformation" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_1427465199024279">
+        <jpa:table name="transformation"/>
+        <jpa:attributes>
+            <jpa:id name="idtransformation" attribute-type="java.lang.Long" visibile="true" id="_1427465199024324">
+                <jpa:column name="IDTRANSFORMATION" unique="false" nullable="false" insertable="true" updatable="true" table="transformation"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="description" optional="true" attribute-type="java.lang.String" visibile="true" id="_1427465199024325">
+                <jpa:column name="DESCRIPTION" unique="false" nullable="true" insertable="true" updatable="true" table="transformation" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="transformationlabel" optional="true" attribute-type="java.lang.Integer" visibile="true" id="_1427465199024326">
+                <jpa:column name="TRANSFORMATIONLABEL" unique="false" nullable="true" insertable="true" updatable="true" table="transformation"/>
+            </jpa:basic>
+            <jpa:one-to-many name="heritagebytransformationCollection" target-entity="Heritagebytransformation" mapped-by="transformation" connected-entity-id="_1427465199024276" connected-attribute-id="_1427465199024294" visibile="true" id="_1427465199024327"/>
+            <jpa:one-to-many name="heritagebytransformationCollection1" target-entity="Heritagebytransformation" mapped-by="transformation1" connected-entity-id="_1427465199024276" connected-attribute-id="_1427465199024295" visibile="true" id="_1427465199024328"/>
+            <jpa:one-to-many name="woCollection" target-entity="Wo" mapped-by="idtransformation" connected-entity-id="_1427465199024278" connected-attribute-id="_1427465199024323" visibile="true" id="_1427465199024329"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram id="_1427465199024273">
+        <plane elementRef="_1427465199024272" id="_1427465199024274_p">
+            <shape elementRef="_1427465199024275" id="_1427465199024275_gui">
+                <Bounds x="440.0" y="262.0" width="142.0" height="273.0"/>
+            </shape>
+            <shape elementRef="_1427465199024276" id="_1427465199024276_gui">
+                <Bounds x="915.0" y="599.0" width="242.0" height="189.0"/>
+            </shape>
+            <shape elementRef="_1427465199024277" id="_1427465199024277_gui">
+                <Bounds x="32.0" y="32.0" width="146.0" height="525.0"/>
+            </shape>
+            <shape elementRef="_1427465199024278" id="_1427465199024278_gui">
+                <Bounds x="242.0" y="621.0" width="147.0" height="189.0"/>
+            </shape>
+            <shape elementRef="_1427465199024279" id="_1427465199024279_gui">
+                <Bounds x="482.0" y="621.0" width="256.0" height="189.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
