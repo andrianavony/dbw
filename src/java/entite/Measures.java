@@ -235,5 +235,5 @@ public class Measures implements Serializable {
     public String toString() {
         return "entite.Measures[ idmeasure=" + idmeasure + " ]";
     }
-    
+   
 }

@@ -48,9 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Batch.findByIdcaliber", query = "SELECT b FROM Batch b WHERE b.idcaliber = :idcaliber"),
     @NamedQuery(name = "Batch.findByQuantity", query = "SELECT b FROM Batch b WHERE b.quantity = :quantity"),
     @NamedQuery(name = "Batch.findByUnits", query = "SELECT b FROM Batch b WHERE b.units = :units"),
-    @NamedQuery(name = "Batch.findByIdbatchlims", query = "SELECT b FROM Batch b WHERE b.idbatchlims = :idbatchlims"),
+    @NamedQuery(name = "Batch.findByLimsbatchid", query = "SELECT b FROM Batch b WHERE b.limsbatchid = :limsbatchid"),
     @NamedQuery(name = "Batch.findByContract", query = "SELECT b FROM Batch b WHERE b.contract = :contract"),
-    @NamedQuery(name = "Batch.findByFoldernolims", query = "SELECT b FROM Batch b WHERE b.foldernolims = :foldernolims"),
+    @NamedQuery(name = "Batch.findByLimsfolderno", query = "SELECT b FROM Batch b WHERE b.limsfolderno = :limsfolderno"),
     @NamedQuery(name = "Batch.findByIdarticleBatchname", query = "SELECT b "
             + " FROM Batch b "
             + " WHERE b.batchname = :batchname "
@@ -106,7 +106,7 @@ public class Batch implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String units;
-    private BigInteger idbatchlims;
+    private BigInteger limsbatchid;
     @Size(max = 50)
     @Column(length = 50)
     private String contract;
@@ -124,7 +124,11 @@ public class Batch implements Serializable {
     @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)
     @ManyToOne
     private Company idcompany;
-    
+     @JoinColumn(name = "IDTRACE", referencedColumnName = "IDTRACE")
+    @ManyToOne
+
+    private Trace idtrace;
+     
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name = "IDWO", referencedColumnName = "IDWO"),
@@ -140,8 +144,9 @@ public class Batch implements Serializable {
     private List<Samples> samplesList;
     @Size(max = 50)
     @Column(length = 50)
-    private String foldernolims;
+    private String limsfolderno;
 
+    
     public Batch() {
     }
 
@@ -269,12 +274,12 @@ public class Batch implements Serializable {
         this.units = units;
     }
 
-    public BigInteger getIdbatchlims() {
-        return idbatchlims;
+    public BigInteger getLimsbatchid() {
+        return limsbatchid;
     }
 
-    public void setIdbatchlims(BigInteger idbatchlims) {
-        this.idbatchlims = idbatchlims;
+    public void setLimsbatchid(BigInteger limsbatchid) {
+        this.limsbatchid = limsbatchid;
     }
 
     public String getContract() {
@@ -285,12 +290,12 @@ public class Batch implements Serializable {
         this.contract = contract;
     }
 
-        public String getFoldernolims() {
-        return foldernolims;
+        public String getLimsfolderno() {
+        return limsfolderno;
     }
 
-    public void setFoldernolims(String foldernolims) {
-        this.foldernolims = foldernolims;
+    public void setLimsfolderno(String limsfolderno) {
+        this.limsfolderno = limsfolderno;
     }
     
     @XmlTransient
@@ -343,6 +348,14 @@ public class Batch implements Serializable {
 
     public void setIdcompany(Company idcompany) {
         this.idcompany = idcompany;
+    }
+    
+    public Trace getIdtrace() {
+        return idtrace;
+    }
+
+    public void setIdtrace(Trace idtrace) {
+        this.idtrace = idtrace;
     }
 
     public Wo getIdwo() {

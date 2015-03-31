@@ -7,6 +7,7 @@ package entite;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -209,5 +210,5 @@ public class Article implements Serializable {
     public String toString() {
         return "entite.Article[ idarticle=" + idarticle + " ]";
     }
-    
+
 }

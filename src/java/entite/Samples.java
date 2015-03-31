@@ -35,11 +35,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Samples.findAll", query = "SELECT s FROM Samples s"),
     @NamedQuery(name = "Samples.findByIdsamples", query = "SELECT s FROM Samples s WHERE s.idsamples = :idsamples"),
-    @NamedQuery(name = "Samples.findByIdsamplestype", query = "SELECT s FROM Samples s WHERE s.idsamplestype = :idsamplestype"),
+    @NamedQuery(name = "Samples.findByLimsid", query = "SELECT s FROM Samples s WHERE s.limsid = :limsid"),
+    @NamedQuery(name = "Samples.findByLimssampleid", query = "SELECT s FROM Samples s WHERE s.limssampleid = :limssampleid"),
+    @NamedQuery(name = "Samples.findByLimsbatchid", query = "SELECT s FROM Samples s WHERE s.limsbatchid = :limsbatchid"),
+    @NamedQuery(name = "Samples.findByLimsfolderno", query = "SELECT s FROM Samples s WHERE s.limsfolderno = :limsfolderno"),
     @NamedQuery(name = "Samples.findByBatchname", query = "SELECT s FROM Samples s WHERE s.batchname = :batchname"),
+    @NamedQuery(name = "Samples.findByIdsamplestype", query = "SELECT s FROM Samples s WHERE s.idsamplestype = :idsamplestype"),
     @NamedQuery(name = "Samples.findByDescription", query = "SELECT s FROM Samples s WHERE s.description = :description"),
     @NamedQuery(name = "Samples.findByCreationdate", query = "SELECT s FROM Samples s WHERE s.creationdate = :creationdate"),
     @NamedQuery(name = "Samples.findByIdstatus", query = "SELECT s FROM Samples s WHERE s.idstatus = :idstatus"),
+    @NamedQuery(name = "Samples.findByStatuslabel", query = "SELECT s FROM Samples s WHERE s.statuslabel = :statuslabel"),
+    @NamedQuery(name = "Samples.findByIdapprobationstatus", query = "SELECT s FROM Samples s WHERE s.idapprobationstatus = :idapprobationstatus"),
+    @NamedQuery(name = "Samples.findByApprobationstatuslabel", query = "SELECT s FROM Samples s WHERE s.approbationstatuslabel = :approbationstatuslabel"),
     @NamedQuery(name = "Samples.findByApporved", query = "SELECT s FROM Samples s WHERE s.apporved = :apporved"),
     @NamedQuery(name = "Samples.findByApporvedby", query = "SELECT s FROM Samples s WHERE s.apporvedby = :apporvedby"),
     @NamedQuery(name = "Samples.findByApporveddate", query = "SELECT s FROM Samples s WHERE s.apporveddate = :apporveddate")})
@@ -50,16 +57,32 @@ public class Samples implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Long idsamples;
-    private BigInteger idsamplestype;
+    private BigInteger limsid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limssampleid;
+    private BigInteger limsbatchid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsfolderno;
     @Size(max = 50)
     @Column(length = 50)
     private String batchname;
+    private BigInteger idsamplestype;
+
     @Size(max = 50)
     @Column(length = 50)
     private String description;
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationdate;
     private Short idstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String statuslabel;
+    private Boolean idapprobationstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String approbationstatuslabel;
     private Short apporved;
     @Size(max = 50)
     @Column(length = 50)
@@ -102,6 +125,41 @@ public class Samples implements Serializable {
     public void setIdsamplestype(BigInteger idsamplestype) {
         this.idsamplestype = idsamplestype;
     }
+    
+        public BigInteger getLimsid() {
+        return limsid;
+    }
+
+
+
+    public void setLimsid(BigInteger limsid) {
+        this.limsid = limsid;
+    }
+
+    public String getLimssampleid() {
+        return limssampleid;
+    }
+
+    public void setLimssampleid(String limssampleid) {
+        this.limssampleid = limssampleid;
+    }
+
+    public BigInteger getLimsbatchid() {
+        return limsbatchid;
+    }
+
+    public void setLimsbatchid(BigInteger limsbatchid) {
+        this.limsbatchid = limsbatchid;
+    }
+
+    public String getLimsfolderno() {
+        return limsfolderno;
+    }
+
+    public void setLimsfolderno(String limsfolderno) {
+        this.limsfolderno = limsfolderno;
+    }
+
 
     public String getBatchname() {
         return batchname;

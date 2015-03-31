@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
@@ -28,13 +29,31 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "results")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Results.findAll", query = "SELECT r FROM Results r"),
     @NamedQuery(name = "Results.findByIdresult", query = "SELECT r FROM Results r WHERE r.idresult = :idresult"),
+    @NamedQuery(name = "Results.findByLimsmeasureid", query = "SELECT r FROM Results r WHERE r.limsmeasureid = :limsmeasureid"),
+    @NamedQuery(name = "Results.findByLimsid", query = "SELECT r FROM Results r WHERE r.limsid = :limsid"),
+    @NamedQuery(name = "Results.findByLimsidseries", query = "SELECT r FROM Results r WHERE r.limsidseries = :limsidseries"),
+    @NamedQuery(name = "Results.findByIdseries", query = "SELECT r FROM Results r WHERE r.idseries = :idseries"),
+    @NamedQuery(name = "Results.findByLimssampleid", query = "SELECT r FROM Results r WHERE r.limssampleid = :limssampleid"),
+    @NamedQuery(name = "Results.findByLimsidanalysis", query = "SELECT r FROM Results r WHERE r.limsidanalysis = :limsidanalysis"),
+    @NamedQuery(name = "Results.findByLimsidmethod", query = "SELECT r FROM Results r WHERE r.limsidmethod = :limsidmethod"),
     @NamedQuery(name = "Results.findByIdmethoddetails", query = "SELECT r FROM Results r WHERE r.idmethoddetails = :idmethoddetails"),
+    @NamedQuery(name = "Results.findByIdcasefile", query = "SELECT r FROM Results r WHERE r.idcasefile = :idcasefile"),
+    @NamedQuery(name = "Results.findByLimsbatchid", query = "SELECT r FROM Results r WHERE r.limsbatchid = :limsbatchid"),
+    @NamedQuery(name = "Results.findByLimsfolderno", query = "SELECT r FROM Results r WHERE r.limsfolderno = :limsfolderno"),
     @NamedQuery(name = "Results.findByBatchname", query = "SELECT r FROM Results r WHERE r.batchname = :batchname"),
     @NamedQuery(name = "Results.findByIdstatus", query = "SELECT r FROM Results r WHERE r.idstatus = :idstatus"),
+    @NamedQuery(name = "Results.findByStatuslabel", query = "SELECT r FROM Results r WHERE r.statuslabel = :statuslabel"),
+    @NamedQuery(name = "Results.findByIdapprobationstatus", query = "SELECT r FROM Results r WHERE r.idapprobationstatus = :idapprobationstatus"),
+    @NamedQuery(name = "Results.findByApprobationstatuslabel", query = "SELECT r FROM Results r WHERE r.approbationstatuslabel = :approbationstatuslabel"),
+    @NamedQuery(name = "Results.findByAnalysisidstatus", query = "SELECT r FROM Results r WHERE r.analysisidstatus = :analysisidstatus"),
+    @NamedQuery(name = "Results.findByAnalysisstatuslabel", query = "SELECT r FROM Results r WHERE r.analysisstatuslabel = :analysisstatuslabel"),
+    @NamedQuery(name = "Results.findByAnalysisidapprobationstatus", query = "SELECT r FROM Results r WHERE r.analysisidapprobationstatus = :analysisidapprobationstatus"),
+    @NamedQuery(name = "Results.findByAnalysisapprobationstatuslabel", query = "SELECT r FROM Results r WHERE r.analysisapprobationstatuslabel = :analysisapprobationstatuslabel"),
     @NamedQuery(name = "Results.findByDescription", query = "SELECT r FROM Results r WHERE r.description = :description"),
     @NamedQuery(name = "Results.findByIsvirtual", query = "SELECT r FROM Results r WHERE r.isvirtual = :isvirtual"),
     @NamedQuery(name = "Results.findByIsfinal", query = "SELECT r FROM Results r WHERE r.isfinal = :isfinal"),
@@ -42,6 +61,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Results.findByIsrequired", query = "SELECT r FROM Results r WHERE r.isrequired = :isrequired"),
     @NamedQuery(name = "Results.findByOccurence", query = "SELECT r FROM Results r WHERE r.occurence = :occurence"),
     @NamedQuery(name = "Results.findByCounteranalysis", query = "SELECT r FROM Results r WHERE r.counteranalysis = :counteranalysis"),
+    @NamedQuery(name = "Results.findByCounteranalysisidlims", query = "SELECT r FROM Results r WHERE r.counteranalysisidlims = :counteranalysisidlims"),
     @NamedQuery(name = "Results.findByOfficialename", query = "SELECT r FROM Results r WHERE r.officialename = :officialename"),
     @NamedQuery(name = "Results.findByMaingroup", query = "SELECT r FROM Results r WHERE r.maingroup = :maingroup"),
     @NamedQuery(name = "Results.findBySubgroup", query = "SELECT r FROM Results r WHERE r.subgroup = :subgroup"),
@@ -49,28 +69,66 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Results.findByMeasuredetails", query = "SELECT r FROM Results r WHERE r.measuredetails = :measuredetails"),
     @NamedQuery(name = "Results.findByRepetition", query = "SELECT r FROM Results r WHERE r.repetition = :repetition"),
     @NamedQuery(name = "Results.findBySubrepetition", query = "SELECT r FROM Results r WHERE r.subrepetition = :subrepetition"),
+    @NamedQuery(name = "Results.findByValuemin", query = "SELECT r FROM Results r WHERE r.valuemin = :valuemin"),
+    @NamedQuery(name = "Results.findByPreferdvaluemin", query = "SELECT r FROM Results r WHERE r.preferdvaluemin = :preferdvaluemin"),
+    @NamedQuery(name = "Results.findByPreferdvaluemax", query = "SELECT r FROM Results r WHERE r.preferdvaluemax = :preferdvaluemax"),
+    @NamedQuery(name = "Results.findByValuemax", query = "SELECT r FROM Results r WHERE r.valuemax = :valuemax"),
     @NamedQuery(name = "Results.findByRawresults", query = "SELECT r FROM Results r WHERE r.rawresults = :rawresults"),
     @NamedQuery(name = "Results.findByFormated", query = "SELECT r FROM Results r WHERE r.formated = :formated"),
     @NamedQuery(name = "Results.findByApporved", query = "SELECT r FROM Results r WHERE r.apporved = :apporved"),
     @NamedQuery(name = "Results.findByApporveddate", query = "SELECT r FROM Results r WHERE r.apporveddate = :apporveddate"),
     @NamedQuery(name = "Results.findByApporvedby", query = "SELECT r FROM Results r WHERE r.apporvedby = :apporvedby"),
-    @NamedQuery(name = "Results_1.findByDateofentry", query = "SELECT r FROM Results r WHERE r.dateofentry = :dateofentry"),
-    @NamedQuery(name = "Results_1.findByHerited", query = "SELECT r FROM Results r WHERE r.herited = :herited"),
-    @NamedQuery(name = "Results_1.findByMeasurename", query = "SELECT r FROM Results r WHERE r.measurename = :measurename"),
-    @NamedQuery(name = "Results_1.findByAnalysisname", query = "SELECT r FROM Results r WHERE r.analysisname = :analysisname"),
-    @NamedQuery(name = "Results_1.findByMethodname", query = "SELECT r FROM Results r WHERE r.methodname = :methodname")})
+    @NamedQuery(name = "Results.findByDateofentry", query = "SELECT r FROM Results r WHERE r.dateofentry = :dateofentry"),
+    @NamedQuery(name = "Results.findByUsername", query = "SELECT r FROM Results r WHERE r.username = :username"),
+    @NamedQuery(name = "Results.findByHerited", query = "SELECT r FROM Results r WHERE r.herited = :herited"),
+    @NamedQuery(name = "Results.findByMeasurename", query = "SELECT r FROM Results r WHERE r.measurename = :measurename"),
+    @NamedQuery(name = "Results.findByAnalysisname", query = "SELECT r FROM Results r WHERE r.analysisname = :analysisname"),
+    @NamedQuery(name = "Results.findByMethodname", query = "SELECT r FROM Results r WHERE r.methodname = :methodname"),
+    @NamedQuery(name = "Results.findByCopiedfrom", query = "SELECT r FROM Results r WHERE r.copiedfrom = :copiedfrom"),
+    @NamedQuery(name = "Results.findByIsresultsinserted", query = "SELECT r FROM Results r WHERE r.isresultsinserted = :isresultsinserted")})
 public class Results implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idresult;
+    private BigInteger idresult;
+    private BigInteger limsmeasureid;
+    private BigInteger limsid;
+    private BigInteger limsidseries;
+    private BigInteger idseries;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limssampleid;
+    private BigInteger limsidanalysis;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsidmethod;
     private BigInteger idmethoddetails;
+    private BigInteger idcasefile;
+    private BigInteger limsbatchid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsfolderno;
     @Size(max = 50)
     @Column(length = 50)
     private String batchname;
-    private Boolean idstatus;
+        private Boolean idstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String statuslabel;
+    private Boolean idapprobationstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String approbationstatuslabel;
+    private Boolean analysisidstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String analysisstatuslabel;
+    private Boolean analysisidapprobationstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String analysisapprobationstatuslabel;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
@@ -80,6 +138,9 @@ public class Results implements Serializable {
     private Boolean isrequired;
     private Short occurence;
     private Short counteranalysis;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String counteranalysisidlims;
     @Size(max = 50)
     @Column(length = 50)
     private String officialename;
@@ -97,6 +158,15 @@ public class Results implements Serializable {
     private String measuredetails;
     private Short repetition;
     private Short subrepetition;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(precision = 22)
+    private Double valuemin;
+    @Column(precision = 22)
+    private Double preferdvaluemin;
+    @Column(precision = 22)
+    private Double preferdvaluemax;
+    @Column(precision = 22)
+    private Double valuemax;
     @Size(max = 50)
     @Column(length = 50)
     private String rawresults;
@@ -111,6 +181,9 @@ public class Results implements Serializable {
     private String apporvedby;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateofentry;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String username;
     private Boolean herited;
     @Size(max = 50)
     @Column(length = 50)
@@ -121,6 +194,10 @@ public class Results implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String methodname;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String copiedfrom;
+    private Boolean isresultsinserted;
     @JoinColumn(name = "IDSAMPLES", referencedColumnName = "IDSAMPLES")
     @ManyToOne
     private Samples idsamples;
@@ -149,16 +226,72 @@ public class Results implements Serializable {
     public Results() {
     }
 
-    public Results(Long idresult) {
+    public Results(BigInteger idresult) {
         this.idresult = idresult;
     }
 
-    public Long getIdresult() {
+    public BigInteger getIdresult() {
         return idresult;
     }
 
-    public void setIdresult(Long idresult) {
+    public void setIdresult(BigInteger idresult) {
         this.idresult = idresult;
+    }
+
+    public BigInteger getLimsmeasureid() {
+        return limsmeasureid;
+    }
+
+    public void setLimsmeasureid(BigInteger limsmeasureid) {
+        this.limsmeasureid = limsmeasureid;
+    }
+
+    public BigInteger getLimsid() {
+        return limsid;
+    }
+
+    public void setLimsid(BigInteger limsid) {
+        this.limsid = limsid;
+    }
+
+    public BigInteger getLimsidseries() {
+        return limsidseries;
+    }
+
+    public void setLimsidseries(BigInteger limsidseries) {
+        this.limsidseries = limsidseries;
+    }
+
+    public BigInteger getIdseries() {
+        return idseries;
+    }
+
+    public void setIdseries(BigInteger idseries) {
+        this.idseries = idseries;
+    }
+
+    public String getLimssampleid() {
+        return limssampleid;
+    }
+
+    public void setLimssampleid(String limssampleid) {
+        this.limssampleid = limssampleid;
+    }
+
+    public BigInteger getLimsidanalysis() {
+        return limsidanalysis;
+    }
+
+    public void setLimsidanalysis(BigInteger limsidanalysis) {
+        this.limsidanalysis = limsidanalysis;
+    }
+
+    public String getLimsidmethod() {
+        return limsidmethod;
+    }
+
+    public void setLimsidmethod(String limsidmethod) {
+        this.limsidmethod = limsidmethod;
     }
 
     public BigInteger getIdmethoddetails() {
@@ -167,6 +300,30 @@ public class Results implements Serializable {
 
     public void setIdmethoddetails(BigInteger idmethoddetails) {
         this.idmethoddetails = idmethoddetails;
+    }
+
+    public BigInteger getIdcasefile() {
+        return idcasefile;
+    }
+
+    public void setIdcasefile(BigInteger idcasefile) {
+        this.idcasefile = idcasefile;
+    }
+
+    public BigInteger getLimsbatchid() {
+        return limsbatchid;
+    }
+
+    public void setLimsbatchid(BigInteger limsbatchid) {
+        this.limsbatchid = limsbatchid;
+    }
+
+    public String getLimsfolderno() {
+        return limsfolderno;
+    }
+
+    public void setLimsfolderno(String limsfolderno) {
+        this.limsfolderno = limsfolderno;
     }
 
     public String getBatchname() {
@@ -183,6 +340,62 @@ public class Results implements Serializable {
 
     public void setIdstatus(Boolean idstatus) {
         this.idstatus = idstatus;
+    }
+
+    public String getStatuslabel() {
+        return statuslabel;
+    }
+
+    public void setStatuslabel(String statuslabel) {
+        this.statuslabel = statuslabel;
+    }
+
+    public Boolean getIdapprobationstatus() {
+        return idapprobationstatus;
+    }
+
+    public void setIdapprobationstatus(Boolean idapprobationstatus) {
+        this.idapprobationstatus = idapprobationstatus;
+    }
+
+    public String getApprobationstatuslabel() {
+        return approbationstatuslabel;
+    }
+
+    public void setApprobationstatuslabel(String approbationstatuslabel) {
+        this.approbationstatuslabel = approbationstatuslabel;
+    }
+
+    public Boolean getAnalysisidstatus() {
+        return analysisidstatus;
+    }
+
+    public void setAnalysisidstatus(Boolean analysisidstatus) {
+        this.analysisidstatus = analysisidstatus;
+    }
+
+    public String getAnalysisstatuslabel() {
+        return analysisstatuslabel;
+    }
+
+    public void setAnalysisstatuslabel(String analysisstatuslabel) {
+        this.analysisstatuslabel = analysisstatuslabel;
+    }
+
+    public Boolean getAnalysisidapprobationstatus() {
+        return analysisidapprobationstatus;
+    }
+
+    public void setAnalysisidapprobationstatus(Boolean analysisidapprobationstatus) {
+        this.analysisidapprobationstatus = analysisidapprobationstatus;
+    }
+
+    public String getAnalysisapprobationstatuslabel() {
+        return analysisapprobationstatuslabel;
+    }
+
+    public void setAnalysisapprobationstatuslabel(String analysisapprobationstatuslabel) {
+        this.analysisapprobationstatuslabel = analysisapprobationstatuslabel;
     }
 
     public String getDescription() {
@@ -241,6 +454,14 @@ public class Results implements Serializable {
         this.counteranalysis = counteranalysis;
     }
 
+    public String getCounteranalysisidlims() {
+        return counteranalysisidlims;
+    }
+
+    public void setCounteranalysisidlims(String counteranalysisidlims) {
+        this.counteranalysisidlims = counteranalysisidlims;
+    }
+
     public String getOfficialename() {
         return officialename;
     }
@@ -297,6 +518,38 @@ public class Results implements Serializable {
         this.subrepetition = subrepetition;
     }
 
+    public Double getValuemin() {
+        return valuemin;
+    }
+
+    public void setValuemin(Double valuemin) {
+        this.valuemin = valuemin;
+    }
+
+    public Double getPreferdvaluemin() {
+        return preferdvaluemin;
+    }
+
+    public void setPreferdvaluemin(Double preferdvaluemin) {
+        this.preferdvaluemin = preferdvaluemin;
+    }
+
+    public Double getPreferdvaluemax() {
+        return preferdvaluemax;
+    }
+
+    public void setPreferdvaluemax(Double preferdvaluemax) {
+        this.preferdvaluemax = preferdvaluemax;
+    }
+
+    public Double getValuemax() {
+        return valuemax;
+    }
+
+    public void setValuemax(Double valuemax) {
+        this.valuemax = valuemax;
+    }
+
     public String getRawresults() {
         return rawresults;
     }
@@ -345,6 +598,14 @@ public class Results implements Serializable {
         this.dateofentry = dateofentry;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Boolean getHerited() {
         return herited;
     }
@@ -375,6 +636,22 @@ public class Results implements Serializable {
 
     public void setMethodname(String methodname) {
         this.methodname = methodname;
+    }
+
+    public String getCopiedfrom() {
+        return copiedfrom;
+    }
+
+    public void setCopiedfrom(String copiedfrom) {
+        this.copiedfrom = copiedfrom;
+    }
+
+    public Boolean getIsresultsinserted() {
+        return isresultsinserted;
+    }
+
+    public void setIsresultsinserted(Boolean isresultsinserted) {
+        this.isresultsinserted = isresultsinserted;
     }
 
     public Samples getIdsamples() {

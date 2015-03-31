@@ -59,7 +59,7 @@ public class TracaBeanNGTest {
         Double KG_Unit_Quantity=-2370.00;
         String Batch_Number="FR63AL11S01010002";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        TracaBean instance = (TracaBean)container.getContext().lookup("java:global/classes/Traca");
+        TracaBean instance = (TracaBean)container.getContext().lookup("java:global/classes/TracaBean");
         
         instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
         instance.createTraca();

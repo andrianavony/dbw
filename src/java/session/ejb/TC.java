@@ -107,7 +107,7 @@ public class TC {
             Batch nextBatch = iBatch.next();
             nextBatch.setContract(Contrat);
             if (Sample != null) {
-                nextBatch.setFoldernolims(Sample.substring(0, 9));
+                nextBatch.setLimsfolderno(Sample.substring(0, 9));
                 em.merge(nextBatch);
             }
         }

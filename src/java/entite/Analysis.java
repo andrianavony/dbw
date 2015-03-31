@@ -35,35 +35,66 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT a FROM Analysis a"),
     @NamedQuery(name = "Analysis.findByIdanalysis", query = "SELECT a FROM Analysis a WHERE a.idanalysis = :idanalysis"),
+    @NamedQuery(name = "Analysis.findByLimsid", query = "SELECT a FROM Analysis a WHERE a.limsid = :limsid"),
+    @NamedQuery(name = "Analysis.findByLimssampleid", query = "SELECT a FROM Analysis a WHERE a.limssampleid = :limssampleid"),
+    @NamedQuery(name = "Analysis.findByLimsidanalysis", query = "SELECT a FROM Analysis a WHERE a.limsidanalysis = :limsidanalysis"),
+    @NamedQuery(name = "Analysis.findByIdcasefile", query = "SELECT a FROM Analysis a WHERE a.idcasefile = :idcasefile"),
+    @NamedQuery(name = "Analysis.findByLimsidseries", query = "SELECT a FROM Analysis a WHERE a.limsidseries = :limsidseries"),
+    @NamedQuery(name = "Analysis.findByIdseries", query = "SELECT a FROM Analysis a WHERE a.idseries = :idseries"),
     @NamedQuery(name = "Analysis.findByIdmethoddetails", query = "SELECT a FROM Analysis a WHERE a.idmethoddetails = :idmethoddetails"),
+    @NamedQuery(name = "Analysis.findByLimsbatchid", query = "SELECT a FROM Analysis a WHERE a.limsbatchid = :limsbatchid"),
+    @NamedQuery(name = "Analysis.findByLimsfolderno", query = "SELECT a FROM Analysis a WHERE a.limsfolderno = :limsfolderno"),
     @NamedQuery(name = "Analysis.findByBatchname", query = "SELECT a FROM Analysis a WHERE a.batchname = :batchname"),
     @NamedQuery(name = "Analysis.findByIdstatus", query = "SELECT a FROM Analysis a WHERE a.idstatus = :idstatus"),
+    @NamedQuery(name = "Analysis.findByStatuslabel", query = "SELECT a FROM Analysis a WHERE a.statuslabel = :statuslabel"),
+    @NamedQuery(name = "Analysis.findByIdapprobationstatus", query = "SELECT a FROM Analysis a WHERE a.idapprobationstatus = :idapprobationstatus"),
+    @NamedQuery(name = "Analysis.findByApprobationstatuslabel", query = "SELECT a FROM Analysis a WHERE a.approbationstatuslabel = :approbationstatuslabel"),
     @NamedQuery(name = "Analysis.findByDescription", query = "SELECT a FROM Analysis a WHERE a.description = :description"),
     @NamedQuery(name = "Analysis.findByIsvirtual", query = "SELECT a FROM Analysis a WHERE a.isvirtual = :isvirtual"),
     @NamedQuery(name = "Analysis.findByIsfinal", query = "SELECT a FROM Analysis a WHERE a.isfinal = :isfinal"),
     @NamedQuery(name = "Analysis.findByOccurence", query = "SELECT a FROM Analysis a WHERE a.occurence = :occurence"),
     @NamedQuery(name = "Analysis.findByOfficialename", query = "SELECT a FROM Analysis a WHERE a.officialename = :officialename"),
+    @NamedQuery(name = "Analysis.findByLimscounteranalysissampelid", query = "SELECT a FROM Analysis a WHERE a.limscounteranalysissampelid = :limscounteranalysissampelid"),
     @NamedQuery(name = "Analysis.findByCounteranalysis", query = "SELECT a FROM Analysis a WHERE a.counteranalysis = :counteranalysis"),
     @NamedQuery(name = "Analysis.findByStatus", query = "SELECT a FROM Analysis a WHERE a.status = :status"),
     @NamedQuery(name = "Analysis.findByApporved", query = "SELECT a FROM Analysis a WHERE a.apporved = :apporved"),
     @NamedQuery(name = "Analysis.findByApporvedby", query = "SELECT a FROM Analysis a WHERE a.apporvedby = :apporvedby"),
     @NamedQuery(name = "Analysis.findByApporveddate", query = "SELECT a FROM Analysis a WHERE a.apporveddate = :apporveddate"),
     @NamedQuery(name = "Analysis.findByHerited", query = "SELECT a FROM Analysis a WHERE a.herited = :herited"),
-    @NamedQuery(name = "Analysis_1.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered"),
-    @NamedQuery(name = "Analysis_1.findByAnalysisname", query = "SELECT a FROM Analysis a WHERE a.analysisname = :analysisname"),
-    @NamedQuery(name = "Analysis_1.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")})
+    @NamedQuery(name = "Analysis.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered"),
+    @NamedQuery(name = "Analysis.findByAnalysisname", query = "SELECT a FROM Analysis a WHERE a.analysisname = :analysisname"),
+    @NamedQuery(name = "Analysis.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")})
 public class Analysis implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idanalysis;
+    private BigInteger idanalysis;
+    private BigInteger limsid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limssampleid;
+    private BigInteger limsidanalysis;
+    private BigInteger idcasefile;
+    private BigInteger limsidseries;
+    private BigInteger idseries;
     private BigInteger idmethoddetails;
+    private BigInteger limsbatchid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsfolderno;
     @Size(max = 50)
     @Column(length = 50)
     private String batchname;
     private Boolean idstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String statuslabel;
+    private Boolean idapprobationstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String approbationstatuslabel;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
@@ -73,6 +104,9 @@ public class Analysis implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String officialename;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limscounteranalysissampelid;
     private Short counteranalysis;
     private Short status;
     private Short apporved;
@@ -115,16 +149,64 @@ public class Analysis implements Serializable {
     public Analysis() {
     }
 
-    public Analysis(Long idanalysis) {
+    public Analysis(BigInteger idanalysis) {
         this.idanalysis = idanalysis;
     }
 
-    public Long getIdanalysis() {
+    public BigInteger getIdanalysis() {
         return idanalysis;
     }
 
-    public void setIdanalysis(Long idanalysis) {
+    public void setIdanalysis(BigInteger idanalysis) {
         this.idanalysis = idanalysis;
+    }
+
+    public BigInteger getLimsid() {
+        return limsid;
+    }
+
+    public void setLimsid(BigInteger limsid) {
+        this.limsid = limsid;
+    }
+
+    public String getLimssampleid() {
+        return limssampleid;
+    }
+
+    public void setLimssampleid(String limssampleid) {
+        this.limssampleid = limssampleid;
+    }
+
+    public BigInteger getLimsidanalysis() {
+        return limsidanalysis;
+    }
+
+    public void setLimsidanalysis(BigInteger limsidanalysis) {
+        this.limsidanalysis = limsidanalysis;
+    }
+
+    public BigInteger getIdcasefile() {
+        return idcasefile;
+    }
+
+    public void setIdcasefile(BigInteger idcasefile) {
+        this.idcasefile = idcasefile;
+    }
+
+    public BigInteger getLimsidseries() {
+        return limsidseries;
+    }
+
+    public void setLimsidseries(BigInteger limsidseries) {
+        this.limsidseries = limsidseries;
+    }
+
+    public BigInteger getIdseries() {
+        return idseries;
+    }
+
+    public void setIdseries(BigInteger idseries) {
+        this.idseries = idseries;
     }
 
     public BigInteger getIdmethoddetails() {
@@ -134,6 +216,23 @@ public class Analysis implements Serializable {
     public void setIdmethoddetails(BigInteger idmethoddetails) {
         this.idmethoddetails = idmethoddetails;
     }
+
+    public BigInteger getLimsbatchid() {
+        return limsbatchid;
+    }
+
+    public void setLimsbatchid(BigInteger limsbatchid) {
+        this.limsbatchid = limsbatchid;
+    }
+
+    public String getLimsfolderno() {
+        return limsfolderno;
+    }
+
+    public void setLimsfolderno(String limsfolderno) {
+        this.limsfolderno = limsfolderno;
+    }
+
 
     public String getBatchname() {
         return batchname;
@@ -149,6 +248,30 @@ public class Analysis implements Serializable {
 
     public void setIdstatus(Boolean idstatus) {
         this.idstatus = idstatus;
+    }
+
+        public String getStatuslabel() {
+        return statuslabel;
+    }
+
+    public void setStatuslabel(String statuslabel) {
+        this.statuslabel = statuslabel;
+    }
+
+    public Boolean getIdapprobationstatus() {
+        return idapprobationstatus;
+    }
+
+    public void setIdapprobationstatus(Boolean idapprobationstatus) {
+        this.idapprobationstatus = idapprobationstatus;
+    }
+
+    public String getApprobationstatuslabel() {
+        return approbationstatuslabel;
+    }
+
+    public void setApprobationstatuslabel(String approbationstatuslabel) {
+        this.approbationstatuslabel = approbationstatuslabel;
     }
 
     public String getDescription() {
@@ -189,6 +312,14 @@ public class Analysis implements Serializable {
 
     public void setOfficialename(String officialename) {
         this.officialename = officialename;
+    }
+    
+        public String getLimscounteranalysissampelid() {
+        return limscounteranalysissampelid;
+    }
+
+    public void setLimscounteranalysissampelid(String limscounteranalysissampelid) {
+        this.limscounteranalysissampelid = limscounteranalysissampelid;
     }
 
     public Short getCounteranalysis() {

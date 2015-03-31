@@ -306,5 +306,5 @@ public class Method implements Serializable {
     public String toString() {
         return "entite.Method[ idmethod=" + idmethod + " ]";
     }
-   
+
 }
