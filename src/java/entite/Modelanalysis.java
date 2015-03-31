@@ -79,6 +79,7 @@ public class Modelanalysis implements Serializable {
     private String groupalanalysis;
     private Boolean officialanalysis;
     private Boolean internalanalysis;
+    private Boolean canbeherited;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "modelanalysis")
     private List<Heritagebygroupofsample> heritagebygroupofsampleList;
     @OneToMany(mappedBy = "idmodelanalysis")
@@ -195,6 +196,14 @@ public class Modelanalysis implements Serializable {
 
     public void setInternalanalysis(Boolean internalanalysis) {
         this.internalanalysis = internalanalysis;
+    }
+    
+    public Boolean getCanbeherited() {
+        return canbeherited;
+    }
+
+    public void setCanbeherited(Boolean canbeherited) {
+        this.canbeherited = canbeherited;
     }
 
     @XmlTransient

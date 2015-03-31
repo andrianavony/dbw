@@ -112,10 +112,17 @@ public class TC {
             }
         }
          System.out.println("Variety ******************************************************** "+Variety);        
-         String VarietyCode=Item.substring(5,11);
+         String VarietyCode=ForItem.getIdVariety(Item);
+         String SpecieCode=ForItem.getIdSpecie(Item);
          System.out.println("VarietyCode ******************************************************** "+VarietyCode);
          TypedQuery<Variety> queryVariety =em.createNamedQuery("Variety.findByIdvariety",Variety.class).setParameter("idvariety", VarietyCode);
-         Variety variety =queryVariety.getSingleResult();
+         List <Variety> varietyList =queryVariety.getResultList();
+         Variety variety;
+         if (varietyList.isEmpty()){
+            variety=new Variety(VarietyCode, SpecieCode);
+        } else{
+             variety= varietyList.get(0);
+          }
          variety.setVarietyname(Variety);
        System.out.println("******************************************************** ");        
          System.out.println("Changement de nom pour la variete "+ VarietyCode);
