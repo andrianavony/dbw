@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Variety.findAll", query = "SELECT v FROM Variety v"),
+    @NamedQuery(name = "Variety.findByIdSpecieIdVariety", query = "SELECT v FROM Variety v WHERE v.varietyPK.idspecie = :idspecie and v.varietyPK.idvariety = :idvariety"),
     @NamedQuery(name = "Variety.findByIdvariety", query = "SELECT v FROM Variety v WHERE v.varietyPK.idvariety = :idvariety"),
     @NamedQuery(name = "Variety.findByIdspecie", query = "SELECT v FROM Variety v WHERE v.varietyPK.idspecie = :idspecie"),
     @NamedQuery(name = "Variety.findByDescription", query = "SELECT v FROM Variety v WHERE v.description = :description"),
@@ -136,6 +137,10 @@ public class Variety implements Serializable {
     @Override
     public String toString() {
         return "entite.Variety[ varietyPK=" + varietyPK + " ]";
+    }
+    
+    public String getIdvariety(){
+        return varietyPK.getIdvariety();
     }
     
 }

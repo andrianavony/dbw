@@ -35,7 +35,7 @@ public class ForItem {
         return IdArticle.substring(11,14);
     }
     
-    public static String getIdStage(String IdArticle ){
+    public static String getIdStageFromItem(String IdArticle ){
         if (null==IdArticle){
             return "";
         }
@@ -48,6 +48,47 @@ public class ForItem {
         }
         
         return IdArticle.substring(15,IdArticle.length());
+    }
+    
+    
+    public static String getIdStageFromStageLabel(String stageLabel ){
+        if (null==stageLabel){
+            return "COM";
+        }
+        
+        
+        if(stageLabel.equalsIgnoreCase("_KG")){
+        return "COM";
+        }
+        
+        if(stageLabel.equalsIgnoreCase("Shelled")){
+        return "B";
+        }
+        
+        if(stageLabel.equalsIgnoreCase("B")){
+        return "B";
+        }
+        return null;
+    }
+
+    /**
+     * On verifie juste la logeur des champs
+     */
+    public static String getIdArticle(String idspecie, String idvariety, String idgeneration, String idstage) {
+        if(idspecie!=null && idvariety!=null && idgeneration!= null){
+            if (idstage==null){
+                return idspecie+ idvariety + idgeneration;
+            }
+            if (idstage.equalsIgnoreCase("_Kg")){
+                return idspecie+ idvariety + idgeneration+idstage;
+            }
+            //Shelled
+            if (idstage.equalsIgnoreCase("Shelled")){
+                return idspecie+ idvariety + idgeneration+"B";
+            }
+
+        } 
+        return null;
     }
 
 }

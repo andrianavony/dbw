@@ -12,6 +12,7 @@ import entite.Trace;
 import entite.Wo;
 import entite.WoPK;
 import entite.Traca;
+import entite.Variety;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
@@ -43,6 +44,17 @@ public class CreateTracaLogged {
      * Prendre en charge les traces au statut Logged
      */
     public void createTraceAndBatchForTracaLogged(){
+        
+        
+         TypedQuery<Variety> queryVar = em.createNamedQuery("Variety.findByIdvariety", Variety.class);
+        System.out.println(" qreation query fate *********************************************");
+            queryVar.setParameter("idvariety", "S10039");
+            List<Variety> varietyList =queryVar.getResultList();
+            
+            System.out.println("varietyList "+ varietyList.size());
+            
+            assert(varietyList.size()==1);
+        
         TypedQuery<Traca> query =em.createNamedQuery("Traca.findTracaLogged",Traca.class);
         List<Traca>  tracaLoggedList = query.getResultList();
         System.out.println(" Nb de tracaLoggedList **************************************************************  "+tracaLoggedList.size());

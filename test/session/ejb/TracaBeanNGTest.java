@@ -60,6 +60,7 @@ public class TracaBeanNGTest {
         String Batch_Number="FR63AL11S01010002";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         TracaBean instance = (TracaBean)container.getContext().lookup("java:global/classes/TracaBean");
+        try{
         
         instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
         instance.createTraca();
@@ -114,8 +115,10 @@ public class TracaBeanNGTest {
             instance.setInfo( CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type,  MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number,  Year,  Bassin,  Producteur,  Contract);
             instance.createTraca();
             
+        }
+        finally {
             container.close();
-        
+        }
         
         
         

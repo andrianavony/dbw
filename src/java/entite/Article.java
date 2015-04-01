@@ -37,7 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Article.findByIdarticle", query = "SELECT a FROM Article a WHERE a.idarticle = :idarticle"),
     @NamedQuery(name = "Article.findByDescription", query = "SELECT a FROM Article a WHERE a.description = :description"),
     @NamedQuery(name = "Article.findByArticlename", query = "SELECT a FROM Article a WHERE a.articlename = :articlename"),
-    @NamedQuery(name = "Article.findByOfficialname", query = "SELECT a FROM Article a WHERE a.officialname = :officialname")})
+    @NamedQuery(name = "Article.findByOfficialname", query = "SELECT a FROM Article a WHERE a.officialname = :officialname"),
+    @NamedQuery(name = "Article.findByVarietyStadeGeneration", query = "SELECT a FROM Article a WHERE a.idvariety.varietyPK.idvariety = :idvariety and a.idstage.idstage = :idstage and a.idgeneration.idgeneration = :idgeneration"),
+    @NamedQuery(name = "Article.findTest", query = "SELECT a FROM Article a WHERE a.idvariety.varietyPK.idvariety = 'S10039' and a.idstage.idstage = 'B'")
+})
 public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
