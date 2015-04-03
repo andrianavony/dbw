@@ -59,6 +59,12 @@ public class Article implements Serializable {
     @Column(length = 50)
     private String officialname;
     @OneToMany(mappedBy = "idarticle")
+    private List<Casefile> casefileList;
+    @OneToMany(mappedBy = "idarticle")
+    private List<Analysis> analysisList;
+    @OneToMany(mappedBy = "idarticle")
+    private List<Samples> samplesList;
+    @OneToMany(mappedBy = "idarticle")
     private Collection<Trace> traceCollection;
     @OneToMany(mappedBy = "idarticle")
     private Collection<Sampleplangroup> sampleplangroupCollection;
@@ -187,6 +193,33 @@ public class Article implements Serializable {
 
     public void setSamplesCollection(Collection<Samples> samplesCollection) {
         this.samplesCollection = samplesCollection;
+    }
+
+    @XmlTransient
+    public List<Casefile> getCasefileList() {
+        return casefileList;
+    }
+
+    public void setCasefileList(List<Casefile> casefileList) {
+        this.casefileList = casefileList;
+    }
+
+    @XmlTransient
+    public List<Analysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    public void setAnalysisList(List<Analysis> analysisList) {
+        this.analysisList = analysisList;
+    }
+
+    @XmlTransient
+    public List<Samples> getSamplesList() {
+        return samplesList;
+    }
+
+    public void setSamplesList(List<Samples> samplesList) {
+        this.samplesList = samplesList;
     }
 
     @Override

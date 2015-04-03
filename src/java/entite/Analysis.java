@@ -56,7 +56,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByOfficialename", query = "SELECT a FROM Analysis a WHERE a.officialename = :officialename"),
     @NamedQuery(name = "Analysis.findByLimscounteranalysissampelid", query = "SELECT a FROM Analysis a WHERE a.limscounteranalysissampelid = :limscounteranalysissampelid"),
     @NamedQuery(name = "Analysis.findByCounteranalysis", query = "SELECT a FROM Analysis a WHERE a.counteranalysis = :counteranalysis"),
-    @NamedQuery(name = "Analysis.findByStatus", query = "SELECT a FROM Analysis a WHERE a.status = :status"),
     @NamedQuery(name = "Analysis.findByApporved", query = "SELECT a FROM Analysis a WHERE a.apporved = :apporved"),
     @NamedQuery(name = "Analysis.findByApporvedby", query = "SELECT a FROM Analysis a WHERE a.apporvedby = :apporvedby"),
     @NamedQuery(name = "Analysis.findByApporveddate", query = "SELECT a FROM Analysis a WHERE a.apporveddate = :apporveddate"),
@@ -76,7 +75,9 @@ public class Analysis implements Serializable {
     @Column(length = 50)
     private String limssampleid;
     private BigInteger limsidanalysis;
-    private BigInteger idcasefile;
+    @JoinColumn(name = "IDCASEFILE", referencedColumnName = "IDCASEFILE")
+    @ManyToOne
+    private Casefile idcasefile;
     private BigInteger limsidseries;
     private BigInteger idseries;
     private BigInteger idmethoddetails;
@@ -87,11 +88,11 @@ public class Analysis implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String batchname;
-    private Boolean idstatus;
+    private short idstatus;
     @Size(max = 50)
     @Column(length = 50)
     private String statuslabel;
-    private Boolean idapprobationstatus;
+    private short idapprobationstatus;
     @Size(max = 50)
     @Column(length = 50)
     private String approbationstatuslabel;
@@ -108,7 +109,7 @@ public class Analysis implements Serializable {
     @Column(length = 50)
     private String limscounteranalysissampelid;
     private Short counteranalysis;
-    private Short status;
+    
     private Short apporved;
     @Size(max = 50)
     @Column(length = 50)
@@ -145,6 +146,34 @@ public class Analysis implements Serializable {
     @JoinColumn(name = "IDSPECIFICATION", referencedColumnName = "IDSPECIFICATION")
     @ManyToOne
     private Specification idspecification;
+    
+    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
+    @ManyToOne
+    private Article idarticle;
+        
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @ManyToOne
+    private Specie idspecie;
+    
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @ManyToOne
+    private Stage idstage;
+    
+    @JoinColumn(name = "COPIEDFROMIDBATH", referencedColumnName = "IDBATCH")
+    @ManyToOne
+    private Batch copiedfromidbatch;
+    
+    @JoinColumn(name = "COPIEDFROMIDSAMPLE", referencedColumnName = "IDSAMPLES")
+    @ManyToOne
+    private Samples copiedfromidsample;
+    
+    public Batch getCopiedfromidbatch() {
+        return copiedfromidbatch;
+    }
+
+    public void setCopiedfromidbatch(Batch copiedfromidbatch) {
+        this.copiedfromidbatch = copiedfromidbatch;
+    }
 
     public Analysis() {
     }
@@ -185,11 +214,11 @@ public class Analysis implements Serializable {
         this.limsidanalysis = limsidanalysis;
     }
 
-    public BigInteger getIdcasefile() {
+    public Casefile getIdcasefile() {
         return idcasefile;
     }
 
-    public void setIdcasefile(BigInteger idcasefile) {
+    public void setIdcasefile(Casefile idcasefile) {
         this.idcasefile = idcasefile;
     }
 
@@ -242,11 +271,11 @@ public class Analysis implements Serializable {
         this.batchname = batchname;
     }
 
-    public Boolean getIdstatus() {
+    public short getIdstatus() {
         return idstatus;
     }
 
-    public void setIdstatus(Boolean idstatus) {
+    public void setIdstatus(short idstatus) {
         this.idstatus = idstatus;
     }
 
@@ -258,11 +287,11 @@ public class Analysis implements Serializable {
         this.statuslabel = statuslabel;
     }
 
-    public Boolean getIdapprobationstatus() {
+    public short getIdapprobationstatus() {
         return idapprobationstatus;
     }
 
-    public void setIdapprobationstatus(Boolean idapprobationstatus) {
+    public void setIdapprobationstatus(short idapprobationstatus) {
         this.idapprobationstatus = idapprobationstatus;
     }
 
@@ -330,13 +359,6 @@ public class Analysis implements Serializable {
         this.counteranalysis = counteranalysis;
     }
 
-    public Short getStatus() {
-        return status;
-    }
-
-    public void setStatus(Short status) {
-        this.status = status;
-    }
 
     public Short getApporved() {
         return apporved;
@@ -392,6 +414,30 @@ public class Analysis implements Serializable {
 
     public void setMethodname(String methodname) {
         this.methodname = methodname;
+    }
+    
+    public Article getIdarticle() {
+        return idarticle;
+    }
+
+    public void setIdarticle(Article idarticle) {
+        this.idarticle = idarticle;
+    }
+    
+    public Specie getIdspecie() {
+        return idspecie;
+    }
+
+    public void setIdspecie(Specie idspecie) {
+        this.idspecie = idspecie;
+    }
+    
+        public Stage getIdstage() {
+        return idstage;
+    }
+
+    public void setIdstage(Stage idstage) {
+        this.idstage = idstage;
     }
 
     @XmlTransient
@@ -483,6 +529,20 @@ public class Analysis implements Serializable {
     @Override
     public String toString() {
         return "entite.Analysis[ idanalysis=" + idanalysis + " ]";
+    }
+
+    /**
+     * @return the copiedfromidsample
+     */
+    public Samples getCopiedfromidsample() {
+        return copiedfromidsample;
+    }
+
+    /**
+     * @param copiedfromidsample the copiedfromidsample to set
+     */
+    public void setCopiedfromidsample(Samples copiedfromidsample) {
+        this.copiedfromidsample = copiedfromidsample;
     }
     
 }

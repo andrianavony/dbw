@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Stage.findByDescription", query = "SELECT s FROM Stage s WHERE s.description = :description"),
     @NamedQuery(name = "Stage.findByStagename", query = "SELECT s FROM Stage s WHERE s.stagename = :stagename")})
 public class Stage implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -46,6 +45,15 @@ public class Stage implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String stagename;
+    @OneToMany(mappedBy = "idstage")
+    private List<Casefile> casefileList;
+    @OneToMany(mappedBy = "idstage")
+    private List<Batch> batchList;
+    @OneToMany(mappedBy = "idstage")
+    private List<Analysis> analysisList;
+    @OneToMany(mappedBy = "idstage")
+    private List<Samples> samplesList;
+    private static final long serialVersionUID = 1L;
     @OneToMany(mappedBy = "idstage")
     private List<Article> articleList;
 
@@ -87,6 +95,42 @@ public class Stage implements Serializable {
 
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
+    }
+
+    @XmlTransient
+    public List<Casefile> getCasefileList() {
+        return casefileList;
+    }
+
+    public void setCasefileList(List<Casefile> casefileList) {
+        this.casefileList = casefileList;
+    }
+
+    @XmlTransient
+    public List<Batch> getBatchList() {
+        return batchList;
+    }
+
+    public void setBatchList(List<Batch> batchList) {
+        this.batchList = batchList;
+    }
+
+    @XmlTransient
+    public List<Analysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    public void setAnalysisList(List<Analysis> analysisList) {
+        this.analysisList = analysisList;
+    }
+
+    @XmlTransient
+    public List<Samples> getSamplesList() {
+        return samplesList;
+    }
+
+    public void setSamplesList(List<Samples> samplesList) {
+        this.samplesList = samplesList;
     }
 
     @Override

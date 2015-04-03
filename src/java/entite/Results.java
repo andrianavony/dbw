@@ -8,6 +8,7 @@ package entite;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,11 +19,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -86,49 +89,73 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Results.findByMethodname", query = "SELECT r FROM Results r WHERE r.methodname = :methodname"),
     @NamedQuery(name = "Results.findByCopiedfrom", query = "SELECT r FROM Results r WHERE r.copiedfrom = :copiedfrom"),
     @NamedQuery(name = "Results.findByIsresultsinserted", query = "SELECT r FROM Results r WHERE r.isresultsinserted = :isresultsinserted")})
-public class Results implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private BigInteger idresult;
-    private BigInteger limsmeasureid;
-    private BigInteger limsid;
-    private BigInteger limsidseries;
-    private BigInteger idseries;
+public class Results implements Serializable {    
+    private Boolean herited;
+    @Size(max = 50)
+    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
+    @ManyToOne
+    private Article idarticle;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String batchname;
     @Size(max = 50)
     @Column(length = 50)
     private String limssampleid;
     private BigInteger limsidanalysis;
     @Size(max = 50)
     @Column(length = 50)
-    private String limsidmethod;
-    private BigInteger idmethoddetails;
-    private BigInteger idcasefile;
+    private String analysisname;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String methodname;
+    private Short repetition;
+    private Short subrepetition;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String measurename;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String rawresults;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String formated;
+    private BigInteger limsidseries;
+    private BigInteger idseries;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationdate;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String statuslabel;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String approbationstatuslabel;
+    private Boolean apporved;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String apporvedby;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date apporveddate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private BigInteger idresult;
+    private BigInteger limsmeasureid;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limscounteranalysissampelid;
+    private Short counteranalysis;
+    private BigInteger limsid;
     private BigInteger limsbatchid;
     @Size(max = 50)
     @Column(length = 50)
     private String limsfolderno;
     @Size(max = 50)
     @Column(length = 50)
-    private String batchname;
-        private Boolean idstatus;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String statuslabel;
+    private String limsidmethod;
+    private BigInteger idmethoddetails;
+    private Boolean idstatus;
     private Boolean idapprobationstatus;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String approbationstatuslabel;
-    private Boolean analysisidstatus;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String analysisstatuslabel;
-    private Boolean analysisidapprobationstatus;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String analysisapprobationstatuslabel;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
@@ -137,10 +164,6 @@ public class Results implements Serializable {
     private Boolean isresults;
     private Boolean isrequired;
     private Short occurence;
-    private Short counteranalysis;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String counteranalysisidlims;
     @Size(max = 50)
     @Column(length = 50)
     private String officialename;
@@ -156,8 +179,6 @@ public class Results implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String measuredetails;
-    private Short repetition;
-    private Short subrepetition;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(precision = 22)
     private Double valuemin;
@@ -167,33 +188,51 @@ public class Results implements Serializable {
     private Double preferdvaluemax;
     @Column(precision = 22)
     private Double valuemax;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String rawresults;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String formated;
-    private Boolean apporved;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date apporveddate;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String apporvedby;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateofentry;
     @Size(max = 50)
     @Column(length = 50)
     private String username;
-    private Boolean herited;
+    private Boolean considered;
     @Size(max = 50)
     @Column(length = 50)
-    private String measurename;
+    private String prodgroup;
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @ManyToOne
+    private Specie idspecie;
+    
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @ManyToOne
+    private Stage idstage;
     @Size(max = 50)
     @Column(length = 50)
-    private String analysisname;
+    private String copiedfromlimsbathcname;
+    @OneToMany(mappedBy = "copiedfromidanalysis")
+    private List<Results> resultsList;
+    @JoinColumn(name = "COPIEDFROMIDANALYSIS", referencedColumnName = "IDANALYSIS")
+    @ManyToOne
+    private Results copiedfromidanalysis;
+    @JoinColumn(name = "COPIEDFROMIDBATCH", referencedColumnName = "IDBATCH")
+    @ManyToOne
+    private Batch copiedfromidbatch;
+    @JoinColumn(name = "COPIEDFROMIDSAMPLE", referencedColumnName = "IDSAMPLES")
+    @ManyToOne
+    private Samples copiedfromidsample;
+    @JoinColumn(name = "IDCASEFILE", referencedColumnName = "IDCASEFILE")
+    @ManyToOne
+    private Casefile idcasefile;
+
+    private Boolean analysisidstatus;
     @Size(max = 50)
     @Column(length = 50)
-    private String methodname;
+    private String analysisstatuslabel;
+    private Boolean analysisidapprobationstatus;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String analysisapprobationstatuslabel;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String counteranalysisidlims;
     @Size(max = 50)
     @Column(length = 50)
     private String copiedfrom;
@@ -302,11 +341,11 @@ public class Results implements Serializable {
         this.idmethoddetails = idmethoddetails;
     }
 
-    public BigInteger getIdcasefile() {
+    public Casefile getIdcasefile() {
         return idcasefile;
     }
 
-    public void setIdcasefile(BigInteger idcasefile) {
+    public void setIdcasefile(Casefile idcasefile) {
         this.idcasefile = idcasefile;
     }
 
@@ -717,6 +756,97 @@ public class Results implements Serializable {
     public void setIdspecification(Specification idspecification) {
         this.idspecification = idspecification;
     }
+
+    public Date getCreationdate() {
+        return creationdate;
+    }
+
+    public void setCreationdate(Date creationdate) {
+        this.creationdate = creationdate;
+    }
+
+    public Boolean getConsidered() {
+        return considered;
+    }
+
+    public void setConsidered(Boolean considered) {
+        this.considered = considered;
+    }
+
+    public String getProdgroup() {
+        return prodgroup;
+    }
+
+    public void setProdgroup(String prodgroup) {
+        this.prodgroup = prodgroup;
+    }
+
+    public Article getIdarticle() {
+        return idarticle;
+    }
+
+    public void setIdarticle(Article idarticle) {
+        this.idarticle = idarticle;
+    }
+    
+    public Specie getIdspecie() {
+        return idspecie;
+    }
+
+    public void setIdspecie(Specie idspecie) {
+        this.idspecie = idspecie;
+    }
+    
+        public Stage getIdstage() {
+        return idstage;
+    }
+
+    public void setIdstage(Stage idstage) {
+        this.idstage = idstage;
+    }
+
+    public String getCopiedfromlimsbathcname() {
+        return copiedfromlimsbathcname;
+    }
+
+    public void setCopiedfromlimsbathcname(String copiedfromlimsbathcname) {
+        this.copiedfromlimsbathcname = copiedfromlimsbathcname;
+    }
+
+    @XmlTransient
+    public List<Results> getResultsList() {
+        return resultsList;
+    }
+
+    public void setResultsList(List<Results> resultsList) {
+        this.resultsList = resultsList;
+    }
+
+    public Results getCopiedfromidanalysis() {
+        return copiedfromidanalysis;
+    }
+
+    public void setCopiedfromidanalysis(Results copiedfromidanalysis) {
+        this.copiedfromidanalysis = copiedfromidanalysis;
+    }
+
+    public Batch getCopiedfromidbatch() {
+        return copiedfromidbatch;
+    }
+
+    public void setCopiedfromidbatch(Batch copiedfromidbatch) {
+        this.copiedfromidbatch = copiedfromidbatch;
+    }
+
+    public Samples getCopiedfromidsample() {
+        return copiedfromidsample;
+    }
+
+    public void setCopiedfromidsample(Samples copiedfromidsample) {
+        this.copiedfromidsample = copiedfromidsample;
+    }
+
+
 
     @Override
     public int hashCode() {

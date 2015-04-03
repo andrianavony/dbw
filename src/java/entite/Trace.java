@@ -6,6 +6,7 @@
 package entite;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,13 +28,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "trace")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Trace.findAll", query = "SELECT t FROM Trace t"),
     @NamedQuery(name = "Trace.findByIdtrace", query = "SELECT t FROM Trace t WHERE t.idtrace = :idtrace"),
+    @NamedQuery(name = "Trace.findByIdwo", query = "SELECT t FROM Trace t WHERE t.idwo = :idwo"),
+    @NamedQuery(name = "Trace.findByIdcompany", query = "SELECT t FROM Trace t WHERE t.idcompany = :idcompany"),
     @NamedQuery(name = "Trace.findByTracetype", query = "SELECT t FROM Trace t WHERE t.tracetype = :tracetype"),
     @NamedQuery(name = "Trace.findByQuantity", query = "SELECT t FROM Trace t WHERE t.quantity = :quantity"),
     @NamedQuery(name = "Trace.findByUnits", query = "SELECT t FROM Trace t WHERE t.units = :units"),
+    @NamedQuery(name = "Trace.findByIdarticle", query = "SELECT t FROM Trace t WHERE t.idarticle = :idarticle"),
+    @NamedQuery(name = "Trace.findByBatchname", query = "SELECT t FROM Trace t WHERE t.batchname = :batchname"),
     @NamedQuery(name = "Trace.findByDescription", query = "SELECT t FROM Trace t WHERE t.description = :description"),
     @NamedQuery(name = "Trace.findByWarehouse", query = "SELECT t FROM Trace t WHERE t.warehouse = :warehouse")})
 public class Trace implements Serializable {
@@ -41,7 +48,7 @@ public class Trace implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idtrace;
+    private BigInteger idtrace;
     @Size(max = 50)
     @Column(length = 50)
     private String tracetype;
@@ -57,9 +64,6 @@ public class Trace implements Serializable {
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE", insertable = false, updatable = false)
-    @ManyToOne
-    private Batch idarticle1;
     @JoinColumn(name = "BATCHNAME", referencedColumnName = "BATCHNAME")
     @ManyToOne
     private Batch batchname;
@@ -80,15 +84,15 @@ public class Trace implements Serializable {
     public Trace() {
     }
 
-    public Trace(Long idtrace) {
+    public Trace(BigInteger idtrace) {
         this.idtrace = idtrace;
     }
 
-    public Long getIdtrace() {
+    public BigInteger getIdtrace() {
         return idtrace;
     }
 
-    public void setIdtrace(Long idtrace) {
+    public void setIdtrace(BigInteger idtrace) {
         this.idtrace = idtrace;
     }
 
@@ -132,15 +136,7 @@ public class Trace implements Serializable {
         this.idarticle = idarticle;
     }
 
-    public Batch getIdarticle1() {
-        return idarticle1;
-    }
-
-    public void setIdarticle1(Batch idarticle1) {
-        this.idarticle1 = idarticle1;
-    }
-
-    public Batch getBatchname() {
+        public Batch getBatchname() {
         return batchname;
     }
 

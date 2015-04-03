@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Modelanalysis.findByInternalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.internalanalysis = :internalanalysis")})
 
 public class Modelanalysis implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -80,7 +79,9 @@ public class Modelanalysis implements Serializable {
     private Boolean officialanalysis;
     private Boolean internalanalysis;
     private Boolean canbeherited;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modelanalysis")
+    @OneToMany(mappedBy = "idmodelanalysis")
+    private List<Analysis> analysisList;
+    private static final long serialVersionUID = 1L;
     private List<Heritagebygroupofsample> heritagebygroupofsampleList;
     @OneToMany(mappedBy = "idmodelanalysis")
     private List<Results> resultsList;
@@ -88,8 +89,7 @@ public class Modelanalysis implements Serializable {
     private List<Heritagebyspecieorigin> heritagebyspecieoriginList;
     @OneToMany(mappedBy = "idmodelanalysis")
     private List<Method> methodList;
-    @OneToMany(mappedBy = "idmodelanalysis")
-    private List<Analysis> analysisList;
+
     
     private List<Heritagebytransformation> heritagebytransformationList;
 

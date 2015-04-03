@@ -36,9 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Variety.findByVarietyname", query = "SELECT v FROM Variety v WHERE v.varietyname = :varietyname"),
     @NamedQuery(name = "Variety.findByOfficialname", query = "SELECT v FROM Variety v WHERE v.officialname = :officialname")})
 public class Variety implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected VarietyPK varietyPK;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
@@ -48,6 +45,11 @@ public class Variety implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String officialname;
+    @OneToMany(mappedBy = "idvariety")
+    private List<Batch> batchList;
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected VarietyPK varietyPK;
     @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Specie specie;
@@ -141,6 +143,15 @@ public class Variety implements Serializable {
     
     public String getIdvariety(){
         return varietyPK.getIdvariety();
+    }
+
+        @XmlTransient
+    public List<Batch> getBatchList() {
+        return batchList;
+    }
+
+    public void setBatchList(List<Batch> batchList) {
+        this.batchList = batchList;
     }
     
 }

@@ -4,28 +4,33 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `SAMPLES`;
 CREATE TABLE IF NOT EXISTS `SAMPLES` (
     `IDSAMPLES`     bigint(20)              NULL AUTO_INCREMENT,
-    `LIMSID` bigint(20) NULL ,
-    `LIMSSAMPLEID`       varchar(50) NULL,
-    `IDCASEFILE`    bigint(20)              NULL,
-    `IDBATCH`       bigint(20)              NULL,
-    `LIMSBATCHID` bigint(20) NULL,
-    `LIMSFOLDERNO`       varchar(50) NULL,
-    `BATCHNAME`       varchar(50) NULL,
+    `ISCURRENT` tinyint(1) NULL,
     `IDARTICLE`     varchar(50)             NULL,
-    `IDSAMPLESTYPE` bigint(20)              NULL,
-
-    `DESCRIPTION`   varchar(50) NULL,
+    `BATCHNAME`     varchar(50) NULL,
+    `LIMSSAMPLEID`  varchar(50) NULL,
     `CREATIONDATE`  datetime NULL,
+    `STATUSLABEL`       varchar(50) NULL,
 
-    `IDSTATUS` tinyint(1) NULL,
-`STATUSLABEL`       varchar(50) NULL,
-`IDAPPROBATIONSTATUS` tinyint(1) NULL,
-`APPROBATIONSTATUSLABEL`       varchar(50) NULL,
-
+    `APPROBATIONSTATUSLABEL`       varchar(50) NULL,
     `APPORVED` smallint(6) NULL,
     `APPORVEDBY` varchar(50) NULL,
     `APPORVEDDATE` datetime NULL,
 
+    `IDBATCH`       bigint(20)              NULL,
+    `IDCASEFILE`    bigint(20)              NULL,
+    `LIMSBATCHID` bigint(20) NULL,
+    `LIMSFOLDERNO`       varchar(50) NULL,
+    
+    `IDSAMPLESTYPE` bigint(20)              NULL,
+
+    `DESCRIPTION`   varchar(50) NULL,
+    `IDSTATUS` tinyint(1) NULL,
+    `IDAPPROBATIONSTATUS` tinyint(1) NULL,
+
+
+      `PRODGROUP`       varchar(50) NULL,
+      `IDSPECIE`        varchar(50) NULL,
+      `IDSTAGE`         varchar(50) NULL,
 PRIMARY KEY (`IDSAMPLES`),
 KEY `IDSAMPLESTYPE`  (`IDSAMPLESTYPE` ),
 KEY `KEY_SAMPLES_IDCASEFILE` (`IDCASEFILE`),
@@ -35,6 +40,13 @@ KEY `BATCHNAME` (`BATCHNAME`)
 COMMIT;
 
 
+START TRANSACTION;
+ALTER TABLE `samples` 
+ADD CONSTRAINT `FK_IDSAMPLES_IDBATCH` 
+FOREIGN KEY (`IDBATCH`) 
+    REFERENCES `batch`(`IDBATCH`) 
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
 
 START TRANSACTION;
 ALTER TABLE `SAMPLES` 
@@ -45,15 +57,7 @@ ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 
-START TRANSACTION;
 
-
-ALTER TABLE `samples` 
-ADD CONSTRAINT `FK_IDSAMPLES_IDBATCH` 
-FOREIGN KEY (`IDBATCH`) 
-    REFERENCES `batch`(`IDBATCH`) 
-ON DELETE RESTRICT ON UPDATE RESTRICT;
-COMMIT;
 
 
 START TRANSACTION;
@@ -63,4 +67,19 @@ START TRANSACTION;
             REFERENCES `article`    (`IDARTICLE`);
 COMMIT;
 
+START TRANSACTION;
+    ALTER TABLE                         `samples`
+    ADD CONSTRAINT `FK_samples_IDSPECIE` 
+    FOREIGN KEY                                  (`IDSPECIE`) 
+    REFERENCES                          `specie` (`IDSPECIE`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
+
+START TRANSACTION;
+    ALTER TABLE                         `samples`
+    ADD CONSTRAINT `FK_samples_IDSTAGE` 
+    FOREIGN KEY                                     (`IDSTAGE`) 
+    REFERENCES                          `stage` (`IDSTAGE`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
 SET foreign_key_checks = 1;

@@ -47,6 +47,8 @@ public class Generation implements Serializable {
     @Column(length = 50)
     private String generationame;
     @OneToMany(mappedBy = "idgeneration")
+    private List<Batch> batchList;
+    @OneToMany(mappedBy = "idgeneration")
     private List<Article> articleList;
 
     public Generation() {
@@ -87,6 +89,15 @@ public class Generation implements Serializable {
 
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
+    }
+
+    @XmlTransient
+    public List<Batch> getBatchList() {
+        return batchList;
+    }
+
+    public void setBatchList(List<Batch> batchList) {
+        this.batchList = batchList;
     }
 
     @Override

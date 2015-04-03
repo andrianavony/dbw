@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -30,12 +31,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "batch")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Batch.findAll", query = "SELECT b FROM Batch b"),
     @NamedQuery(name = "Batch.findByIdbatch", query = "SELECT b FROM Batch b WHERE b.idbatch = :idbatch"),
     @NamedQuery(name = "Batch.findByBatchname", query = "SELECT b FROM Batch b WHERE b.batchname = :batchname"),
     @NamedQuery(name = "Batch.findByDescription", query = "SELECT b FROM Batch b WHERE b.description = :description"),
+    @NamedQuery(name = "Batch.findByIdarticle", query = "SELECT b FROM Batch b WHERE b.idarticle = :idarticle"),
     @NamedQuery(name = "Batch.findByIdstage", query = "SELECT b FROM Batch b WHERE b.idstage = :idstage"),
     @NamedQuery(name = "Batch.findByIdspecie", query = "SELECT b FROM Batch b WHERE b.idspecie = :idspecie"),
     @NamedQuery(name = "Batch.findByIdvariety", query = "SELECT b FROM Batch b WHERE b.idvariety = :idvariety"),
@@ -46,10 +49,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Batch.findByOrigin2", query = "SELECT b FROM Batch b WHERE b.origin2 = :origin2"),
     @NamedQuery(name = "Batch.findByIddiagram", query = "SELECT b FROM Batch b WHERE b.iddiagram = :iddiagram"),
     @NamedQuery(name = "Batch.findByIdcaliber", query = "SELECT b FROM Batch b WHERE b.idcaliber = :idcaliber"),
+    @NamedQuery(name = "Batch.findByIdwo", query = "SELECT b FROM Batch b WHERE b.idwo = :idwo"),
+    @NamedQuery(name = "Batch.findByIdtrace", query = "SELECT b FROM Batch b WHERE b.idtrace = :idtrace"),
     @NamedQuery(name = "Batch.findByQuantity", query = "SELECT b FROM Batch b WHERE b.quantity = :quantity"),
     @NamedQuery(name = "Batch.findByUnits", query = "SELECT b FROM Batch b WHERE b.units = :units"),
     @NamedQuery(name = "Batch.findByLimsbatchid", query = "SELECT b FROM Batch b WHERE b.limsbatchid = :limsbatchid"),
+    @NamedQuery(name = "Batch.findByIdcompany", query = "SELECT b FROM Batch b WHERE b.idcompany = :idcompany"),
     @NamedQuery(name = "Batch.findByContract", query = "SELECT b FROM Batch b WHERE b.contract = :contract"),
+    @NamedQuery(name = "Batch.findByIdtreatement", query = "SELECT b FROM Batch b WHERE b.idtreatement = :idtreatement"),
     @NamedQuery(name = "Batch.findByLimsfolderno", query = "SELECT b FROM Batch b WHERE b.limsfolderno = :limsfolderno"),
     @NamedQuery(name = "Batch.findByIdarticleBatchname", query = "SELECT b "
             + " FROM Batch b "
@@ -63,25 +70,13 @@ public class Batch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idbatch;
+    private BigInteger idbatch;
     @Size(max = 50)
     @Column(length = 50)
     private String batchname;
     @Size(max = 50)
     @Column(length = 50)
     private String description;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idstage;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idspecie;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idvariety;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idgeneration;
     @Size(max = 50)
     @Column(length = 50)
     private String prodgroup;
@@ -110,10 +105,32 @@ public class Batch implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String contract;
-    @OneToMany(mappedBy = "idarticle1")
-    private List<Trace> traceList;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String limsfolderno;
+    @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION")
+    @ManyToOne
+    private Generation idgeneration;
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = false, updatable = false)
+    @ManyToOne
+    private Specie idspecie;
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @ManyToOne
+    private Stage idstage;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumns({
+        @JoinColumn(name = "IDVARIETY", referencedColumnName = "IDVARIETY"),
+        @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = true, updatable = true)    
+    })
+    private Variety idvariety;
+    @OneToMany(mappedBy = "copiedfromidbatch")
+    private List<Analysis> analysisListCopiedFromThisBatch;
+    @OneToMany(mappedBy = "idbatch")
+    private List<Analysis> analysisList;
+    @OneToMany(mappedBy = "idbatch")
+    private List<Samples> samplesList;
     @OneToMany(mappedBy = "batchname")
-    private List<Trace> traceList1;
+    private List<Trace> traceList;
     @OneToMany(mappedBy = "idbatch")
     private List<Results> resultsList;
     @OneToMany(mappedBy = "idbatch")
@@ -138,27 +155,20 @@ public class Batch implements Serializable {
     @JoinColumn(name = "IDTREATEMENT", referencedColumnName = "IDTREATEMENT")
     @ManyToOne
     private Treatement idtreatement;
-    @OneToMany(mappedBy = "idbatch")
-    private List<Analysis> analysisList;
-    @OneToMany(mappedBy = "idbatch")
-    private List<Samples> samplesList;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String limsfolderno;
 
     
     public Batch() {
     }
 
-    public Batch(Long idbatch) {
+    public Batch(BigInteger idbatch) {
         this.idbatch = idbatch;
     }
 
-    public Long getIdbatch() {
+    public BigInteger getIdbatch() {
         return idbatch;
     }
 
-    public void setIdbatch(Long idbatch) {
+    public void setIdbatch(BigInteger idbatch) {
         this.idbatch = idbatch;
     }
 
@@ -177,39 +187,7 @@ public class Batch implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getIdstage() {
-        return idstage;
-    }
-
-    public void setIdstage(String idstage) {
-        this.idstage = idstage;
-    }
-
-    public String getIdspecie() {
-        return idspecie;
-    }
-
-    public void setIdspecie(String idspecie) {
-        this.idspecie = idspecie;
-    }
-
-    public String getIdvariety() {
-        return idvariety;
-    }
-
-    public void setIdvariety(String idvariety) {
-        this.idvariety = idvariety;
-    }
-
-    public String getIdgeneration() {
-        return idgeneration;
-    }
-
-    public void setIdgeneration(String idgeneration) {
-        this.idgeneration = idgeneration;
-    }
-
+    
     public String getProdgroup() {
         return prodgroup;
     }
@@ -307,14 +285,6 @@ public class Batch implements Serializable {
         this.traceList = traceList;
     }
 
-    @XmlTransient
-    public List<Trace> getTraceList1() {
-        return traceList1;
-    }
-
-    public void setTraceList1(List<Trace> traceList1) {
-        this.traceList1 = traceList1;
-    }
 
     @XmlTransient
     public List<Results> getResultsList() {
@@ -375,12 +345,12 @@ public class Batch implements Serializable {
     }
 
     @XmlTransient
-    public List<Analysis> getAnalysisList() {
-        return analysisList;
+    public List<Analysis> getAnalysisListCopiedFromThisBatch() {
+        return analysisListCopiedFromThisBatch;
     }
 
-    public void setAnalysisList(List<Analysis> analysisList) {
-        this.analysisList = analysisList;
+    public void setAnalysisListCopiedFromThisBatch(List<Analysis> analysisListCopiedFromThisBatch) {
+        this.analysisListCopiedFromThisBatch = analysisListCopiedFromThisBatch;
     }
 
     @XmlTransient
@@ -390,6 +360,47 @@ public class Batch implements Serializable {
 
     public void setSamplesList(List<Samples> samplesList) {
         this.samplesList = samplesList;
+    }
+
+    public Generation getIdgeneration() {
+        return idgeneration;
+    }
+
+    public void setIdgeneration(Generation idgeneration) {
+        this.idgeneration = idgeneration;
+    }
+
+    public Specie getIdspecie() {
+        return idspecie;
+    }
+
+    public void setIdspecie(Specie idspecie) {
+        this.idspecie = idspecie;
+    }
+
+    public Stage getIdstage() {
+        return idstage;
+    }
+
+    public void setIdstage(Stage idstage) {
+        this.idstage = idstage;
+    }
+
+    public Variety getIdvariety() {
+        return idvariety;
+    }
+
+    public void setIdvariety(Variety idvariety) {
+        this.idvariety = idvariety;
+    }
+
+    @XmlTransient
+    public List<Analysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    public void setAnalysisList(List<Analysis> analysisList) {
+        this.analysisList = analysisList;
     }
 
     @Override

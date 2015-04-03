@@ -79,6 +79,9 @@ public class Method implements Serializable {
     private Boolean isdefault;
     private Boolean officialanalysis;
     private Boolean internalanalysis;
+    @OneToMany(mappedBy = "idmethod")
+    private List<Analysis> analysisList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
     private List<Methoddetails> methoddetailsList;
     @OneToMany(mappedBy = "idsubmethod")
@@ -96,8 +99,6 @@ public class Method implements Serializable {
     private Method idmother;
     @OneToMany(mappedBy = "idmethod")
     private List<Specificationdetails> specificationdetailsList;
-    @OneToMany(mappedBy = "idmethod")
-    private List<Analysis> analysisList;
 
     public Method() {
     }

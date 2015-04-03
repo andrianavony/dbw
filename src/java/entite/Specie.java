@@ -34,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Specie.findBySpeciename", query = "SELECT s FROM Specie s WHERE s.speciename = :speciename"),
     @NamedQuery(name = "Specie.findByOfficialname", query = "SELECT s FROM Specie s WHERE s.officialname = :officialname")})
 public class Specie implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -47,6 +46,15 @@ public class Specie implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String officialname;
+    @OneToMany(mappedBy = "idspecie")
+    private List<Casefile> casefileList;
+    @OneToMany(mappedBy = "idspecie")
+    private List<Batch> batchList;
+    @OneToMany(mappedBy = "idspecie")
+    private List<Analysis> analysisList;
+    @OneToMany(mappedBy = "idspecie")
+    private List<Samples> samplesList;
+    private static final long serialVersionUID = 1L;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "specie")
     private List<Variety> varietyList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "specie")
@@ -110,6 +118,42 @@ public class Specie implements Serializable {
 
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
+    }
+
+    @XmlTransient
+    public List<Casefile> getCasefileList() {
+        return casefileList;
+    }
+
+    public void setCasefileList(List<Casefile> casefileList) {
+        this.casefileList = casefileList;
+    }
+
+    @XmlTransient
+    public List<Batch> getBatchList() {
+        return batchList;
+    }
+
+    public void setBatchList(List<Batch> batchList) {
+        this.batchList = batchList;
+    }
+
+    @XmlTransient
+    public List<Analysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    public void setAnalysisList(List<Analysis> analysisList) {
+        this.analysisList = analysisList;
+    }
+
+    @XmlTransient
+    public List<Samples> getSamplesList() {
+        return samplesList;
+    }
+
+    public void setSamplesList(List<Samples> samplesList) {
+        this.samplesList = samplesList;
     }
 
     @Override

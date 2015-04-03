@@ -127,7 +127,6 @@ public class CreateOrUpdateArticle {
     public Variety getArticleBySpecieVariety(String idspecie, String idvariety) {
         
         TypedQuery<Variety> query = em.createNamedQuery("Variety.findByIdSpecieIdVariety", Variety.class);
-        System.out.println(" qreation query fate *********************************************");
             query.setParameter("idspecie", idspecie);
             query.setParameter("idvariety", idvariety);
             List<Variety> varietyList =query.getResultList();

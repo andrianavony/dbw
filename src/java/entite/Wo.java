@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -24,12 +25,15 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author S.ANDRIANAVONY
  */
 @Entity
+@Table(name = "wo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Wo.findAll", query = "SELECT w FROM Wo w"),
     @NamedQuery(name = "Wo.findByIdwo", query = "SELECT w FROM Wo w WHERE w.woPK.idwo = :idwo"),
     @NamedQuery(name = "Wo.findByIdcompany", query = "SELECT w FROM Wo w WHERE w.woPK.idcompany = :idcompany"),
-    @NamedQuery(name = "Wo.findByDescription", query = "SELECT w FROM Wo w WHERE w.description = :description")})
+    @NamedQuery(name = "Wo.findByIddiagram", query = "SELECT w FROM Wo w WHERE w.iddiagram = :iddiagram"),
+    @NamedQuery(name = "Wo.findByDescription", query = "SELECT w FROM Wo w WHERE w.description = :description")
+    })
 public class Wo implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -39,9 +43,6 @@ public class Wo implements Serializable {
     private String description;
     @OneToMany(mappedBy = "idwo")
     private List<Trace> traceList;
-    @JoinColumn(name = "IDTRANSFORMATION", referencedColumnName = "IDTRANSFORMATION")
-    @ManyToOne
-    private Transformation idtransformation;
     @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Company company;
@@ -87,16 +88,6 @@ public class Wo implements Serializable {
         this.traceList = traceList;
     }
     
-    public Transformation getIdtransformation() {
-        return idtransformation;
-    }
-
-
-
-    public void setIdtransformation(Transformation idtransformation) {
-        this.idtransformation = idtransformation;
-    }
-
     public Company getCompany() {
         return company;
     }

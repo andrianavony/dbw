@@ -27,27 +27,58 @@ CREATE TABLE IF NOT EXISTS `batch` (
   `IDTREATEMENT`    varchar(50) NULL,
   `LIMSFOLDERNO`    varchar(50) NULL,
 PRIMARY KEY (`IDBATCH`) COMMENT 'identifiant du lot',
-    KEY `IDITEM`            (`IDARTICLE`), 
-    KEY `I_stade`           (`IDSTAGE`)         COMMENT 'pour faire la jointure avec Stade', 
-    KEY `I_BATCH_Species`   (`IDSPECIE`)        COMMENT 'I_BATCH_Species', 
-    KEY `I_BATCH_Variety`   (`IDVARIETY`)       COMMENT 'I_BATCH_Variety', 
-    KEY `I_BATCH_Genration` (`IDGENERATION`)    COMMENT 'I_BATCH_Genration',
-    KEY `IDCOMPANY` (`IDCOMPANY`),
-    KEY `IDWO` (`IDWO`),
-    KEY `BATCHNAME` (`BATCHNAME`),
-    KEY `IDTREATEMENT` (`IDTREATEMENT`)
+    KEY `Key_Batch_IDARTICLE`            (`IDARTICLE`), 
+    KEY `Key_stade`           (`IDSTAGE`)         COMMENT 'pour faire la jointure avec Stade', 
+    KEY `Key_BATCH_Species`   (`IDSPECIE`)        COMMENT 'I_BATCH_Species', 
+    KEY `Key_BATCH_Variety`   (`IDVARIETY`)       COMMENT 'I_BATCH_Variety', 
+    KEY `Key_BATCH_Genration` (`IDGENERATION`)    COMMENT 'I_BATCH_Genration',
+    KEY `Key_BATCH_IDCOMPANY` (`IDCOMPANY`),
+    KEY `Key_BATCH_IDWO` (`IDWO`),
+    KEY `Key_BATCH_BATCHNAME` (`BATCHNAME`),
+    KEY `Key_BATCH_IDTREATEMENT` (`IDTREATEMENT`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
-
-START TRANSACTION;
-
 
 START TRANSACTION;
     ALTER TABLE `batch`
         ADD CONSTRAINT `FK_BATCH_ARTICLE` 
             FOREIGN KEY             (`IDARTICLE`) 
             REFERENCES `article`    (`IDARTICLE`);
+COMMIT;
+
+START TRANSACTION;
+    ALTER TABLE                         `batch`
+    ADD CONSTRAINT `FK_batch_IDSPECIE` 
+    FOREIGN KEY                                  (`IDSPECIE`) 
+    REFERENCES                          `specie` (`IDSPECIE`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
+
+
+START TRANSACTION;
+    ALTER TABLE                         `batch`
+    ADD CONSTRAINT `FK_batch_IDVARIETY` 
+    FOREIGN KEY                                     (`IDVARIETY`) 
+    REFERENCES                          `variety`    (`IDVARIETY`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
+
+
+START TRANSACTION;
+    ALTER TABLE                         `batch`
+    ADD CONSTRAINT `FK_batch_IDGENERATION` 
+    FOREIGN KEY                                         (`IDGENERATION`) 
+    REFERENCES                          `generation`    (`IDGENERATION`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+COMMIT;
+
+START TRANSACTION;
+    ALTER TABLE                         `batch`
+    ADD CONSTRAINT `FK_batch_IDSTAGE` 
+    FOREIGN KEY                                     (`IDSTAGE`) 
+    REFERENCES                          `stage` (`IDSTAGE`)
+ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 START TRANSACTION;

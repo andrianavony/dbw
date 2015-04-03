@@ -3,10 +3,10 @@ START TRANSACTION;
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE IF NOT EXISTS `article` (
   `IDARTICLE`       varchar(50) NULL,
-  `IDSTAGE`         varchar(50) NULL,
   `IDSPECIE`        varchar(50) NULL,
   `IDVARIETY`       varchar(50) NULL,
   `IDGENERATION`    varchar(50) NULL,
+  `IDSTAGE`         varchar(50) NULL,
   `DESCRIPTION`     varchar(50) NULL,
   `ARTICLENAME`     varchar(50) NULL,
   `OFFICIALNAME`     varchar(50) NULL,

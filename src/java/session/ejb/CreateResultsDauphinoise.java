@@ -45,7 +45,7 @@ public class CreateResultsDauphinoise {
    Double kgQuantitiesAssembly;
    Double kgWeight;
    Integer numberOfDose50MGR;
-   Double humidityPc;
+   String humidityPc;
    Double pmg;
    Double fgDef;
    Double fgMorts;
@@ -80,49 +80,20 @@ public class CreateResultsDauphinoise {
 
    String idmeasure;
    
-   @Inject BatchManager batchManager; 
+   //@Inject BatchManager batchManager; 
    
    
    
    public Batch createtBatch(){
-       batchManager.createBatch(idvariety, stageLabel, idGeneration, batchName, idCompany);
-       return batchManager.getBatchCurrent();
+       //batchManager.createBatch(idvariety, stageLabel, idGeneration, batchName, idCompany);
+       //return batchManager.getBatchCurrent();
+       return null;
    }
    
    public Batch process(){
-       batchManager.addresults("humidityPc", humidityPc);
-       return batchManager.getBatchCurrent();
+       //batchManager.addresults("humidityPc", humidityPc);
+       //return batchManager.getBatchCurrent();
+       return null;
    }
    
-   
-   
-    
-   public Results CreateOrUpdateResultsanalysis (String idarticle){
-       if (idarticle==null){
-           return null;
-       }
-        String idspecie = ForItem.getIdSpecie(idarticle);
-        String idvariety = ForItem.getIdVariety(idarticle);
-        String idstage = ForItem.getIdStageFromItem(idarticle);
-        String idgeneration=ForItem.getIdGeneration(idarticle);
-        return CreateOrUpdateResultsanalysis ( idarticle,  idstage,  idspecie,  idvariety,idgeneration);
-    }
-            
-    public Results CreateOrUpdateResultsanalysis (String idarticle, String idstage, String idspecie, String idvariety,String idgeneration){
-        Article a = new Article (idarticle);
-        Stage stage=new Stage(idstage);
-        Specie specie = new Specie(idspecie);
-        Variety variety = new Variety(idvariety, idspecie);
-        Generation generation = new Generation(idgeneration);
-        //Specie specie=new Specie(idspecie);
-        //em.merge(specie);
-        a.setIdspecie(specie);
-        a.setIdvariety(variety);
-        a.setIdstage(stage);
-        a.setIdgeneration(generation);
-        return CreateOrUpdateResultsanalysis( a);
-    }
-    protected Results CreateOrUpdateResultsanalysis(Article article){
-        return null;// em.merge(article);
-    }
-}
+  }
