@@ -132,7 +132,7 @@ public class CreateOrUpdateArticleNGTest {
         CreateOrUpdateArticle instanceMAJArt = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         try {
         
-        String idvariety="S10039";
+        String idvariety="S10095";
         String specie = "S0101";
         Variety expResult = new Variety(idvariety, specie)  ;
         
@@ -151,7 +151,7 @@ public class CreateOrUpdateArticleNGTest {
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         try {
-        String idvariety="S10039";
+        String idvariety="S10095";
         String specie = "S0101";
         Variety expResult = new Variety(idvariety, specie)  ;
         
@@ -164,9 +164,27 @@ public class CreateOrUpdateArticleNGTest {
     }
     
     @Test
-    public void getArticleByVarietyStageLagel() throws NamingException{
+    public void getArticleByVarietyStageLagelB() throws NamingException{
         String idvariety="S10039";
         String stageLabel="B";
+        String idGeneration="C04";
+        
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        try {
+        String expResult = "S0101S10039C04_B";
+        Article result = instance.getArticleByVarietyStageLagel(idvariety,stageLabel,idGeneration);
+        assertEquals(result.getIdarticle(), expResult);
+        }
+        finally {
+            container.close();
+        }
+    }
+    
+    @Test
+    public void getArticleByVarietyStageLagelKG() throws NamingException{
+        String idvariety="S10039";
+        String stageLabel="KG";
         String idGeneration="C04";
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
@@ -196,5 +214,80 @@ public class CreateOrUpdateArticleNGTest {
         expResult.setIdgeneration(generation);
         
         
+    }
+
+    /**
+     * Test of getArticleByVarietyStageLagel method, of class CreateOrUpdateArticle.
+     */
+    @Test
+    public void testGetArticleByVarietyStageLagel() throws Exception {
+        System.out.println("getArticleByVarietyStageLagel");
+        String idvariety = "";
+        String stageLabel = "";
+        String idGeneration = "";
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        Article expResult = null;
+        Article result = instance.getArticleByVarietyStageLagel(idvariety, stageLabel, idGeneration);
+        assertEquals(result, expResult);
+        container.close();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of createOrUpdateArticle method, of class CreateOrUpdateArticle.
+     */
+    @Test
+    public void testCreateOrUpdateArticle_5args() throws Exception {
+        System.out.println("createOrUpdateArticle");
+        String idarticle = "";
+        String idstage = "";
+        String idspecie = "";
+        String idvariety = "";
+        String idgeneration = "";
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        Article expResult = null;
+        Article result = instance.createOrUpdateArticle(idarticle, idstage, idspecie, idvariety, idgeneration);
+        assertEquals(result, expResult);
+        container.close();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getArticleByVariety method, of class CreateOrUpdateArticle.
+     */
+    @Test
+    public void testGetArticleByVariety() throws Exception {
+        System.out.println("getArticleByVariety");
+        String idvariety = "";
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        Variety expResult = null;
+        Variety result = instance.getArticleByVariety(idvariety);
+        assertEquals(result, expResult);
+        container.close();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getArticleBySpecieVariety method, of class CreateOrUpdateArticle.
+     */
+    @Test
+    public void testGetArticleBySpecieVariety() throws Exception {
+        System.out.println("getArticleBySpecieVariety");
+        String idspecie = "";
+        String idvariety = "";
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        Variety expResult = null;
+        Variety result = instance.getArticleBySpecieVariety(idspecie, idvariety);
+        assertEquals(result, expResult);
+        container.close();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

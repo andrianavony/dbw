@@ -57,6 +57,14 @@ public class ForItem {
         }
         
         
+        if(stageLabel.equalsIgnoreCase("A")){
+        return "A";
+        }
+        
+        if(stageLabel.equalsIgnoreCase("C")){
+        return "C";
+        }
+        
         if(stageLabel.equalsIgnoreCase("_KG")){
         return "COM";
         }
@@ -74,18 +82,33 @@ public class ForItem {
     /**
      * On verifie juste la logeur des champs
      */
-    public static String getIdArticle(String idspecie, String idvariety, String idgeneration, String idstage) {
+    public static String getIdArticle(String idspecie, String idvariety, String idgeneration, String idstageOuLabel) {
         if(idspecie!=null && idvariety!=null && idgeneration!= null){
+            String  idstage =getIdStageFromStageLabel(idstageOuLabel);
             if (idstage==null){
+                return idspecie+ idvariety + idgeneration;
+            }else {
+                return idspecie+ idvariety + idgeneration+"_"+idstage;
+            }
+            /*
+            if (idstage==null){
+                return idspecie+ idvariety + idgeneration;
+            }
+            if (idstage.equalsIgnoreCase("COM")){
                 return idspecie+ idvariety + idgeneration;
             }
             if (idstage.equalsIgnoreCase("_Kg")){
                 return idspecie+ idvariety + idgeneration+idstage;
             }
+            if (idstage.equalsIgnoreCase("Kg")){
+                return idspecie+ idvariety + idgeneration+"_"+idstage;
+            }
+            
             //Shelled
             if (idstage.equalsIgnoreCase("Shelled")){
                 return idspecie+ idvariety + idgeneration+"B";
             }
+                    */
 
         } 
         return null;

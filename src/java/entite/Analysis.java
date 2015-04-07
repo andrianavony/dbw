@@ -62,7 +62,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByHerited", query = "SELECT a FROM Analysis a WHERE a.herited = :herited"),
     @NamedQuery(name = "Analysis.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered"),
     @NamedQuery(name = "Analysis.findByAnalysisname", query = "SELECT a FROM Analysis a WHERE a.analysisname = :analysisname"),
-    @NamedQuery(name = "Analysis.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")})
+    @NamedQuery(name = "Analysis.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")
+    ,@NamedQuery(name = "Analysis.findByIdsample", query = "SELECT a FROM Analysis a WHERE a.idsamples =:idsamples")
+    ,@NamedQuery(name = "Analysis.findByIdsampleIdModelanalysis", query = "SELECT a FROM Analysis a WHERE a.idsamples = :idsamples and a.idmodelanalysis.idmodelanalysis=:idmodelanalysis")
+    ,@NamedQuery(name = "Analysis.findByIdsampleIdModelanalysisIdMethod"
+            , query = "SELECT a FROM Analysis a WHERE 1=1 and a.idsamples = :idsamples and a.idmodelanalysis =:idmodelanalysis  and a.idmethod=:idmethod")
+})
 public class Analysis implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -120,6 +125,9 @@ public class Analysis implements Serializable {
     private Boolean considered;
     @Size(max = 50)
     @Column(length = 50)
+    private String prodgroup;
+    @Size(max = 50)
+    @Column(length = 50)
     private String analysisname;
     @Size(max = 50)
     @Column(length = 50)
@@ -159,7 +167,7 @@ public class Analysis implements Serializable {
     @ManyToOne
     private Stage idstage;
     
-    @JoinColumn(name = "COPIEDFROMIDBATH", referencedColumnName = "IDBATCH")
+    @JoinColumn(name = "COPIEDFROMIDBATCH", referencedColumnName = "IDBATCH")
     @ManyToOne
     private Batch copiedfromidbatch;
     
@@ -543,6 +551,19 @@ public class Analysis implements Serializable {
      */
     public void setCopiedfromidsample(Samples copiedfromidsample) {
         this.copiedfromidsample = copiedfromidsample;
+    }   
+
+    /**
+     * @return the prodgroup
+     */
+    public String getProdgroup() {
+        return prodgroup;
     }
-    
+
+    /**
+     * @param prodgroup the prodgroup to set
+     */
+    public void setProdgroup(String prodgroup) {
+        this.prodgroup = prodgroup;
+    }
 }

@@ -61,7 +61,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Batch.findByIdarticleBatchname", query = "SELECT b "
             + " FROM Batch b "
             + " WHERE b.batchname = :batchname "
-            + " and b.idarticle = :idarticle "),    
+            + " and b.idarticle = :idarticle "),
+    @NamedQuery(name = "Batch.findByIdarticleBatchnameCompanyname", query = "SELECT b "
+            + " FROM Batch b "
+            + " WHERE b.batchname = :batchname "
+            + " and b.idarticle.idarticle= :idarticle "
+            + " and b.idcompany.idcompany = :idcompany"
+    )
 })
 
 public class Batch implements Serializable {
@@ -69,7 +75,7 @@ public class Batch implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private BigInteger idbatch;
     @Size(max = 50)
     @Column(length = 50)
@@ -107,6 +113,9 @@ public class Batch implements Serializable {
     private String contract;
     @Size(max = 50)
     @Column(length = 50)
+    private String producername;
+    @Size(max = 50)
+    @Column(length = 50)
     private String limsfolderno;
     @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION")
     @ManyToOne
@@ -138,8 +147,7 @@ public class Batch implements Serializable {
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)
-    @ManyToOne
+    @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = true, updatable = true)
     private Company idcompany;
      @JoinColumn(name = "IDTRACE", referencedColumnName = "IDTRACE")
     @ManyToOne
@@ -149,7 +157,7 @@ public class Batch implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumns({
         @JoinColumn(name = "IDWO", referencedColumnName = "IDWO"),
-        @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = true, updatable = true)    
+        @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)    
     })
     private Wo idwo;
     @JoinColumn(name = "IDTREATEMENT", referencedColumnName = "IDTREATEMENT")
@@ -266,6 +274,14 @@ public class Batch implements Serializable {
 
     public void setContract(String contract) {
         this.contract = contract;
+    }
+    
+    public String getProducername() {
+        return producername;
+    }
+
+    public void setProducername(String producername) {
+        this.producername = producername;
     }
 
         public String getLimsfolderno() {

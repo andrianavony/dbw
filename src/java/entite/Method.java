@@ -47,7 +47,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Method.findByIsvirtual", query = "SELECT m FROM Method m WHERE m.isvirtual = :isvirtual"),
     @NamedQuery(name = "Method.findByIsdefault", query = "SELECT m FROM Method m WHERE m.isdefault = :isdefault"),
     @NamedQuery(name = "Method.findByOfficialanalysis", query = "SELECT m FROM Method m WHERE m.officialanalysis = :officialanalysis"),
-    @NamedQuery(name = "Method.findByInternalanalysis", query = "SELECT m FROM Method m WHERE m.internalanalysis = :internalanalysis")})
+    @NamedQuery(name = "Method.findByInternalanalysis", query = "SELECT m FROM Method m WHERE m.internalanalysis = :internalanalysis")
+    ,@NamedQuery(name = "Method.findByIdmodelanalysis", query = "SELECT m FROM Method m WHERE m.idmodelanalysis = :idmodelanalysis ")        
+    ,@NamedQuery(name = "Method.findByIdmodelanalysisMethodname", query = "SELECT m FROM Method m WHERE m.idmodelanalysis.idmodelanalysis = :idmodelanalysis and m.methodname = :methodname")    
+    ,@NamedQuery(name = "Method.findByLimsanalysisidMethodname", query = "SELECT m FROM Method m WHERE m.limsanalysisid = :limsanalysisid  and m.methodname = :methodname"),    
+})
 public class Method implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

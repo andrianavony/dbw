@@ -98,10 +98,10 @@ public class Samples implements Serializable {
     private List<Analysis> analysisListCopiedFromOneOfMyanalysis;
     @OneToMany(mappedBy = "idsamples")
     private List<Analysis> analysisList;
-    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE", insertable = true, updatable = true)
     @ManyToOne
     private Stage idstage;
-    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
+    @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE",insertable = true, updatable = true)
     @ManyToOne
     private Article idarticle;
     @JoinColumn(name = "IDBATCH", referencedColumnName = "IDBATCH")
@@ -110,7 +110,7 @@ public class Samples implements Serializable {
     @JoinColumn(name = "IDCASEFILE", referencedColumnName = "IDCASEFILE")
     @ManyToOne
     private Casefile idcasefile;
-    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = true, updatable = true)
     @ManyToOne
     private Specie idspecie;
     

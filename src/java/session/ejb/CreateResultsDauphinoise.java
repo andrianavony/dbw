@@ -80,14 +80,14 @@ public class CreateResultsDauphinoise {
 
    String idmeasure;
    
-   //@Inject BatchManager batchManager; 
+   @Inject BatchManager batchManager; 
    
    
    
    public Batch createtBatch(){
-       //batchManager.createBatch(idvariety, stageLabel, idGeneration, batchName, idCompany);
-       //return batchManager.getBatchCurrent();
-       return null;
+       batchManager.createOrUpdateBatch(idvariety, stageLabel, idGeneration, batchName, idCompany);
+       return batchManager.getBatchCurrent();
+       
    }
    
    public Batch process(){

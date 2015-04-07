@@ -43,7 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Measures.findByOfficialname", query = "SELECT m FROM Measures m WHERE m.officialname = :officialname"),
     @NamedQuery(name = "Measures.findByPrintname", query = "SELECT m FROM Measures m WHERE m.printname = :printname"),
     @NamedQuery(name = "Measures.findByIsprintable", query = "SELECT m FROM Measures m WHERE m.isprintable = :isprintable"),
-    @NamedQuery(name = "Measures.findByDefaultvalue", query = "SELECT m FROM Measures m WHERE m.defaultvalue = :defaultvalue")})
+    @NamedQuery(name = "Measures.findByDefaultvalue", query = "SELECT m FROM Measures m WHERE m.defaultvalue = :defaultvalue")
+    ,@NamedQuery(name = "Measures.findByLimsanalysisidMeasurename", query = "SELECT m FROM Measures m WHERE m.limsanalysisid = :limsanalysisid and m.measurename = :measurename")
+})
 public class Measures implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

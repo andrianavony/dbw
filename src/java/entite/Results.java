@@ -91,7 +91,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Results.findByIsresultsinserted", query = "SELECT r FROM Results r WHERE r.isresultsinserted = :isresultsinserted")})
 public class Results implements Serializable {    
     private Boolean herited;
-    @Size(max = 50)
+    //@Size(max = 50)
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;

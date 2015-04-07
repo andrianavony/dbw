@@ -89,13 +89,13 @@ public class Casefile implements Serializable {
     private BigInteger limsbatchid;
     private Boolean idstatus;
     private Boolean idapprobationstatus;
-    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE",insertable = true, updatable = true)
     @ManyToOne
     private Stage idstage;
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
+    @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE",insertable = true, updatable = true)
     @ManyToOne
     private Specie idspecie;
     @OneToMany(mappedBy = "idcasefile")

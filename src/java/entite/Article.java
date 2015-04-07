@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -21,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -45,9 +47,8 @@ public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true, length = 50)
     private String idarticle;
     @Size(max = 50)
     @Column(length = 50)
@@ -60,8 +61,12 @@ public class Article implements Serializable {
     private String officialname;
     @OneToMany(mappedBy = "idarticle")
     private List<Casefile> casefileList;
-    @OneToMany(mappedBy = "idarticle")
+    @OneToMany(mappedBy = "idarticle",fetch = FetchType.LAZY)
     private List<Analysis> analysisList;
+    
+    @OneToMany(mappedBy = "idarticle",fetch = FetchType.LAZY)
+    private List<Results> resultsList;
+    
     @OneToMany(mappedBy = "idarticle")
     private List<Samples> samplesList;
     @OneToMany(mappedBy = "idarticle")
@@ -70,10 +75,10 @@ public class Article implements Serializable {
     private Collection<Sampleplangroup> sampleplangroupCollection;
     @OneToMany(mappedBy = "idarticle")
     private Collection<Batch> batchCollection;
-    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
+    @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE", insertable = true, updatable = true)
     @ManyToOne
     private Stage idstage;
-    @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION")
+    @JoinColumn(name = "IDGENERATION", referencedColumnName = "IDGENERATION", insertable = true, updatable = true)
     @ManyToOne
     private Generation idgeneration;
     @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE", insertable = false, updatable = false)
@@ -211,6 +216,15 @@ public class Article implements Serializable {
 
     public void setAnalysisList(List<Analysis> analysisList) {
         this.analysisList = analysisList;
+    }
+    
+    @XmlTransient
+    public List<Results> getResultsList() {
+        return resultsList;
+    }
+
+    public void setResultsList(List<Results> resultsList) {
+        this.resultsList = resultsList;
     }
 
     @XmlTransient

@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `batch` (
   `LIMSBATCHID`     bigint(20)  NULL,
   `IDCOMPANY`       varchar(50) NULL,
   `CONTRACT`        varchar(50) NULL,
+  `PRODUCERNAME`    varchar(50) NULL,
   `IDTREATEMENT`    varchar(50) NULL,
   `LIMSFOLDERNO`    varchar(50) NULL,
 PRIMARY KEY (`IDBATCH`) COMMENT 'identifiant du lot',

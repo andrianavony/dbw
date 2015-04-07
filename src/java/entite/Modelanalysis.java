@@ -43,7 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Modelanalysis.findByGroupmeasures", query = "SELECT m FROM Modelanalysis m WHERE m.groupmeasures = :groupmeasures"),
     @NamedQuery(name = "Modelanalysis.findByGroupalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.groupalanalysis = :groupalanalysis"),
     @NamedQuery(name = "Modelanalysis.findByOfficialanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.officialanalysis = :officialanalysis"),
-    @NamedQuery(name = "Modelanalysis.findByInternalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.internalanalysis = :internalanalysis")})
+    @NamedQuery(name = "Modelanalysis.findByInternalanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.internalanalysis = :internalanalysis")
+    ,@NamedQuery(name = "Modelanalysis.findByLimsidanalysis", query = "SELECT m FROM Modelanalysis m WHERE m.limsidanalysis = :limsidanalysis"),    
+})
 
 public class Modelanalysis implements Serializable {
     @Id
@@ -55,6 +57,7 @@ public class Modelanalysis implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String idlims;
+    private BigInteger limsidanalysis;
     @Size(max = 50)
     @Column(length = 50)
     private String category;
@@ -284,6 +287,20 @@ public class Modelanalysis implements Serializable {
     @Override
     public String toString() {
         return "entite.Modelanalysis[ idmodelanalysis=" + idmodelanalysis + " ]";
+    }
+
+    /**
+     * @return the limsidanalysis
+     */
+    public BigInteger getLimsidanalysis() {
+        return limsidanalysis;
+    }
+
+    /**
+     * @param limsidanalysis the limsidanalysis to set
+     */
+    public void setLimsidanalysis(BigInteger limsidanalysis) {
+        this.limsidanalysis = limsidanalysis;
     }
 
 }
