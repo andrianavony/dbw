@@ -45,7 +45,7 @@ public class CreateTracaLogged {
      */
     public void createTraceAndBatchForTracaLogged(){
         
-        
+        /*
          TypedQuery<Variety> queryVar = em.createNamedQuery("Variety.findByIdvariety", Variety.class);
         System.out.println(" qreation query fate *********************************************");
             queryVar.setParameter("idvariety", "S10039");
@@ -54,7 +54,7 @@ public class CreateTracaLogged {
             System.out.println("varietyList "+ varietyList.size());
             
             assert(varietyList.size()==1);
-        
+        */
         TypedQuery<Traca> query =em.createNamedQuery("Traca.findTracaLogged",Traca.class);
         List<Traca>  tracaLoggedList = query.getResultList();
         System.out.println(" Nb de tracaLoggedList **************************************************************  "+tracaLoggedList.size());
@@ -63,6 +63,7 @@ public class CreateTracaLogged {
             tracaBean.setInfo(tracaLogged);
             System.out.println(" demande de création ***************************************************");
             tracaBean.createTraca();
+            tracaBean.setDone(tracaLogged);
         }        
     }
 

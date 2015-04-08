@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Traca.findByContrat", query = "SELECT t FROM Traca t WHERE t.contrat = :contrat"),
     @NamedQuery(name = "Traca.findByStatustraca", query = "SELECT t FROM Traca t WHERE t.statustraca = :statustraca"),
     @NamedQuery(name = "Traca.findByIdtraca", query = "SELECT t FROM Traca t WHERE t.idtraca = :idtraca"),
-    @NamedQuery(name = "Traca.findTracaLogged", query = "SELECT t FROM Traca t WHERE t.statustraca = 0 "),
+    @NamedQuery(name = "Traca.findTracaLogged", query = "SELECT t FROM Traca t WHERE t.statustraca = 1 "),
 })
 public class Traca implements Serializable {
     private static final long serialVersionUID = 1L;

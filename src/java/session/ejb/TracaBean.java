@@ -172,5 +172,11 @@ public class TracaBean {
         this.Producteur = traca.getProducteur();
         this.Contract = traca.getContrat();
     }
+
+    public void setDone(Traca tracaLogged) {
+        short statusDone=0;
+        tracaLogged.setStatustraca(statusDone);
+        em.merge(tracaLogged);
+    }
     
 }
