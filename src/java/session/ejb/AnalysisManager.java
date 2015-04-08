@@ -33,46 +33,59 @@ public class AnalysisManager {
     
     @Inject ResultsManager resultsManager; 
     
+    /***
+     * une analyse doit etre faite sur un ES
+     */
+    public Samples samplesCurrent;
+    
     public AnalysisManager(){
-        System.out.println("********************************* CREATION  AnalysisManager ");
+       
     }
+    
+    
+    public void setSamplesCurrent(    Samples samplesCurrent){
+        this.samplesCurrent=samplesCurrent;
+    }
+
     
     /**
      * Cette methode permet de saisir les résultats avec l'identifiant LIMS de l'analyses et une des methode qui lui est associée.
      * On crée l'objet Methode qui contient une référence à une modele d'analyse.
     **/
-    public Analysis addresults(Samples samplesCurrent, BigInteger limsanalysisid, String methodname, String mesureName, String rawresult) {
+    public Analysis addresults( BigInteger limsanalysisid, String methodname, String mesureName, String rawresult) {
         if(null==samplesCurrent) {
             return null;
         }
             
-        Contracts.assertNotNull(samplesCurrent);
+        Contracts.assertNotNull(samplesCurrent," l'échantillon ne doit pas etre null");
         Method method = createOrRetreiveMethodeFromLims(limsanalysisid, methodname);
         
-        return addresults(samplesCurrent, method, mesureName, rawresult);
+        addresults( method, mesureName, rawresult);
+        em.flush();
+        return analysisCurrent;
     }       
       
-    public Analysis addresults(Samples samplesCurrent, Method method, String mesureName, String rawresult) {
-        List<Analysis> analysisList= fingExistingAnalysis( samplesCurrent, method);
+    public entite.Results addresults( Method method, String mesureName, String rawresult) {
+        List<Analysis> analysisList= fingExistingAnalysis(  method);
         if(analysisList.isEmpty()){
             analysisCurrent=createAnalysis(samplesCurrent, method);
         }else{
             analysisCurrent=analysisList.get(0);
         }
-        em.merge(analysisCurrent);
+        analysisCurrent=em.merge(analysisCurrent);
         em.flush();
-        resultsManager.addresults(analysisCurrent, method, mesureName, rawresult);
-        return analysisCurrent;
+        return resultsManager.addresults(analysisCurrent, method, mesureName, rawresult);
+        
         
     }
     
-    public List<Analysis> fingExistingAnalysis(Samples idsamples,  Method idmethod){
+    public List<Analysis> fingExistingAnalysis(  Method idmethod){
         Modelanalysis idmodelanalysis = idmethod.getIdmodelanalysis();
         Contracts.assertNotNull(idmodelanalysis);
         
         TypedQuery<Analysis> query ;
         query= em.createNamedQuery("Analysis.findByIdsampleIdModelanalysisIdMethod", Analysis.class);
-            query.setParameter("idsamples", idsamples);
+            query.setParameter("idsamples", samplesCurrent);
             query.setParameter("idmodelanalysis", idmodelanalysis);
             query.setParameter("idmethod",idmethod);
             
@@ -197,7 +210,9 @@ public class AnalysisManager {
     }
     
     public List<Modelanalysis> fingExistingModelanalysisFromLims(BigInteger limsidanalysis){
-        TypedQuery<Modelanalysis> query ; 
+        TypedQuery<Modelanalysis> query ;
+        Contracts.assertNotNull(em);
+        System.out.println("Em not null ***********");
         query= em.createNamedQuery("Modelanalysis.findByLimsidanalysis", Modelanalysis.class);
             query.setParameter("limsidanalysis",limsidanalysis);
             List<Modelanalysis> modelanalysisesList =query.getResultList();
@@ -212,6 +227,13 @@ public class AnalysisManager {
         System.out.println(modelanalysis.getIdmodelanalysis() + " *********** modelanalysis ******************** "+modelanalysis.getLimsidanalysis());
         return modelanalysis;
     }
-    
+
+    public void setAnalysis(Analysis analysis) {
+        samplesCurrent=analysis.getIdsamples();
+        Contracts.assertNotNull(samplesCurrent);
+        analysisCurrent=analysis;
+    }
+
+   
     
 }

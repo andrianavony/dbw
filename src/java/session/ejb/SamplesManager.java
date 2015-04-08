@@ -33,11 +33,12 @@ public class SamplesManager {
         System.out.println("entrerdans SamplesManager *************");
     }
     
-    public void addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) {
+    public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) {
         System.out.println("entrer dans SamplesManager Addresults **************************"+analysisManager);
 
-        //setCasefile(casefileCurrent);        
-        analysisManager.addresults(samplesCurrent,idModelanalysis,  methodname,  mesureName,  rawresult);
+        //setCasefile(casefileCurrent);
+        analysisManager.setSamplesCurrent(samplesCurrent);
+        return analysisManager.addresults(idModelanalysis,  methodname,  mesureName,  rawresult);
     }
 
     public Samples setCasefile(Casefile casefileCurrent) {

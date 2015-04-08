@@ -101,9 +101,9 @@ public class BatchManager {
         return batchCurrent;
     }
 
-    public void addresults(Batch batch, BigInteger idModelanalysis,String methodname, String mesurename, String rawresults) {
-        setCurrentBatch(batch);
-        casefileManagerCurrent.addresults( idModelanalysis, methodname, mesurename, rawresults);
+    public entite.Analysis addresults( BigInteger idModelanalysis,String methodname, String mesurename, String rawresults) {
+        entite.Casefile casefile= createOrRetriveCaseFileCurrent(batchCurrent); 
+        return casefileManagerCurrent.addresults( idModelanalysis, methodname, mesurename, rawresults);
     }
 
     public Article getArticleByVarietyStageLagel(String idvariety, String stageLabel, String idgeneration) {
@@ -115,10 +115,9 @@ public class BatchManager {
         return createOrUpdateArticle.createOrUpdateArticle(idspecie, idvariety, idgeneration, idstage);
     }
 
-    public  Batch setCurrentBatch(Batch batch) {
-        batchCurrent=batch;
-        casefileManagerCurrent.setBatch(batchCurrent);
-        return batchCurrent;
+    public  entite.Casefile createOrRetriveCaseFileCurrent(Batch batch) {
+        entite.Casefile casefile = casefileManagerCurrent.createOrRetriveCaseFileCurrent(batch);
+        return casefile;
     }
 
     public Batch createBatch(String batchName, Article idarticle, String companyName) {
@@ -150,7 +149,9 @@ public class BatchManager {
             em.flush();
             em.merge(batchCurrent);
             */        
-            casefileManagerCurrent.setBatch(batchCurrent);
+            //entite.Casefile tmp = casefileManagerCurrent.createOrRetriveCaseFileCurrent(batchCurrent);
+            
+            
             return batchCurrent;
 
     }

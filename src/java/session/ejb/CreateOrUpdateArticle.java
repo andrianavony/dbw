@@ -109,6 +109,9 @@ public class CreateOrUpdateArticle {
         return em.merge(article);
     }
 
+    /***
+     * une variete n'appartent qu à un seul espece
+     */
     
     public Variety getArticleByVariety(String idvariety) {
         VarietyPK varietyPK = new VarietyPK();

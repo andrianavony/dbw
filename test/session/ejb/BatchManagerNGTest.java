@@ -201,6 +201,44 @@ public class BatchManagerNGTest {
         fail("The test case is a prototype.");
     }
 
+        /**
+     * On cree un lot puis on demande la creation de DL
+     * On test que le lot associé au DL est bien le lot utilisé pour la creation du DL.
+     * Si on crée un deuxième lot avec les 3 mêmes critères on obtient bien le même lots 
+     */
+    @Test
+    public void testsameCaseFile() throws Exception {
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        try{
+            System.out.println(" avant creation BatchManager ");
+            BatchManager instance = (BatchManager)container.getContext().lookup("java:global/classes/BatchManager");
+            System.out.println(" apres creation BatchManager ");
+            
+            Article article= new Article("S0101S10095C04");
+            Batch batch=instance.createOrUpdateBatch(batchname, "S0101S10095C04", "unknomnCompagny");//companyname); 
+            assertEquals(batch, instance.getBatchCurrent());
+            entite.Casefile casefile = instance.createOrRetriveCaseFileCurrent(batch);
+            assertNotNull(casefile.getIdcasefile());
+            assertTrue(casefile.getIscurrent());
+            
+            
+            Batch batchfromCaseFile =casefile.getIdbatch();
+            assertEquals(batch, batchfromCaseFile);
+           Batch sameBatch=instance.createOrUpdateBatch(batchname, "S0101S10095C04", "unknomnCompagny");//companyname);
+            
+            assertEquals(sameBatch, batch);
+            entite.Casefile samecasefile = instance.createOrRetriveCaseFileCurrent(sameBatch);
+            assertNotNull(samecasefile.getIdcasefile(), " le dossier doit être le meme avec le meme triplet");
+
+            assertEquals(samecasefile, casefile);
+            
+            container.close();
+        } finally {
+            container.close();
+        }
+            
+    }
+
     /**
      * Test of addresults method, of class BatchManager.
      */
@@ -211,25 +249,30 @@ public class BatchManagerNGTest {
         String rawresults = "10";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
         try{
-            System.out.println(" avant creation BatchManager ");
+            System.out.println(" avant creation BatchManager dans testAddresults ");
             BatchManager instance = (BatchManager)container.getContext().lookup("java:global/classes/BatchManager");
-            System.out.println(" apres creation BatchManager ");
+            System.out.println(" apres creation BatchManager dans testAddresults");
             
             Article article= new Article("S0101S10095C04");
             Batch batch=instance.createOrUpdateBatch(batchname, "S0101S10095C04", "unknomnCompagny");//companyname);
             System.out.println(" jaona batch "+batch.getIdcompany());
             System.out.println("demande test BatchManager addresults");
-            instance.addresults(batch, new BigInteger("357"),"Grains Entiers", mesurename, rawresults);
+            entite.Analysis analysis=instance.addresults( new BigInteger("357"),"Grains Entiers", mesurename, rawresults);
+            AnalysisManager analysisManager = (AnalysisManager)container.getContext().lookup("java:global/classes/AnalysisManager");
+            
+            analysisManager.setAnalysis (analysis);
             mesurename="Poids Sec";
             rawresults="11";
-            instance.addresults(batch, new BigInteger("357"),"Grains Entiers", mesurename, rawresults);
+            assertNotNull(analysisManager);
+            
+            analysisManager.addresults(new BigInteger("357"),"Grains Entiers", mesurename, rawresults);
             container.close();
         } finally {
             container.close();
         }
             
     }
-    
+        
     public void setResults(Batch batch){
 
 

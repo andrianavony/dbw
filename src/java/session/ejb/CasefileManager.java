@@ -13,6 +13,8 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import org.hibernate.validator.internal.util.Contracts;
 import utilities.DateManager;
 
 /**
@@ -31,20 +33,26 @@ public class CasefileManager {
     
     @Inject SamplesManager samplesManager;  
     
-    Casefile casefileCurrent;
+    public Casefile casefileCurrent;
     
-    public void setBatch(Batch batchCurrent) {
-        System.out.println(" passe dans set Batch ********************");
-        List<Casefile> casefilesList =batchCurrent.getCasefileList();
-        for (Casefile casefile: casefilesList){
-            if(casefile.getIscurrent()){
-                casefileCurrent=casefile;
-            }
-        }
-        if(null==casefileCurrent){
-            casefileCurrent = createCaseFile(batchCurrent);
+    public Casefile createOrRetriveCaseFileCurrent(Batch batchCurrent) {
+        List<Casefile> casefilesList = findCaseFile(batchCurrent);
+        
+        if(casefilesList.isEmpty()){
+            System.out.println("Liste vide ");
+            casefileCurrent=createCaseFile(batchCurrent);
+            return casefileCurrent;
         }
         
+        for(Casefile casefile : casefilesList){
+            if(casefile.getIscurrent()){
+                casefileCurrent=casefile;
+                return casefileCurrent;
+            }
+        }
+        // aucun dossier n'est courant
+        casefileCurrent=createCaseFile(batchCurrent);        
+        return casefileCurrent;
     }
 
     public Casefile createCaseFile(Batch batchCurrent) {
@@ -64,15 +72,28 @@ public class CasefileManager {
         casefileCurrent.setLimsbatchid(batchCurrent.getLimsbatchid());
         casefileCurrent.setLimsfolderno(batchCurrent.getLimsfolderno());
         
-        em.merge(casefileCurrent);
+        casefileCurrent =em.merge(casefileCurrent);
         samplesManager.setCasefile(casefileCurrent);
-        
+        //em.flush();
+        System.out.println("casefileCurrent "+casefileCurrent.getIdcasefile());
         return casefileCurrent;
     }
 
-    public void addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) {
+    public entite.Analysis addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) {
         System.out.println("********************** dans DL manager addResults");
-        samplesManager.addresults(casefileCurrent,idModelanalysis,methodname , mesurename, rawresults);
+        return samplesManager.addresults(casefileCurrent,idModelanalysis,methodname , mesurename, rawresults);
+    }
+
+    public void setCasefileCurrent(Casefile casefile) {
+        casefileCurrent=casefile;
+    }
+
+    public List<Casefile> findCaseFile(Batch batchCurrent) {
+        Contracts.assertNotNull(batchCurrent);
+        
+        TypedQuery<Casefile> query= em.createNamedQuery("Casefile.findByIdbatch", Casefile.class);
+            query.setParameter("idbatch", batchCurrent);
+            return query.getResultList();
     }
     
 }
