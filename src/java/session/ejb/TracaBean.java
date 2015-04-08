@@ -113,29 +113,32 @@ public class TracaBean {
         wo = createWo();// CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type, MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number, Year, Bassin, Producteur, Contract); 
         trace.setIdwo(wo);
         
-        createBatch();// CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type, MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number, Year, Bassin, Producteur, Contract);
+        createBatch(idarticle, company);// CompanyId,  Warehouse_Id,  Reference_Id,  Transaction_Type, MGR_Unit_Quantity,  MGV_Unit_Quantity,  KG_Unit_Quantity,  Item_Number,  Batch_Number, Year, Bassin, Producteur, Contract);
         
         setTraceQuantity();
         em.merge(trace);
         
     }
 
-    private Wo createWo(){//String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
+    public Wo createWo(){//String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
         
         WoPK woPK =new WoPK(Reference_Id, CompanyId);
         wo = new Wo(woPK);
         return wo;
     }
     
-    private void setTraceQuantity(){
+    public void setTraceQuantity(){
         trace.setQuantity(this.KG_Unit_Quantity);
         trace.setUnits("Kg");
         trace.setTracetype(Transaction_Type);
     }
-    private void createBatch(){//String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
+    public void createBatch(Article idarticle,Company company ){//String CompanyId, String Warehouse_Id, String Reference_Id, String Transaction_Type, Double MGR_Unit_Quantity, Double MGV_Unit_Quantity, Double KG_Unit_Quantity, String Item_Number, String Batch_Number, String Year, String Bassin, String Producteur, String Contract) {
         Batch batch= new Batch();
         batch.setBatchname(Batch_Number);
-        batch.setIdarticle(trace.getIdarticle());
+        batch.setIdarticle(idarticle);
+        batch.setIdspecie(idarticle.getIdspecie());
+        batch.setIdstage(idarticle.getIdstage());
+        batch.setIdcompany(company);
         batch.setIdwo(trace.getIdwo());
         batch.setContract(Contract);
     
