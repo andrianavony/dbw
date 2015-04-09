@@ -68,6 +68,14 @@ import javax.xml.bind.annotation.XmlTransient;
             + " and b.idarticle.idarticle= :idarticle "
             + " and b.idcompany.idcompany = :idcompany"
     )
+    ,@NamedQuery(name = "Batch.findByIdarticleBatchnameCompanynameIdWo", query = "SELECT b "
+            + " FROM Batch b "
+            + " WHERE b.batchname = :batchname "
+            + " and b.idarticle.idarticle= :idarticle "
+            + " and b.idwo = :idwo "
+            + " and b.idcompany.idcompany = :idcompany"
+            
+    )    
 })
 
 public class Batch implements Serializable {

@@ -7,11 +7,15 @@ package entite;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.Size;
@@ -41,7 +45,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Traca.findByContrat", query = "SELECT t FROM Traca t WHERE t.contrat = :contrat"),
     @NamedQuery(name = "Traca.findByStatustraca", query = "SELECT t FROM Traca t WHERE t.statustraca = :statustraca"),
     @NamedQuery(name = "Traca.findByIdtraca", query = "SELECT t FROM Traca t WHERE t.idtraca = :idtraca"),
-    @NamedQuery(name = "Traca.findTracaLogged", query = "SELECT t FROM Traca t WHERE t.statustraca = 1 "),
+    @NamedQuery(name = "Traca.findTracaLogged", query = "SELECT t FROM Traca t WHERE t.statustraca = 1 ")
+    ,@NamedQuery(name = "Traca.findByIdwoTracetype", query = "SELECT t FROM Traca t WHERE t.idwo = :idwo and t.tracetype = :tracetype")
+    ,@NamedQuery(name = "Traca.findByIdwo_Production", query = "SELECT t FROM Traca t WHERE t.idwo = :idwo and t.idcompany = :idcompany and t.tracetype = 'Production' ")    
 })
 public class Traca implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -51,9 +57,12 @@ public class Traca implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String warehouse;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idwo;
+    @ManyToOne()
+    @JoinColumns({
+        @JoinColumn(name = "IDWO", referencedColumnName = "IDWO"),
+        @JoinColumn(name = "IDCOMPANY", referencedColumnName = "IDCOMPANY", insertable = false, updatable = false)    
+    })
+    private Wo idwo;
     @Size(max = 50)
     @Column(length = 50)
     private String tracetype;
@@ -117,11 +126,11 @@ public class Traca implements Serializable {
         this.warehouse = warehouse;
     }
 
-    public String getIdwo() {
+    public Wo getIdwo() {
         return idwo;
     }
 
-    public void setIdwo(String idwo) {
+    public void setIdwo(Wo idwo) {
         this.idwo = idwo;
     }
 

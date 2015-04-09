@@ -152,7 +152,7 @@ public class TracaBean {
     public void setInfo(Traca traca ) {
         this.CompanyId = traca.getIdcompany();
         this.Warehouse_Id = traca.getWarehouse();
-        this.Reference_Id = traca.getIdwo();
+        this.Reference_Id = traca.getIdwo().getWoPK().getIdwo();
         this.Transaction_Type = traca.getTracetype();
         String mgr = traca.getMgrquantity();
         if (mgr!=null){
