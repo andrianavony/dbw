@@ -62,13 +62,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByHerited", query = "SELECT a FROM Analysis a WHERE a.herited = :herited"),
     @NamedQuery(name = "Analysis.findByConsidered", query = "SELECT a FROM Analysis a WHERE a.considered = :considered"),
     @NamedQuery(name = "Analysis.findByAnalysisname", query = "SELECT a FROM Analysis a WHERE a.analysisname = :analysisname"),
-    @NamedQuery(name = "Analysis.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname")
-    ,@NamedQuery(name = "Analysis.findByIdsample", query = "SELECT a FROM Analysis a WHERE a.idsamples =:idsamples")
-    ,@NamedQuery(name = "Analysis.findByIdsampleIdModelanalysis", query = "SELECT a FROM Analysis a WHERE a.idsamples = :idsamples and a.idmodelanalysis.idmodelanalysis=:idmodelanalysis")
-    ,@NamedQuery(name = "Analysis.findByIdsampleIdModelanalysisIdMethod"
-            , query = "SELECT a FROM Analysis a WHERE 1=1 and a.idsamples = :idsamples and a.idmodelanalysis =:idmodelanalysis  and a.idmethod=:idmethod")
+    @NamedQuery(name = "Analysis.findByMethodname", query = "SELECT a FROM Analysis a WHERE a.methodname = :methodname"),
+    @NamedQuery(name = "Analysis.findByIdsample", query = "SELECT a FROM Analysis a WHERE a.idsamples =:idsamples"),
+    @NamedQuery(name = "Analysis.findByIdsampleIdModelanalysis", query = "SELECT a FROM Analysis a WHERE a.idsamples = :idsamples and a.idmodelanalysis.idmodelanalysis=:idmodelanalysis"),
+    @NamedQuery(name = "Analysis.findByIdsampleIdModelanalysisIdMethod", query = "SELECT a FROM Analysis a WHERE 1=1 and a.idsamples = :idsamples and a.idmodelanalysis =:idmodelanalysis  and a.idmethod=:idmethod"),
+    @NamedQuery(name = "Analysis.findByLimsanalysisorigrec", query = "SELECT a FROM Analysis a WHERE a.limsanalysisorigrec=:limsanalysisorigrec")
 })
 public class Analysis implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,12 +80,15 @@ public class Analysis implements Serializable {
     @Size(max = 50)
     @Column(length = 50)
     private String limssampleid;
+    private BigInteger limsanalysisorigrec;
     private BigInteger limsidanalysis;
     @JoinColumn(name = "IDCASEFILE", referencedColumnName = "IDCASEFILE")
     @ManyToOne
     private Casefile idcasefile;
     private BigInteger limsidseries;
     private BigInteger idseries;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationdate;
     private BigInteger idmethoddetails;
     private BigInteger limsbatchid;
     @Size(max = 50)
@@ -114,7 +118,7 @@ public class Analysis implements Serializable {
     @Column(length = 50)
     private String limscounteranalysissampelid;
     private Short counteranalysis;
-    
+
     private Short apporved;
     @Size(max = 50)
     @Column(length = 50)
@@ -154,27 +158,27 @@ public class Analysis implements Serializable {
     @JoinColumn(name = "IDSPECIFICATION", referencedColumnName = "IDSPECIFICATION")
     @ManyToOne
     private Specification idspecification;
-    
+
     @JoinColumn(name = "IDARTICLE", referencedColumnName = "IDARTICLE")
     @ManyToOne
     private Article idarticle;
-        
+
     @JoinColumn(name = "IDSPECIE", referencedColumnName = "IDSPECIE")
     @ManyToOne
     private Specie idspecie;
-    
+
     @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE")
     @ManyToOne
     private Stage idstage;
-    
+
     @JoinColumn(name = "COPIEDFROMIDBATCH", referencedColumnName = "IDBATCH")
     @ManyToOne
     private Batch copiedfromidbatch;
-    
+
     @JoinColumn(name = "COPIEDFROMIDSAMPLE", referencedColumnName = "IDSAMPLES")
     @ManyToOne
     private Samples copiedfromidsample;
-    
+
     public Batch getCopiedfromidbatch() {
         return copiedfromidbatch;
     }
@@ -270,7 +274,6 @@ public class Analysis implements Serializable {
         this.limsfolderno = limsfolderno;
     }
 
-
     public String getBatchname() {
         return batchname;
     }
@@ -287,7 +290,7 @@ public class Analysis implements Serializable {
         this.idstatus = idstatus;
     }
 
-        public String getStatuslabel() {
+    public String getStatuslabel() {
         return statuslabel;
     }
 
@@ -350,8 +353,8 @@ public class Analysis implements Serializable {
     public void setOfficialename(String officialename) {
         this.officialename = officialename;
     }
-    
-        public String getLimscounteranalysissampelid() {
+
+    public String getLimscounteranalysissampelid() {
         return limscounteranalysissampelid;
     }
 
@@ -366,7 +369,6 @@ public class Analysis implements Serializable {
     public void setCounteranalysis(Short counteranalysis) {
         this.counteranalysis = counteranalysis;
     }
-
 
     public Short getApporved() {
         return apporved;
@@ -423,7 +425,7 @@ public class Analysis implements Serializable {
     public void setMethodname(String methodname) {
         this.methodname = methodname;
     }
-    
+
     public Article getIdarticle() {
         return idarticle;
     }
@@ -431,7 +433,7 @@ public class Analysis implements Serializable {
     public void setIdarticle(Article idarticle) {
         this.idarticle = idarticle;
     }
-    
+
     public Specie getIdspecie() {
         return idspecie;
     }
@@ -439,8 +441,8 @@ public class Analysis implements Serializable {
     public void setIdspecie(Specie idspecie) {
         this.idspecie = idspecie;
     }
-    
-        public Stage getIdstage() {
+
+    public Stage getIdstage() {
         return idstage;
     }
 
@@ -551,7 +553,7 @@ public class Analysis implements Serializable {
      */
     public void setCopiedfromidsample(Samples copiedfromidsample) {
         this.copiedfromidsample = copiedfromidsample;
-    }   
+    }
 
     /**
      * @return the prodgroup
@@ -565,5 +567,33 @@ public class Analysis implements Serializable {
      */
     public void setProdgroup(String prodgroup) {
         this.prodgroup = prodgroup;
+    }
+
+    /**
+     * @return the limsanalysisorigrec
+     */
+    public BigInteger getLimsanalysisorigrec() {
+        return limsanalysisorigrec;
+    }
+
+    /**
+     * @param limsanalysisorigrec the limsanalysisorigrec to set
+     */
+    public void setLimsanalysisorigrec(BigInteger limsanalysisorigrec) {
+        this.limsanalysisorigrec = limsanalysisorigrec;
+    }
+
+    /**
+     * @return the creationdate
+     */
+    public Date getCreationdate() {
+        return creationdate;
+    }
+
+    /**
+     * @param creationdate the creationdate to set
+     */
+    public void setCreationdate(Date creationdate) {
+        this.creationdate = creationdate;
     }
 }

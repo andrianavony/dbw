@@ -47,7 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Casefile.findByIscurrent", query = "SELECT c FROM Casefile c WHERE c.iscurrent = :iscurrent"),
     @NamedQuery(name = "Casefile.findByDescription", query = "SELECT c FROM Casefile c WHERE c.description = :description")
     ,@NamedQuery(name = "Casefile.findByIdbatch", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch")
-    ,@NamedQuery(name = "Casefile.findByIdbatchCurrentCasefile", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch and c.iscurrent = 1")    
+    ,@NamedQuery(name = "Casefile.findByIdbatchCurrentCasefile", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch and c.iscurrent = 1")
+    ,@NamedQuery(name = "Casefile.findByLimsfoldernoNumdemandelims", query = "SELECT c FROM Casefile c WHERE c.limsfolderno = :limsfolderno and c.numdemandelims = :numdemandelims")    
 })
 public class Casefile implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -89,6 +90,7 @@ public class Casefile implements Serializable {
     private BigInteger limsbatchid;
     private Boolean idstatus;
     private Boolean idapprobationstatus;
+    private Integer numdemandelims;
     @JoinColumn(name = "IDSTAGE", referencedColumnName = "IDSTAGE",insertable = true, updatable = true)
     @ManyToOne
     private Stage idstage;
@@ -327,6 +329,20 @@ public class Casefile implements Serializable {
     @Override
     public String toString() {
         return "entite.Casefile[ idcasefile=" + idcasefile + " ]";
+    }
+
+    /**
+     * @return the numdemandelims
+     */
+    public Integer getNumdemandelims() {
+        return numdemandelims;
+    }
+
+    /**
+     * @param numdemandelims the numdemandelims to set
+     */
+    public void setNumdemandelims(Integer numdemandelims) {
+        this.numdemandelims = numdemandelims;
     }
     
 }

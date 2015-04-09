@@ -17,6 +17,7 @@ import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.hibernate.validator.internal.util.Contracts;
@@ -40,7 +41,7 @@ public class BatchManager {
    @Inject
    CasefileManager casefileManagerCurrent;
     
-   Batch batchCurrent;
+   private Batch batchCurrent;
            
    public BatchManager(){
        
@@ -62,7 +63,7 @@ public class BatchManager {
         return createOrUpdateBatch(batchName,article,compagnyName);
     }
     
-    public List<Batch> fingBatchExisting(String batchName,String idarticle,String idcompany){
+    public List<Batch> findBatchExisting(String batchName,String idarticle,String idcompany){
         TypedQuery<Batch> query = em.createNamedQuery("Batch.findByIdarticleBatchnameCompanyname", Batch.class);
             query.setParameter("batchname", batchName);
             query.setParameter("idarticle", idarticle);
@@ -72,28 +73,30 @@ public class BatchManager {
             System.out.println("idarticle "+idarticle);
             System.out.println("companyName "+idcompany);
             List<Batch> batchsList =query.getResultList();
-            System.out.println("dans fingBatchExisting isEmpty "+batchsList.isEmpty());
             return batchsList;
     }
     
     public Batch createOrUpdateBatch(String batchName,String idarticle,String companyName){     
-        List<Batch> batchsList= fingBatchExisting(batchName,idarticle,companyName);
+        List<Batch> batchsList= findBatchExisting(batchName,idarticle,companyName);
         if(batchsList.isEmpty()){
             Article article = createOrUpdateArticle.createOrUpdateArticle(idarticle);
-            return createBatch(batchName,article,companyName);
-        }
-        else return batchsList.get(0);
+            setBatchCurrent(createBatch(batchName,article,companyName));
+        } else {
+            setBatchCurrent(batchsList.get(0));
+        }    
+        return getBatchCurrent();
+
     }
     
     public Batch createOrUpdateBatch(String batchName,Article idarticle,String companyName){
-        List<Batch> batchsList= fingBatchExisting(batchName,idarticle.getIdarticle(),companyName);
+        List<Batch> batchsList= findBatchExisting(batchName,idarticle.getIdarticle(),companyName);
         
         if(batchsList.isEmpty()){
-            return createBatch (batchName,idarticle,companyName);
+            setBatchCurrent(createBatch (batchName,idarticle,companyName));
         } else {
-            batchCurrent = batchsList.get(0);
+            setBatchCurrent(batchsList.get(0));
         }    
-        return batchCurrent;
+        return getBatchCurrent();
 
     }
 
@@ -102,7 +105,7 @@ public class BatchManager {
     }
 
     public entite.Analysis addresults( BigInteger idModelanalysis,String methodname, String mesurename, String rawresults) {
-        entite.Casefile casefile= createOrRetriveCaseFileCurrent(batchCurrent); 
+        entite.Casefile casefile= createOrRetriveCaseFileCurrent(); 
         return casefileManagerCurrent.addresults( idModelanalysis, methodname, mesurename, rawresults);
     }
 
@@ -115,12 +118,15 @@ public class BatchManager {
         return createOrUpdateArticle.createOrUpdateArticle(idspecie, idvariety, idgeneration, idstage);
     }
 
-    public  entite.Casefile createOrRetriveCaseFileCurrent(Batch batch) {
-        entite.Casefile casefile = casefileManagerCurrent.createOrRetriveCaseFileCurrent(batch);
+    public  entite.Casefile createOrRetriveCaseFileCurrent() {
+        Contracts.assertNotNull(getBatchCurrent());
+        System.out.println("batchCurrent "+getBatchCurrent().getIdbatch());
+        casefileManagerCurrent.setCurrentBatch(getBatchCurrent());
+        entite.Casefile casefile = casefileManagerCurrent.createOrRetriveCaseFileCurrent();
         return casefile;
     }
 
-    public Batch createBatch(String batchName, Article idarticle, String companyName) {
+    public Batch createBatch(String batchName, Article idarticle, String companyName){ // {, String limsbatchid) {
             Batch batch =new Batch();
             batch.setBatchname(batchName);
             Company company =new Company(companyName);
@@ -128,16 +134,22 @@ public class BatchManager {
             batch.setIdcompany(company);
             batch.setIdarticle(idarticle);
             
-            Contracts.assertNotNull(idarticle.getIdspecie());
-            batch.setIdspecie(idarticle.getIdspecie());
-            Contracts.assertNotNull(idarticle.getIdvariety());
-            batch.setIdvariety(idarticle.getIdvariety());
-            Contracts.assertNotNull(idarticle.getIdgeneration());
-            batch.setIdgeneration(idarticle.getIdgeneration());
-            Contracts.assertNotNull(idarticle.getIdstage());
-            batch.setIdstage(idarticle.getIdstage());
 
-            batchCurrent = em.merge(batch);
+            batch.setIdspecie(idarticle.getIdspecie());
+
+            batch.setIdvariety(idarticle.getIdvariety());
+
+            batch.setIdgeneration(idarticle.getIdgeneration());
+
+            batch.setIdstage(idarticle.getIdstage());
+            
+            System.out.println("avant merge");
+//            batch.setLimsbatchid(new BigInteger(limsbatchid));
+            batch=em.merge(batch);
+            System.out.println("apres merge");
+//            em.flush();
+
+
             /*
             em.flush();
             query=(TypedQuery<Batch>) em.createQuery("Update Batch b set b.idcompany = :company where b.idbatch = :batch");
@@ -152,9 +164,58 @@ public class BatchManager {
             //entite.Casefile tmp = casefileManagerCurrent.createOrRetriveCaseFileCurrent(batchCurrent);
             
             
-            return batchCurrent;
+            return batch;
 
     }
+
+    public Article createOrUpdateArticle(String articlename) {
+        return createOrUpdateArticle.createOrUpdateArticle(articlename);
+    }
+
+    public Batch findExistingBatchByIdBatch(BigInteger idbatch) {
+        Batch b=null;
+        TypedQuery<Batch> q = em.createNamedQuery("Batch.findByIdbatch",Batch.class);
+            q.setParameter("idbatch", idbatch);
+       List<Batch> batchs = q.getResultList();
+       if(batchs.isEmpty()){
+           return null;
+       }
+       b=batchs.get(0);
+        return b;    
+    }
+
+    public Batch findExistingBatchByLimsBatchId(String limsbatchid) {
+        BigInteger b =new BigInteger(limsbatchid);
+        return findExistingBatchByLimsBatchId(b);
+    }
+    public Batch findExistingBatchByLimsBatchId(BigInteger limsbatchid) {
+       
+        Batch b=null;
+        TypedQuery<Batch> q = em.createNamedQuery("Batch.findByLimsbatchid",Batch.class);
+        q.setParameter("limsbatchid", limsbatchid);
+       List<Batch> batchs = q.getResultList();
+       if(batchs.isEmpty()){
+           return null;
+       }
+       b=batchs.get(0);
+        return b;    
+    }
+
+    /**
+     * @param batchCurrent the batchCurrent to set
+     */
+    public void setBatchCurrent(Batch batchCurrent) {
+        this.batchCurrent = batchCurrent;
+    }
+
+    
+    public Batch createBatch(String batchname, Article idarticle, String idcompany, String limsbatchid) {
+        Batch b = createBatch(batchname, idarticle, idcompany  );
+        
+        b.setLimsbatchid(new BigInteger(limsbatchid));
+        return em.merge(b);
+    }
+    
     
     
 }

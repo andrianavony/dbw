@@ -14,6 +14,7 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -29,6 +30,8 @@ public class SamplesManager {
     
     Samples samplesCurrent;
     
+    Casefile casefileCurrent;
+            
     public SamplesManager (){
         System.out.println("entrerdans SamplesManager *************");
     }
@@ -41,21 +44,11 @@ public class SamplesManager {
         return analysisManager.addresults(idModelanalysis,  methodname,  mesureName,  rawresult);
     }
 
-    public Samples setCasefile(Casefile casefileCurrent) {
-        System.out.println("Jaona passe dans setcaseFile de SamplesManager ***************");
-        List<Samples> samplesList = casefileCurrent.getSamplesList();
-        for(Samples sample : samplesList){
-            if(sample.getIscurrent()){
-                samplesCurrent=sample;
-            }
-        }
-        if(null==samplesCurrent){
-            samplesCurrent=createSamples(casefileCurrent);
-        }
-        return samplesCurrent;
+    public void setCasefile(Casefile casefileCurrent) {
+        this.casefileCurrent=casefileCurrent;
     }
-
-    public Samples createSamples(Casefile casefileCurrent) {
+    
+    public Samples createSamples(String limssampleid) {
         System.out.println("Dans create sample ******************************");
         samplesCurrent = new Samples();
         samplesCurrent.setIscurrent(Boolean.TRUE);
@@ -67,8 +60,24 @@ public class SamplesManager {
         samplesCurrent.setIdcasefile(casefileCurrent);
         samplesCurrent.setIdspecie(casefileCurrent.getIdspecie());
         samplesCurrent.setIdstage(casefileCurrent.getIdstage());
+        samplesCurrent.setLimssampleid(limssampleid);
+        samplesCurrent.setLimsfolderno(casefileCurrent.getLimsfolderno());
+        
+        
         em.merge(samplesCurrent);
         //em.flush();
+        return samplesCurrent;
+    }
+
+    public Samples findExistingSamples(String limssampleid) {
+        TypedQuery<Samples> q = em.createNamedQuery("Samples.findByLimssampleid", Samples.class);
+        q.setParameter("limssampleid", limssampleid);
+        
+        List<Samples> samplesList = q.getResultList();
+        if(samplesList.isEmpty()){
+                return null;
+        }
+        samplesCurrent=samplesList.get(0);
         return samplesCurrent;
     }
     

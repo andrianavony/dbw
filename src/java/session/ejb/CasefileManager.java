@@ -34,13 +34,14 @@ public class CasefileManager {
     @Inject SamplesManager samplesManager;  
     
     public Casefile casefileCurrent;
+    public Batch batchCurrent ;
     
-    public Casefile createOrRetriveCaseFileCurrent(Batch batchCurrent) {
+    public Casefile createOrRetriveCaseFileCurrent() {
         List<Casefile> casefilesList = findCaseFile(batchCurrent);
         
         if(casefilesList.isEmpty()){
             System.out.println("Liste vide ");
-            casefileCurrent=createCaseFile(batchCurrent);
+            casefileCurrent=createCaseFile();
             return casefileCurrent;
         }
         
@@ -51,15 +52,33 @@ public class CasefileManager {
             }
         }
         // aucun dossier n'est courant
-        casefileCurrent=createCaseFile(batchCurrent);        
+        casefileCurrent=createCaseFile();        
         return casefileCurrent;
     }
 
-    public Casefile createCaseFile(Batch batchCurrent) {
+    
+    public Casefile merge(){
+        return em.merge(casefileCurrent);
+    }
+    
+    public Casefile createCaseFile() {
         System.out.println("passe dans creation DL ******************");
         casefileCurrent=new Casefile();
+        setInfoFromBatchCurrent();
+        /*
+        casefileCurrent =em.merge(casefileCurrent);
+        samplesManager.setCasefile(casefileCurrent);
+        //em.flush();
+        System.out.println("casefileCurrent "+casefileCurrent.getIdcasefile());
+        */        
+        return merge ();
+    }
+    
+    public void setInfoFromBatchCurrent(){
         casefileCurrent.setIdbatch(batchCurrent);
         casefileCurrent.setIdarticle(batchCurrent.getIdarticle());
+        System.out.println(" ========================================= "+batchCurrent.getBatchname());
+        Contracts.assertNotNull(batchCurrent.getBatchname());
         casefileCurrent.setBatchname(batchCurrent.getBatchname());
         casefileCurrent.setCreationdate(DateManager.getNow());
         casefileCurrent.setStatuslabel("current");
@@ -71,13 +90,9 @@ public class CasefileManager {
         casefileCurrent.setIdstage(batchCurrent.getIdstage());
         casefileCurrent.setLimsbatchid(batchCurrent.getLimsbatchid());
         casefileCurrent.setLimsfolderno(batchCurrent.getLimsfolderno());
-        
-        casefileCurrent =em.merge(casefileCurrent);
-        samplesManager.setCasefile(casefileCurrent);
-        //em.flush();
-        System.out.println("casefileCurrent "+casefileCurrent.getIdcasefile());
-        return casefileCurrent;
     }
+        
+     
 
     public entite.Analysis addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) {
         System.out.println("********************** dans DL manager addResults");
@@ -94,6 +109,45 @@ public class CasefileManager {
         TypedQuery<Casefile> query= em.createNamedQuery("Casefile.findByIdbatch", Casefile.class);
             query.setParameter("idbatch", batchCurrent);
             return query.getResultList();
+    }
+
+   public  void setCurrentBatch(Batch idbatch) {
+        this.batchCurrent=idbatch;
+    }
+
+   public Casefile createCaseFile(String limsfolderno, Integer numdemandelims) {
+       Casefile c =createCaseFile();
+       c.setLimsfolderno(limsfolderno);
+       c.setNumdemandelims(numdemandelims);
+       c=em.merge(c);
+        return c;
+    }
+   
+   
+
+   public  Casefile findExistingCasefile(BigInteger idcasefile) {
+        Casefile c =null; 
+       TypedQuery<Casefile> q = em.createNamedQuery("Casefile.findByIdcasefile", Casefile.class);
+        q.setParameter("idcasefile", idcasefile);
+        List<Casefile> casefiles =q.getResultList();
+        if(casefiles.isEmpty()){
+            return null;
+        }
+        c=casefiles.get(0);
+        return c;
+    }
+
+   public  Casefile findExistingFolderno(String limsfolderno, Integer numdemandelims) {
+        Casefile c =null; 
+       TypedQuery<Casefile> q = em.createNamedQuery("Casefile.findByLimsfoldernoNumdemandelims", Casefile.class);
+        q.setParameter("limsfolderno", limsfolderno);
+        q.setParameter("numdemandelims", numdemandelims);
+        List<Casefile> casefiles =q.getResultList();
+        if(casefiles.isEmpty()){
+            return null;
+        }
+        c=casefiles.get(0);
+        return c;
     }
     
 }

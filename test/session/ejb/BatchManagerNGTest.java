@@ -217,7 +217,7 @@ public class BatchManagerNGTest {
             Article article= new Article("S0101S10095C04");
             Batch batch=instance.createOrUpdateBatch(batchname, "S0101S10095C04", "unknomnCompagny");//companyname); 
             assertEquals(batch, instance.getBatchCurrent());
-            entite.Casefile casefile = instance.createOrRetriveCaseFileCurrent(batch);
+            entite.Casefile casefile = instance.createOrRetriveCaseFileCurrent();
             assertNotNull(casefile.getIdcasefile());
             assertTrue(casefile.getIscurrent());
             
@@ -227,7 +227,8 @@ public class BatchManagerNGTest {
            Batch sameBatch=instance.createOrUpdateBatch(batchname, "S0101S10095C04", "unknomnCompagny");//companyname);
             
             assertEquals(sameBatch, batch);
-            entite.Casefile samecasefile = instance.createOrRetriveCaseFileCurrent(sameBatch);
+            instance.setBatchCurrent(sameBatch);
+            entite.Casefile samecasefile = instance.createOrRetriveCaseFileCurrent();
             assertNotNull(samecasefile.getIdcasefile(), " le dossier doit être le meme avec le meme triplet");
 
             assertEquals(samecasefile, casefile);
