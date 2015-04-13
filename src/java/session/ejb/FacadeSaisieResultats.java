@@ -9,6 +9,7 @@ import entite.Analysis;
 import entite.Batch;
 import entite.Article;
 import entite.Casefile;
+import entite.Results;
 import entite.Samples;
 import java.math.BigInteger;
 import java.util.Date;
@@ -101,6 +102,15 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
             return null;
         }
         
+        c=em.merge(c);
+        return c;
+    }
+    
+    @Override
+    public entite.Casefile createCasefileForHeritage(entite.Batch idbatch){
+        Casefile c=null;
+        casefileManager.setCurrentBatch(idbatch);
+        c= casefileManager.createCaseFile();
         c=em.merge(c);
         return c;
     }
@@ -209,5 +219,23 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     }
 
 
+    @Override
+    public void copieResultats(Results resultatInserted, Batch descendantsBatch, String heritage) {
+        Casefile casefileHeritage= createCasefileForHeritage(descendantsBatch);
+        String limSampleid=heritage;
+        Samples samples= createSample(casefileHeritage, limSampleid);
+        
+        BigInteger limsanalysisorigrec;
+        BigInteger idmethod;
+        
+        createAnalysis(samples, resultatInserted);
+    }
+
+    @Override
+    public void createAnalysis(Samples samples, Results resultatInserted) {
+        analysisManager.setSamplesCurrent(samples);
+        analysisManager.createAnalysisFromResults(resultatInserted);
+        
+    }
     
 }

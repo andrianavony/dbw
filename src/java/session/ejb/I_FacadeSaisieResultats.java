@@ -9,6 +9,7 @@ import entite.Analysis;
 import entite.Article;
 import entite.Batch;
 import entite.Casefile;
+import entite.Results;
 import entite.Samples;
 import java.math.BigInteger;
 import java.util.Date;
@@ -45,6 +46,10 @@ public interface I_FacadeSaisieResultats {
     
     public entite.Casefile createCasefile(entite.Batch idbatch,String limsfolderno, Integer numdemandelims);
     
+    public entite.Casefile createCasefileForHeritage(entite.Batch idbatch);
+    
+    public void createAnalysis(Samples samples, Results resultatInserted);
+    
     public entite.Samples createSample(entite.Casefile idcasefile,    String limssampleid);
     
     public Analysis createAnalysisViaInfoLims(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries);
@@ -76,6 +81,7 @@ public interface I_FacadeSaisieResultats {
     
     public Samples findExistingSamples(String limssampleid);
     
+    public void copieResultats(Results resultatInserted, Batch descendantsBatch, String heritage);
     
     
     

@@ -306,8 +306,20 @@ public class AnalysisManager {
         r.setIdseries(analysisCurrent.getIdseries());
         
         em.merge(r);
+        em.flush();
         return analysisCurrent;
         
     }
+
+    public Analysis createAnalysisFromResults(Results resultatInserted) {
+        Analysis a =new Analysis();
+        setInfoFromSample(a , samplesCurrent);
+        setInfoFromModeleAnalysis(a, resultatInserted.getIdmodelanalysis());
+        setInfoFromMethod(a, resultatInserted.getIdmethod());
+        a= em.merge(a);
+        em.flush();
+        return a;
+    }
     
 }
+

@@ -6,6 +6,7 @@
 package entite;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -101,12 +102,12 @@ public class Traca implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(nullable = false)
-    private Long idtraca;
+    private BigInteger idtraca;
 
     public Traca() {
     }
 
-    public Traca(Long idtraca) {
+    public Traca(BigInteger idtraca) {
         this.idtraca = idtraca;
     }
 
@@ -230,11 +231,11 @@ public class Traca implements Serializable {
         this.statustraca = statustraca;
     }
 
-    public Long getIdtraca() {
+    public BigInteger getIdtraca() {
         return idtraca;
     }
 
-    public void setIdtraca(Long idtraca) {
+    public void setIdtraca(BigInteger idtraca) {
         this.idtraca = idtraca;
     }
 
