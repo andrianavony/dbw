@@ -452,8 +452,5 @@ public class Batch implements Serializable {
         return "entite.Batch[ idbatch=" + idbatch + " ]";
     }
 
-    public void setLimsbatchid(String limsbatchid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+        
 }

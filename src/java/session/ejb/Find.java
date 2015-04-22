@@ -16,103 +16,60 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
-import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PostPersist;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
-import utilities.AnalysisUtility;
 
 /**
  *
  * @author S.ANDRIANAVONY
  */
 @Stateless
-public class AddResultsListener {
+public class Find {
+    //@PersistenceContext ()
+    //protected EntityManager em;
+    
+    private static EntityManager em = null;
 
-    @PersistenceContext ()
-    public EntityManager em;
+    public static void setEm(EntityManager entityManager) {
+        em = entityManager;
+    }
+
     
-    //private entite.Results resultatInserted;
-    
-    @Inject I_FacadeSaisieResultats facadeSaisieResultats;
-    
-    @Inject 
-    //@EJB
-             public Find find;
+    private EntityManagerFactory emf;
     
     
-    
-    
-    public AddResultsListener(){
-        System.out.println(" Ceration AddResultsListener =================================================");
-        
-        /*
+    public Find(){
+        //emf=Persistence.createEntityManagerFactory("dbwEJBwsPU");
+        //em=emf.createEntityManager();
+         System.out.println("*********** Creation de FIND **************============================================"+em);
+         InitialContext ic=null;
+         
+         /*
         try {
-           
-            find = InitialContext.doLookup("java:global/classes/Find");//java:global/classes/Find!session.ejb.Find, java:global/classes/Find
+            System.out.println("*********** dans try de FIND **************============================================");
+            ic=new InitialContext();
+            em=(EntityManager) ic.lookup("java:comp/env/persistence/dbwEJBwsPU");
+            System.out.println("*********** Dans de FIND **************============================================"+em);
         } catch (NamingException ex) {
-            Logger.getLogger(AddResultsListener.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Find.class.getName()).log(Level.SEVERE, null, ex);
         }
-         System.out.println(" Ceration AddResultsListener =========================================="+find);
-//         System.out.println(" Ceration AddResultsListener =========================================="+find.em);
-        
-    */
+         */
+         
     }
-    
     @PostConstruct
-    public void log(){
-        System.out.println(" Post creation Ceration AddResultsListener ================================================="+find);
-    }
-        
-    @PostPersist
-    public void heritageDesResultats(entite.Results resultatInserted){
-        
-        System.out.println(" saisie résultats de "+resultatInserted.getIdresult()+ " avec la valeur " + resultatInserted.getRawresults());
-       
-
-        System.out.println(" FInd dans AddResultsListener =====================================================");
-        System.out.println(" FInd dans AddResultsListener=====================================================" + find);
-        System.out.println(" FInd dans AddResultsListener===================================================== facadeSaisieResultats" + facadeSaisieResultats);
-        System.out.println(" FInd dans AddResultsListener=====================================================");
-
-       Batch batch= find.getIdBatch(resultatInserted);
-        List<entite.Batch> descendantsList= find.getListBatchDescendants(batch);
-        if(null==descendantsList){
-            return;
-        }
-        System.out.println("==================================================== descendantsList.size()  "+descendantsList.size());
-        for (entite.Batch descendantsBatch: descendantsList ){
-            System.out.println("Insertion heritage dans "+descendantsBatch);
-            //facadeSaisieResultats.copieResultats(resultatInserted,descendantsBatch,Constant.typeDeCopie.HERITAGE, );
-        }
-        
-    }
-    
-    
-    /*
-    public List<entite.Traca> listeWoProduction(Batch batchProduit) {
-        return find.listeWoProduction(batchProduit);
-    }
-
-    public List<Batch>  getBatchFromTraca(Traca traca) {
-        return find.getBatchFromTraca(traca);
-    }
-
-    public List<Batch> getListBatchDescendants(Results resultatInserted) {
-        return find.getListBatchDescendants(resultatInserted.getIdbatch());
-    }
-*/
-    public List<Batch> getListBatchDescendants(Results resultatInserted) {
-        return getListBatchDescendants(resultatInserted.getIdbatch());
+    public void init(){
+        System.out.println("*********** PostConstruct Creation de FIND **************============================================");
     }
     
     public List<entite.Traca> listeWoProduction(Batch batchProduit) {
+        System.out.println("*********** Dans FIND **************============================================"+em);
         if(null == batchProduit){
             return null;
         }
@@ -147,7 +104,7 @@ public class AddResultsListener {
      * OF028712
      **/
     public List<entite.Batch> getListBatchDescendants(Batch lotParent){
-        
+         System.out.println("*********** Dans FIND **************============================================"+em);
         List<entite.Traca> woProduction = listeWoProduction (lotParent);
         if(null==woProduction){
             return null;
@@ -181,15 +138,12 @@ public class AddResultsListener {
     }
 
     public Batch getBatchByIdbatch(BigInteger bi_idbatch) {
-        System.out.println(" entrer dans getBatchByIdbatch ***********************************************");
         Batch idbatch = new Batch(bi_idbatch);
         TypedQuery<Batch> q =em.createNamedQuery("Batch.findByIdbatch", Batch.class);
-        q.setParameter("idbatch",idbatch );
+        q.setParameter("idbatch",bi_idbatch );
         if(q.getResultList().isEmpty()){
             return null;
         }
         return q.getResultList().get(0); 
     }
-}   
-
-    
+}

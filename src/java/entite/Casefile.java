@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import utilities.Constant;
 
 /**
  *
@@ -48,7 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Casefile.findByDescription", query = "SELECT c FROM Casefile c WHERE c.description = :description")
     ,@NamedQuery(name = "Casefile.findByIdbatch", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch")
     ,@NamedQuery(name = "Casefile.findByIdbatchCurrentCasefile", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch and c.iscurrent = 1")
-    ,@NamedQuery(name = "Casefile.findByLimsfoldernoNumdemandelims", query = "SELECT c FROM Casefile c WHERE c.limsfolderno = :limsfolderno and c.numdemandelims = :numdemandelims")    
+    ,@NamedQuery(name = "Casefile.findByLimsfoldernoNumdemandelims", query = "SELECT c FROM Casefile c WHERE c.limsfolderno = :limsfolderno and c.numdemandelims = :numdemandelims")
+    ,@NamedQuery(name = "Casefile.findByCasefiletype", query = "SELECT c FROM Casefile c WHERE c.casefiletype = :casefiletype")    
+    ,@NamedQuery(name = "Casefile.findByIdbatchCasefiletype", query = "SELECT c FROM Casefile c WHERE c.idbatch = :idbatch and c.casefiletype = :casefiletype")
 })
 public class Casefile implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -344,5 +347,4 @@ public class Casefile implements Serializable {
     public void setNumdemandelims(Integer numdemandelims) {
         this.numdemandelims = numdemandelims;
     }
-    
 }

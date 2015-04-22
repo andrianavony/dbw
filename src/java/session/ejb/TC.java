@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import utilities.ArticleUtility;
 import entite.Article;
 import entite.Batch;
 import entite.Generation;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import utilities.BatchFind;
 import utilities.ForItem;
 
 /**
@@ -29,6 +31,8 @@ import utilities.ForItem;
 @Stateless
 @LocalBean
 public class TC {
+    @Inject BatchFind batchFind;
+    
     @PersistenceContext
     protected EntityManager em;
 
@@ -77,32 +81,32 @@ public class TC {
 
     
     @Inject
-    CreateOrUpdateArticle createOrUpdateArticle;
+    ArticleUtility articleUtility;
     
     public TC(){
     }
     
     public Article createOrUpdateArticle (String idarticle){
-        return createOrUpdateArticle.createOrUpdateArticle (idarticle);
+        Article a =articleUtility.createOrUpdateArticle (idarticle);
+        return em.merge(a);
     }
             
     public Article createOrUpdateArticle (String idarticle, String idstage, String idspecie, String idvariety,String idgeneration){
-        return createOrUpdateArticle.createOrUpdateArticle (idarticle, idstage, idspecie, idvariety,idgeneration);
+        Article a = articleUtility.createOrUpdateArticle (idarticle, idstage, idspecie, idvariety,idgeneration);
+        return em.merge(a);
     }
     protected Article createOrUpdateArticle(Article article){
-        return createOrUpdateArticle.createOrUpdateArticle(article);
+        return em.merge(article);
     }
     
     public void process(){
         Batch lot = new Batch();
         lot.setBatchname(Batch);
-        lot.setIdarticle(new Article(Item));
+        Article article =new Article(Item);
+        lot.setIdarticle(article);
         
-        TypedQuery<Batch> query =em.createNamedQuery("Batch.findByIdarticleBatchname",Batch.class)
-                .setParameter("batchname", lot.getBatchname())
-                .setParameter("idarticle", lot.getIdarticle());
-         List <Batch> listBatch =query.getResultList();
-         Iterator<Batch> iBatch =listBatch.iterator();
+        List <Batch> listBatch = batchFind.findByIdarticleBatchname(Batch, article);
+        Iterator<Batch> iBatch =listBatch.iterator();
          while (iBatch.hasNext()) {
             Batch nextBatch = iBatch.next();
             nextBatch.setContract(Contrat);
@@ -115,20 +119,9 @@ public class TC {
          String VarietyCode=ForItem.getIdVariety(Item);
          String SpecieCode=ForItem.getIdSpecie(Item);
          System.out.println("VarietyCode ******************************************************** "+VarietyCode);
-         TypedQuery<Variety> queryVariety =em.createNamedQuery("Variety.findByIdvariety",Variety.class).setParameter("idvariety", VarietyCode);
-         List <Variety> varietyList =queryVariety.getResultList();
-         Variety variety;
-         if (varietyList.isEmpty()){
-            variety=new Variety(VarietyCode, SpecieCode);
-        } else{
-             variety= varietyList.get(0);
-          }
-         variety.setVarietyname(Variety);
-       System.out.println("******************************************************** ");        
-         System.out.println("Changement de nom pour la variete "+ VarietyCode);
-         System.out.println("nouveau nom "+variety);
-         System.out.println("******************************************************** ");        
-         em.merge(variety);
+         Variety variety =articleUtility.createOrRetrieveVariety(VarietyCode,SpecieCode, Variety);
+         
+        em.merge(variety);
     }
     
     public void SetInfo(String Stock,    String Specie,String Generation,

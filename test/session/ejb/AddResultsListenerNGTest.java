@@ -108,7 +108,7 @@ public class AddResultsListenerNGTest {
             resultatInserted = new Results();
             resultatInserted.setIdbatch(lotSaisie);
             
-            instance.setResultatInserted(resultatInserted);
+
             instance.heritageDesResultats(resultatInserted);
         }finally{
         
@@ -143,11 +143,11 @@ public class AddResultsListenerNGTest {
             resultatInserted.setIdbatch(lotSaisie);
             
             AddResultsListener instance = (AddResultsListener)container.getContext().lookup("java:global/classes/AddResultsListener");
-            instance.setResultatInserted(resultatInserted);
+
             
             List<Batch> expResult = new ArrayList<>(1);
             expResult.add(produit);
-            List<Batch> result = instance.listBatchDescendants();
+            List<Batch> result = instance.getListBatchDescendants(resultatInserted);
             assertEquals(result, expResult);
         }
         finally{
@@ -197,7 +197,7 @@ public class AddResultsListenerNGTest {
             resultatInserted.setIdbatch(lotSaisie);
             
             AddResultsListener instance = (AddResultsListener)container.getContext().lookup("java:global/classes/AddResultsListener");
-            instance.setResultatInserted(resultatInserted);
+
             
             List<entite.Traca> expResult = new ArrayList<>(1);
             expResult.add(tracaProduction);
@@ -232,7 +232,7 @@ public class AddResultsListenerNGTest {
             resultatInserted.setIdbatch(lotSaisie);
             
             AddResultsListener instance = (AddResultsListener)container.getContext().lookup("java:global/classes/AddResultsListener");
-            instance.setResultatInserted(resultatInserted);
+
             
             List<entite.Batch> expResult = new ArrayList<>(1);
             expResult.add(produit);

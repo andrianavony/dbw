@@ -91,7 +91,9 @@ import session.ejb.AddResultsListener;
     @NamedQuery(name = "Results.findByAnalysisname", query = "SELECT r FROM Results r WHERE r.analysisname = :analysisname"),
     @NamedQuery(name = "Results.findByMethodname", query = "SELECT r FROM Results r WHERE r.methodname = :methodname"),
     @NamedQuery(name = "Results.findByCopiedfrom", query = "SELECT r FROM Results r WHERE r.copiedfrom = :copiedfrom"),
-    @NamedQuery(name = "Results.findByIsresultsinserted", query = "SELECT r FROM Results r WHERE r.isresultsinserted = :isresultsinserted")})
+    @NamedQuery(name = "Results.findByIsresultsinserted", query = "SELECT r FROM Results r WHERE r.isresultsinserted = :isresultsinserted")
+    ,@NamedQuery(name = "Results.findByIdanalysis", query = "SELECT r FROM Results r WHERE r.idanalysis = :idanalysis"),    
+})
 public class Results implements Serializable {    
     private Boolean herited;
     //@Size(max = 50)

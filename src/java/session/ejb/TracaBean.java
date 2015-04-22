@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import utilities.ArticleUtility;
 import entite.Article;
 import entite.Batch;
 import entite.Company;
@@ -48,7 +49,7 @@ public class TracaBean {
     protected EntityManager em;
     
     @Inject
-    CreateOrUpdateArticle createOrUpdateArticle;
+    ArticleUtility createOrUpdateArticle;
     
     
     
@@ -98,7 +99,7 @@ public class TracaBean {
     public void createTraca(){    
         //createOrUpdateArticle.createOrUpdateArticle("S0101S10031C04_C");
         
-        //createOrUpdateArticle = new  CreateOrUpdateArticle();
+        //createOrUpdateArticle = new  ArticleUtility();
         System.out.println(" dans create Traca "+createOrUpdateArticle);
         System.out.println(" dans create Traca this.Item_Number ============================================= "+this.Item_Number);
         Article idarticle = createOrUpdateArticle.createOrUpdateArticle(this.Item_Number);

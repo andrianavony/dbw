@@ -52,7 +52,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Samples.findByDescription", query = "SELECT s FROM Samples s WHERE s.description = :description"),
     @NamedQuery(name = "Samples.findByIdstatus", query = "SELECT s FROM Samples s WHERE s.idstatus = :idstatus"),
     @NamedQuery(name = "Samples.findByIdapprobationstatus", query = "SELECT s FROM Samples s WHERE s.idapprobationstatus = :idapprobationstatus"),
-    @NamedQuery(name = "Samples.findByProdgroup", query = "SELECT s FROM Samples s WHERE s.prodgroup = :prodgroup")})
+    @NamedQuery(name = "Samples.findByProdgroup", query = "SELECT s FROM Samples s WHERE s.prodgroup = :prodgroup")
+    ,@NamedQuery(name = "Samples.findByIdcasefileIscurrent", query = "SELECT s FROM Samples s WHERE s.idcasefile =:idcasefile and s.iscurrent = 1")    
+})
 public class Samples implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

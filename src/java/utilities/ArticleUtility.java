@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package session.ejb;
+package utilities;
 
 import entite.Article;
 import entite.Generation;
@@ -14,6 +14,7 @@ import entite.VarietyPK;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -39,9 +40,9 @@ import utilities.ForItem;
  */
 @Stateless
 @LocalBean
-public class CreateOrUpdateArticle {
-   @PersistenceContext
-    protected EntityManager em;
+public class ArticleUtility {
+   
+   @Inject ArticleFind articleFind; 
     
    public Article createOrUpdateArticle (String idarticle){
        if (idarticle==null){
@@ -57,13 +58,8 @@ public class CreateOrUpdateArticle {
    public Article getArticleByVarietyStageLagel(String idvariety, String stageLabel, String idGeneration) {
        
         String idStage = ForItem.getIdStageFromStageLabel(stageLabel);
-        TypedQuery<Article> query = em.createNamedQuery("Article.findByVarietyStadeGeneration", Article.class);
-            query.setParameter("idvariety", idvariety);
-            query.setParameter("idstage", idStage);
-            query.setParameter("idgeneration", idGeneration);
-            
-        List<Article> articleList =query.getResultList();
         
+        List<Article> articleList = articleFind.findByVarietyStadeGeneration(idvariety,idStage,idGeneration);
         if(articleList.isEmpty()){
             return null;
         }else {
@@ -74,18 +70,7 @@ public class CreateOrUpdateArticle {
      
    public Article createOrUpdateArticle ( String idspecie, String idvariety,String idgeneration, String idstage){
        String idarticle = ForItem.getIdArticle(idspecie, idvariety,idgeneration, idstage);
-        Article a = new Article (idarticle);
-        Stage stage=new Stage(idstage);
-        Specie specie = new Specie(idspecie);
-        Variety variety = new Variety(idvariety, idspecie);
-        Generation generation = new Generation(idgeneration);
-        //Specie specie=new Specie(idspecie);
-        //em.merge(specie);
-        a.setIdspecie(specie);
-        a.setIdvariety(variety);
-        a.setIdstage(stage);
-        a.setIdgeneration(generation);
-        return createOrUpdateArticle(a);
+        return createOrUpdateArticle (idarticle, idstage, idspecie, idvariety,idgeneration);
     }
    
     public Article createOrUpdateArticle (String idarticle, String idstage, String idspecie, String idvariety,String idgeneration){
@@ -100,26 +85,33 @@ public class CreateOrUpdateArticle {
         a.setIdvariety(variety);
         a.setIdstage(stage);
         a.setIdgeneration(generation);
-        return createOrUpdateArticle(a);
+        return a;
     }
     
     
     
-    protected Article createOrUpdateArticle(Article article){
-        return em.merge(article);
+    public Variety createOrRetrieveVariety(String idvariety,String  SpecieCode,String varietyname) {
+        List<Variety> varietyList =articleFind.getArticleByVariety(idvariety);
+        if(varietyList.isEmpty()){
+            return null;
+        }else {
+            return varietyList.get(0);
+        }
     }
-
+    
+    public Variety createVariety(String VarietyCode,String  SpecieCode,String Variety){
+        Variety variety=new Variety(VarietyCode, SpecieCode);
+        variety.setVarietyname(Variety);
+        return variety;
+    }
+    
+    
     /***
      * une variete n'appartent qu à un seul espece
      */
     
     public Variety getArticleByVariety(String idvariety) {
-        VarietyPK varietyPK = new VarietyPK();
-        varietyPK.setIdvariety(idvariety);
-        TypedQuery<Variety> query = em.createNamedQuery("Variety.findByIdvariety", Variety.class);
-            query.setParameter("idvariety", idvariety);
-            List<Variety> varietyList =query.getResultList();
-        
+        List<Variety> varietyList =articleFind.getArticleByVariety(idvariety);
         if(varietyList.isEmpty()){
             return null;
         }else {
@@ -128,12 +120,7 @@ public class CreateOrUpdateArticle {
     }
 
     public Variety getArticleBySpecieVariety(String idspecie, String idvariety) {
-        
-        TypedQuery<Variety> query = em.createNamedQuery("Variety.findByIdSpecieIdVariety", Variety.class);
-            query.setParameter("idspecie", idspecie);
-            query.setParameter("idvariety", idvariety);
-            List<Variety> varietyList =query.getResultList();
-        
+        List<Variety> varietyList =articleFind.getArticleBySpecieVariety(idspecie, idvariety);
         if(varietyList.isEmpty()){
             return null;
         }else {

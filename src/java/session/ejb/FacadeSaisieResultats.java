@@ -11,13 +11,24 @@ import entite.Article;
 import entite.Casefile;
 import entite.Results;
 import entite.Samples;
+import error.AnalysisWithoutSamplesError;
+import error.BatchIdNotFindError;
+import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateful;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.TransactionPhase;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.hibernate.validator.internal.util.Contracts;
+import utilities.BatchFind;
+import utilities.BatchUtility;
+import utilities.CaseFileFind;
+import utilities.Constant;
+import utilities.SamplesFind;
 
 /**
  *
@@ -30,9 +41,17 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     protected EntityManager em;
     
     @Inject BatchManager batchManager;
+    @Inject BatchUtility batchUtility;
+    @Inject BatchFind batchFind;
+    
     @Inject CasefileManager casefileManager;
+    @Inject CaseFileFind caseFileFind;
+    
     @Inject SamplesManager samplesManager;
+    @Inject SamplesFind samplesFind;
+    
     @Inject AnalysisManager analysisManager;
+    
     
     
     public FacadeSaisieResultats(){
@@ -41,62 +60,44 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     
     
     @Override
-    public Batch createBatch(BigInteger idbatch) {
-        Batch b=null;
-        if(idbatch!=null){
-            b = findExistingBatchByBatchId(idbatch);
-        }
-        b=em.merge(b);
-        return b;        
+    public Batch retrieveBatchFromIdBatch(BigInteger idbatch) throws BatchIdNotFindError {
+        return em.merge(batchManager.retrieveBatchFromIdBatch(idbatch));
     }
 
     @Override
-    public Batch createBatch(String batchname, String articlename, String idcompany, String limsbatchid) {
-        Batch b=null;
-        System.out.println("entrer dans Facade Create batch");
-        if(limsbatchid!= null ){
-            b = findExistingBatchByLimsBatchId(limsbatchid);
-        }
-        System.out.println("Step 1 ");
-        if(b==null){
-            Article idarticle= batchManager.createOrUpdateArticle(articlename);
-            System.out.println("idarticle "+idarticle);
-            b=createBatch(batchname, idarticle, idcompany, limsbatchid);
-        }
-        System.out.println("Step final ");
+    public Batch createOrRetrieveBatch(String batchname, String articlename, String idcompany, String limsbatchid) {
+        BigInteger bi_limsbatchid= new BigInteger(limsbatchid);
+        return createOrRetrieveBatch(batchname, articlename, idcompany, bi_limsbatchid);
+    }
+    
+    @Override
+    public Batch createOrRetrieveBatch(String batchname, String articlename, String idcompany, BigInteger limsbatchid) {
+        Batch b=batchManager.createOrRetrieveBatch(batchname, articlename, idcompany, limsbatchid);       
         b=em.merge(b);
         return b;
     }
     
     @Override
-    public Batch createBatch(String batchname, Article idarticle, String idcompany, String limsbatchid) {
-        Batch b=null;
-        System.out.println("Step inter  1 ");
-        if(limsbatchid!= null ){
-            b = findExistingBatchByLimsBatchId(limsbatchid);
-        }
-                System.out.println("Step inter  2");
-        if(b==null){
-            System.out.println("Step inter  3");
-            b=batchManager.createBatch(batchname,idarticle  , idcompany, limsbatchid);
-            System.out.println("Step inter  4");
-            //b.setLimsbatchid(limsbatchid);            
-        }
-        System.out.println("Step inter  5");
-        //b=em.merge(b);
-        return b;//em.merge(b);
+    public Batch createOrRetrieveBatch(String batchname, Article idarticle, String idcompany, String limsbatchid) {
+        BigInteger bi_limsbatchid= new BigInteger(limsbatchid);
+        return createOrRetrieveBatch( batchname,  idarticle,  idcompany,  bi_limsbatchid);
     }
     
+    @Override
+    public Batch createOrRetrieveBatch(String batchname, Article idarticle, String idcompany, BigInteger limsbatchid) {
+        Batch b=batchManager.createOrRetrieveBatch( batchname,  idarticle,  idcompany,  limsbatchid);
+        return em.merge(b);
+    }
 
     @Override
-    public Casefile createCasefile(BigInteger idcasefile) {
+    public Casefile retrieveCasefile(BigInteger idcasefile) {
         Casefile c=null;
         
         if(idcasefile==null){
             return null;
         }
         
-        c=findExistingCasefile (idcasefile);
+        c=caseFileFind.findExistingCasefile (idcasefile);
         
         if(null==c){
             return null;
@@ -107,35 +108,22 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     }
     
     @Override
-    public entite.Casefile createCasefileForHeritage(entite.Batch idbatch){
+    public entite.Casefile createOrRretriveCasefileForTypeDeCopie(entite.Batch idbatch, Constant.typeDeCopie typeDeCopie){
         Casefile c=null;
         casefileManager.setCurrentBatch(idbatch);
-        c= casefileManager.createCaseFile();
+        c= casefileManager.createOrRretriveCasefileForTypeDeCopie(idbatch,typeDeCopie);
+        c.setCasefiletype(typeDeCopie.toString());
         c=em.merge(c);
         return c;
     }
 
     @Override
-    public Casefile createCasefile(Batch idbatch, String limsfolderno, Integer numdemandelims) {
-        Casefile c=null;
-        Batch batchForRetreiveInformation=null;
-        if(null!= idbatch){
-             batchForRetreiveInformation=batchManager.findExistingBatchByIdBatch(idbatch.getIdbatch());
-        }
-        Contracts.assertNotNull(batchForRetreiveInformation);
-        casefileManager.setCurrentBatch(batchForRetreiveInformation);
-        if(limsfolderno!=null){
-            c=findExistingFolderno (limsfolderno,numdemandelims);
-        }        
-        if(null==c){
-            c= casefileManager.createCaseFile(limsfolderno, numdemandelims);
-        }
-        c=em.merge(c);
-        return c;
+    public Casefile createOrRetrieveCasefile(Batch idbatch, String limsfolderno, Integer numdemandelims) throws BatchIdNotFindError {
+        return batchManager.createOrRetrieveCasefile(idbatch, limsfolderno, numdemandelims);
     }
 
     @Override
-    public Samples createSample(Casefile idcasefile, String limssampleid) {
+    public Samples createSample(Casefile idcasefile, String limssampleid) throws SampleWithoutCasefileError {
         Samples s =null;
         samplesManager.setCasefile(idcasefile);
         s =samplesManager.createSamples(limssampleid);
@@ -143,25 +131,24 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     }
     
     @Override
-    public Samples findExistingSamples(String limssampleid){
-        return samplesManager.findExistingSamples(limssampleid);
-    }
-
-    @Override
     public Analysis createAnalysis(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger idmethod) {
         Analysis a=null;
         return a;
     }
     
     @Override
-    public Analysis createAnalysisViaInfoLims(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries) {
+    public Analysis createAnalysisViaInfoLims(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries)
+                    throws AnalysisWithoutSamplesError 
+    {
         analysisManager.setSamplesCurrent(idsamples);
         Analysis a=analysisManager.createAnalysisViaInfoLims( idsamples,  limsanalysisorigrec,  limsanalysisid,  analysisname,    methodname,  limsidseries) ;
         return a;
     }
     
     @Override
-    public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries){
+    public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries)
+            throws AnalysisWithoutSamplesError 
+    {
         analysisManager.setSamplesCurrent(idsamples);
         Analysis a=analysisManager.getOrCreateAnalysisViaLimsAnalysisOrigrec( idsamples,  limsanalysisorigrec,  limsanalysisid,  analysisname,    methodname,  limsidseries) ;
         return a;
@@ -201,7 +188,7 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
         return a;
     }
 
-    
+    /*
     public Batch findExistingBatchByBatchId(BigInteger idbatch) {
         return batchManager.findExistingBatchByIdBatch(idbatch);
     }
@@ -217,25 +204,34 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     public Casefile findExistingFolderno(String limsfolderno, Integer numdemandelims) {
         return casefileManager.findExistingFolderno(limsfolderno, numdemandelims);
     }
+    */
 
 
     @Override
-    public void copieResultats(Results resultatInserted, Batch descendantsBatch, String heritage) {
-        Casefile casefileHeritage= createCasefileForHeritage(descendantsBatch);
-        String limSampleid=heritage;
-        Samples samples= createSample(casefileHeritage, limSampleid);
+    public entite.Analysis copieResultats(Results resultatInserted, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch) throws SampleWithoutCasefileError , AnalysisWithoutSamplesError{
+        Casefile casefileTypedeCopie= createOrRretriveCasefileForTypeDeCopie(descendantsBatch,typeDeCopie);
+        
+        Samples samples= createSample(casefileTypedeCopie, null);
         
         BigInteger limsanalysisorigrec;
         BigInteger idmethod;
         
-        createAnalysis(samples, resultatInserted);
+        return createAnalysis(samples, resultatInserted);
     }
 
     @Override
-    public void createAnalysis(Samples samples, Results resultatInserted) {
+    public entite.Analysis createAnalysis(Samples samples, Results resultatInserted) throws AnalysisWithoutSamplesError{
         analysisManager.setSamplesCurrent(samples);
-        analysisManager.createAnalysisFromResults(resultatInserted);
+        return analysisManager.createAnalysisFromResults(samples, resultatInserted);
         
     }
     
+    public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch){
+        return null;
+    }
+    
+    //public void onAnalysis(@Observes(during = TransactionPhase.AFTER_SUCCESS) Analysis event){
+        //analysisManager.doOnAnalysis(event);
+    //    System.out.println(" dans Facade declenchement evenement " + event.getIdanalysis());
+    //}
 }

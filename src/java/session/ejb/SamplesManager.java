@@ -8,13 +8,19 @@ package session.ejb;
 
 import entite.Casefile;
 import entite.Samples;
+import entite.Analysis;
+import error.AnalysisWithoutSamplesError;
+import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import utilities.SamplesUtility;
 
 /**
  *
@@ -27,6 +33,7 @@ public class SamplesManager {
     
     @Inject  
     AnalysisManager analysisManager ;
+    @Inject SamplesUtility samplesUtility;
     
     Samples samplesCurrent;
     
@@ -36,50 +43,46 @@ public class SamplesManager {
         System.out.println("entrerdans SamplesManager *************");
     }
     
-    public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) {
+    public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) throws SampleWithoutCasefileError {
         System.out.println("entrer dans SamplesManager Addresults **************************"+analysisManager);
 
         //setCasefile(casefileCurrent);
+        if(null==samplesCurrent){
+            samplesCurrent=samplesUtility.createOrRetreiveSampleCurrent(casefileCurrent);
+        }
+        System.out.println(" SamplesManager Addresults ****************************************"+samplesCurrent);
         analysisManager.setSamplesCurrent(samplesCurrent);
-        return analysisManager.addresults(idModelanalysis,  methodname,  mesureName,  rawresult);
+        Analysis a =null;
+        try {
+            a = analysisManager.addresults(idModelanalysis,  methodname,  mesureName,  rawresult);
+        } catch (AnalysisWithoutSamplesError ex) {
+            Logger.getLogger(SamplesManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return a;
     }
 
     public void setCasefile(Casefile casefileCurrent) {
         this.casefileCurrent=casefileCurrent;
     }
     
-    public Samples createSamples(String limssampleid) {
+    public Samples createSamples(String limssampleid) throws SampleWithoutCasefileError {
         System.out.println("Dans create sample ******************************");
-        samplesCurrent = new Samples();
-        samplesCurrent.setIscurrent(Boolean.TRUE);
-        samplesCurrent.setIdarticle(casefileCurrent.getIdarticle());
-        samplesCurrent.setBatchname(casefileCurrent.getBatchname());
-        samplesCurrent.setCreationdate(utilities.DateManager.getNow());
-        samplesCurrent.setStatuslabel("logged");
-        samplesCurrent.setIdbatch(casefileCurrent.getIdbatch());
-        samplesCurrent.setIdcasefile(casefileCurrent);
-        samplesCurrent.setIdspecie(casefileCurrent.getIdspecie());
-        samplesCurrent.setIdstage(casefileCurrent.getIdstage());
-        samplesCurrent.setLimssampleid(limssampleid);
-        samplesCurrent.setLimsfolderno(casefileCurrent.getLimsfolderno());
-        
-        
-        em.merge(samplesCurrent);
-        //em.flush();
-        return samplesCurrent;
+        samplesCurrent = createSamplesWithLimssampleid(limssampleid);
+        return em.merge(samplesCurrent);
     }
+    
+    public Samples createSamplesWithLimssampleid(String limssampleid) throws SampleWithoutCasefileError {
+        Samples s =createSamples();
+        s.setLimssampleid(limssampleid);
+        return s;
+    }
+        
+    public Samples createSamples() throws SampleWithoutCasefileError {
+        return  samplesUtility.createSample(casefileCurrent);
+    } 
 
-    public Samples findExistingSamples(String limssampleid) {
-        TypedQuery<Samples> q = em.createNamedQuery("Samples.findByLimssampleid", Samples.class);
-        q.setParameter("limssampleid", limssampleid);
-        
-        List<Samples> samplesList = q.getResultList();
-        if(samplesList.isEmpty()){
-                return null;
-        }
-        samplesCurrent=samplesList.get(0);
-        return samplesCurrent;
-    }
+    
     
     
     

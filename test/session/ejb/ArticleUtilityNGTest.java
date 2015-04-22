@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import utilities.ArticleUtility;
 import entite.Article;
 import entite.Generation;
 import entite.Specie;
@@ -26,16 +27,32 @@ import utilities.ForItem;
  *
  * @author S.ANDRIANAVONY
  */
-public class CreateOrUpdateArticleNGTest {
+public class ArticleUtilityNGTest {
+    
+    String idspecie ;
+    String idvariety ;
+    String idstage;
+    String idgeneration;
+    String batchname ;
+    String companyname ;
+
+    String idspecieRes ;
+    String idvarietyRes ;
+    String idstageRes;
+    String idgenerationRes;
+    String batchnameRes ;
+    String companynameRes ;
+    
+    
      Specie specie;
     Variety variety;
     Stage stage;
     Generation generation;
     Article expResult;
     
-    //@Inject CreateOrUpdateArticle createOrUpdateArticle;
+    //@Inject ArticleUtility createOrUpdateArticle;
     
-    public CreateOrUpdateArticleNGTest() {
+    public ArticleUtilityNGTest() {
     }
 
     @BeforeClass
@@ -48,11 +65,57 @@ public class CreateOrUpdateArticleNGTest {
 
     @BeforeMethod
     public void setUpMethod() throws Exception {
+         idspecie = "S0101";
+         idvariety = "S10095";
+         idstage = "COM";
+         idgeneration = "C04";
+         batchname = "unknomnBatch";
+         companyname = "unknomnCompagny";
     }
 
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
+    
+        /**
+     * Test of createOrUpdateArticle method, of class BatchManager.
+     */
+    @Test
+    public void testCreateOrUpdateArticle() throws Exception {
+        System.out.println("createOrUpdateArticle");
+        String idspecie = "S0101";
+        String idvariety = "S10095";
+        String idgeneration = "C04";
+        String idstage = "COM";
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/ArticleUtility");
+        Article expResult = null;
+        try{
+            Article result = instance.createOrUpdateArticle(idspecie, idvariety, idgeneration, idstage);
+            
+            System.out.println("result 5 args jaona "+result);
+            idspecieRes=result.getIdspecie().getIdspecie();
+            System.out.println("idspecieRes "+idspecieRes);
+            idstageRes=result.getIdstage().getIdstage();
+            System.out.println("idstageRes "+idstageRes);
+            idvarietyRes=result.getIdvariety().getIdvariety();
+            System.out.println("idvarietyRes "+idvarietyRes);
+            idgenerationRes=result.getIdgeneration().getIdgeneration();
+            System.out.println("idgenerationRes "+idgenerationRes);
+            
+            System.out.println("batchnameRes "+batchnameRes);
+            System.out.println("companynameRes"+companynameRes);
+            
+            assertEquals(idspecie,idspecieRes );
+            assertEquals(idstage , idstageRes );
+            assertEquals(idvariety ,idvarietyRes);
+            assertEquals(idgeneration ,idgenerationRes);
+         } finally {
+            container.close();
+        }
+}
+    
+    
 
     /**
      * Insertion du code article dans la base en utilisant le nom de l'article.
@@ -63,7 +126,7 @@ public class CreateOrUpdateArticleNGTest {
         System.out.println("createOrUpdateArticle");
         String idarticle = "S0101S10098C04";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/ArticleUtility");
         try {
         Article result = instance.createOrUpdateArticle(idarticle);
 
@@ -129,7 +192,7 @@ public class CreateOrUpdateArticleNGTest {
          
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instanceMAJArt = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instanceMAJArt = (ArticleUtility)container.getContext().lookup("java:global/classes/ArticleUtility");
         try {
         
         String idvariety="S10095";
@@ -153,7 +216,7 @@ public class CreateOrUpdateArticleNGTest {
         
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         try {
         String idvariety="S10095";
         String specie = "S0101";
@@ -174,7 +237,7 @@ public class CreateOrUpdateArticleNGTest {
         String idGeneration="C04";
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         try {
         String expResult = "S0101S10095C04_B";
         Article result = instance.getArticleByVarietyStageLagel(idvariety,stageLabel,idGeneration);
@@ -192,7 +255,7 @@ public class CreateOrUpdateArticleNGTest {
         String idGeneration="C04";
         
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         try {
         String expResult = "S0101S10095C04_KG";
         Article result = instance.getArticleByVarietyStageLagel(idvariety,stageLabel,idGeneration);
@@ -223,7 +286,7 @@ public class CreateOrUpdateArticleNGTest {
     
 
     /**
-     * Test of getArticleBySpecieVariety method, of class CreateOrUpdateArticle.
+     * Test of getArticleBySpecieVariety method, of class ArticleUtility.
      */
     @Test
     public void testGetArticleBySpecieVariety() throws Exception {
@@ -231,7 +294,7 @@ public class CreateOrUpdateArticleNGTest {
         String idvariety="S10095";
         String idspecie = "S0101";
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CreateOrUpdateArticle instance = (CreateOrUpdateArticle)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
+        ArticleUtility instance = (ArticleUtility)container.getContext().lookup("java:global/classes/CreateOrUpdateArticle");
         Variety expResult = null;
         try {
             Variety result = instance.getArticleBySpecieVariety(idspecie, idvariety);
