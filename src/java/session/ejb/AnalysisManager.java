@@ -6,16 +6,24 @@
 package session.ejb;
 
 import entite.Analysis;
+import entite.Batch;
+import entite.Company;
 import entite.Method;
 import entite.Modelanalysis;
 import entite.Results;
 import entite.Samples;
+import entite.Traca;
+import entite.Wo;
 import error.AnalysisWithoutSamplesError;
+import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
@@ -27,6 +35,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.hibernate.validator.internal.util.Contracts;
 import utilities.AnalysisUtility;
+import utilities.Constant;
+import utilities.DateManager;
 
 /**
  *
@@ -42,6 +52,7 @@ public class AnalysisManager {
     Analysis analysisCurrent;
     
     
+//    @EJB I_FacadeSaisieResultats facadeSaisieResultats;
     
     @Inject ResultsManager resultsManager;
     
@@ -63,6 +74,38 @@ public class AnalysisManager {
         this.samplesCurrent=samplesCurrent;
     }
 
+        /****
+     * Si le lot descendant n'existe pas dans le systeme on ne le cree pas le
+     * @throws il n'est pas normale qu'on ne puisse pas ajouter DL, un ES ou une analyses sue le DL
+     */
+ /*   
+    public List<Analysis> doHeritage(Analysis analysisACopier) throws AnalysisWithoutSamplesError, SampleWithoutCasefileError {
+        System.out.println("**************************Heritage ");
+        List<Analysis> analyseHerited = new ArrayList<>();
+         Batch batch= getIdBatch(analysisACopier);
+        List<entite.Batch> descendantsList= getListBatchDescendants(batch);
+        if(null==descendantsList){
+            return analyseHerited;
+        }
+        
+        for (entite.Batch descendantsBatch: descendantsList ){
+            System.out.println("Insertion heritage dans "+descendantsBatch);
+            entite.Casefile casefileHeritage = facadeSaisieResultats.createOrRretriveCasefileForTypeDeCopie(batch, Constant.typeDeCopie.HERITAGE);
+            
+            Samples samplesCurrentDLBatchDescendants=null;
+            samplesCurrentDLBatchDescendants = facadeSaisieResultats.getSampleCurrent(casefileHeritage);
+            em.merge(samplesCurrentDLBatchDescendants);
+            
+            BigInteger limsidanalysis=analysisACopier.getLimsidanalysis();
+            String methodName = analysisACopier.getMethodname();
+            Analysis analysisDescendantsBatch= analysisUtility.createAnalysis(samplesCurrent,limsidanalysis , methodName);
+            
+            analysisDescendantsBatch = facadeSaisieResultats.copieResultats(analysisACopier,Constant.typeDeCopie.HERITAGE,analysisDescendantsBatch );
+            analyseHerited.add(em.merge(analysisDescendantsBatch));
+        }
+        return analyseHerited;
+    }
+ */   
     public Analysis createAnalysis(BigInteger limsanalysisid, String methodname) throws AnalysisWithoutSamplesError {
         Analysis a;
         try {
@@ -102,7 +145,8 @@ public class AnalysisManager {
     
     public Analysis addresultsToAnalysisCurrent(  String mesureName, String rawresult){
         Results r =analysisUtility.addresultsToAnalysis( analysisCurrent, mesureName,  rawresult);
-        em.merge(r);        
+        em.merge(r);
+        analysisCurrent.setCopystatus(Constant.HERITAGETODO);
         return em.merge(analysisCurrent);
     }
             
@@ -249,7 +293,103 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
         return em.merge(a);
     }
 
+
+    public Batch getIdBatch(Analysis analysis) {        
+        if(analysis == null){
+            return null;
+        }
+        return getBatchByIdbatch(analysis.getIdbatch().getIdbatch());
+    }
+
+    public Batch getBatchByIdbatch(BigInteger bi_idbatch) {
+        Batch idbatch = new Batch(bi_idbatch);
+        TypedQuery<Batch> q =em.createNamedQuery("Batch.findByIdbatch", Batch.class);
+        q.setParameter("idbatch",bi_idbatch );
+        if(q.getResultList().isEmpty()){
+            return null;
+        }
+        return q.getResultList().get(0); 
+    }
     
+    /***
+     * trouve les lots qui ont été produits a partir du lot du résultats d'analyse
+     * OF028712
+     **/
+    public List<entite.Batch> getListBatchDescendants(Batch lotParent){
+         System.out.println("*********** Dans FIND **************============================================"+em);
+        List<entite.Traca> woProduction = listeWoProduction (lotParent);
+        if(null==woProduction){
+            return null;
+        }
+        if(woProduction.isEmpty()){
+            return null;
+        }
+        
+        List<entite.Batch> descendants = null; //new ArrayList<>(woProduction.size());
+        for(entite.Traca traca : woProduction){
+            System.out.println(" traca trouver "+traca );
+            descendants=getBatchFromTraca(traca);
+            System.out.println("descendants "+descendants.size());
+        }
+        
+        return descendants;
+    }
+    
+    public List<entite.Traca> listeWoProduction(Batch batchProduit) {
+        System.out.println("*********** Dans FIND **************============================================"+em);
+        if(null == batchProduit){
+            return null;
+        }
+        Wo idWo= batchProduit.getIdwo();
+        Company idcompany =batchProduit.getIdcompany();
+        System.out.println("idWo "+idWo);
+        System.out.println("idcompany"+idcompany);
+        TypedQuery<entite.Traca> q = em.createNamedQuery("Traca.findByIdwo_Production", entite.Traca.class);
+        q.setParameter("idwo", idWo); 
+        q.setParameter("idcompany", idcompany.getIdcompany());
+        List<entite.Traca> tmp=q.getResultList();
+        System.out.println("q "+q);
+        return tmp;
+        
+    }
+    
+    public List<Batch>  getBatchFromTraca(Traca traca) {
+        TypedQuery<Batch> q =em.createNamedQuery("Batch.findByIdarticleBatchnameCompanynameIdWo", Batch.class);
+        q.setParameter("batchname",traca.getBatchname() ); 
+        q.setParameter("idarticle", traca.getIdarticle()); 
+        q.setParameter("idcompany", traca.getIdcompany());
+        String idwo =traca.getIdwo().getWoPK().getIdwo();
+        System.out.println("idwo "+idwo);
+        q.setParameter("idwo", traca.getIdwo());
+        
+        return q.getResultList(); 
+        
+    }
+
+  
+
+    /****
+     * l'analyse est déjà rataccher à un lot, DL, ES
+     */
+    public Analysis copierAnalysis(Analysis analysisACopier, Constant.typeDeCopie typeDeCopie, Analysis analyseFille) {
+        if(typeDeCopie== Constant.typeDeCopie.HERITAGE){
+            analyseFille.setHerited(Boolean.TRUE);
+        }
+        
+        analyseFille.setCreationdate(DateManager.getNow());
+        analyseFille.setCopiedfromidbatch(analysisACopier.getIdbatch());
+        analyseFille.setCopiedfromidsample(analysisACopier.getIdsamples());
+        
+        List<Results> listResults= analysisUtility.getResultsListFromAnalysis(analysisACopier);
+        for(Results resultACopier : listResults){
+            Results c= analysisUtility.copyResultsToAnalysis(analysisCurrent, resultACopier);
+            em.merge(c);
+        }
+        analyseFille=em.merge(analyseFille);
+        return analyseFille;
+    }
     
 }
+
+  
 

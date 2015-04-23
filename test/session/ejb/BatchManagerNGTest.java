@@ -9,6 +9,7 @@ import entite.Analysis;
 import entite.Article;
 import entite.Batch;
 import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +19,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.Constant;
 
 /**
  *
@@ -278,6 +280,10 @@ public class BatchManagerNGTest {
             
             Analysis memeAnalysis= analysisManager.addresults(new BigInteger("357"),"Grains Entiers", mesurename, rawresults);
            assertEquals(memeAnalysis, analysis);
+           assertEquals(Constant.HERITAGETODO, memeAnalysis.getCopystatus());
+           
+           //List<Analysis> analysesAjoute= analysisManager.doHeritage(memeAnalysis);
+           //assertEquals(analysesAjoute.size(), 1);
             container.close();
             
         /*

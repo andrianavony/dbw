@@ -82,6 +82,14 @@ public class SamplesManager {
         return  samplesUtility.createSample(casefileCurrent);
     } 
 
+    public Samples getSampleCurrent(Casefile casefile) throws SampleWithoutCasefileError {
+        setCasefile(casefileCurrent);
+        samplesCurrent=samplesUtility.createOrRetreiveSampleCurrent(casefile);
+        em.merge(casefileCurrent);
+        em.merge(samplesCurrent);
+        return samplesCurrent; 
+    }
+
     
     
     

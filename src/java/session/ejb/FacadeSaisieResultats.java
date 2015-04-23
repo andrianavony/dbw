@@ -226,12 +226,24 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
         
     }
     
-    public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch){
-        return null;
+    /****
+     * analysisDescendantsBatch a déjà les informations sur les ES, DL et batch
+     */
+    //public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch){
+    @Override
+    public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch){
+        analysisManager.setSamplesCurrent(analysisDescendantsBatch.getIdsamples());
+        return analysisManager.copierAnalysis(analysisACopier,typeDeCopie,analysisDescendantsBatch);
+        
     }
     
     //public void onAnalysis(@Observes(during = TransactionPhase.AFTER_SUCCESS) Analysis event){
         //analysisManager.doOnAnalysis(event);
     //    System.out.println(" dans Facade declenchement evenement " + event.getIdanalysis());
     //}
+
+    @Override
+    public Samples getSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError {
+       return samplesManager.getSampleCurrent(casefileHeritage);
+    }
 }

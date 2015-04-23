@@ -317,5 +317,11 @@ public class AnalysisUtility {
         a.setLimsidanalysis(limsidanalysis);
         return a;
     }
+
+    public Results copyResultsToAnalysis(Analysis analysisCurrent, Results resultACopier) {
+        String mesureName=resultACopier.getMeasurename();
+        String rawresult=resultACopier.getRawresults();
+        return addresultsToAnalysis(analysisCurrent,  mesureName,  rawresult);
+    }
       
 }

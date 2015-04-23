@@ -178,6 +178,27 @@ public class Analysis implements Serializable {
     @JoinColumn(name = "COPIEDFROMIDSAMPLE", referencedColumnName = "IDSAMPLES")
     @ManyToOne
     private Samples copiedfromidsample;
+    
+    private int copystatus;
+    
+    private String copytype;
+
+    public String getCopytype() {
+        return copytype;
+    }
+
+    public void setCopytype(String copytype) {
+        this.copytype = copytype;
+    }
+
+    public int getCopystatus() {
+        return copystatus;
+    }
+
+    public void setCopystatus(int copystatus) {
+        this.copystatus = copystatus;
+    }
+    
 
     public Batch getCopiedfromidbatch() {
         return copiedfromidbatch;

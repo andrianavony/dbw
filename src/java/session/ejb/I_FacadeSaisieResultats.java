@@ -114,9 +114,11 @@ public interface I_FacadeSaisieResultats {
      *        Si null on crée une nouvelle analyse.
      * @return  l'analyse sur laquelle on a fait copie des résultats. Cette amanyse pourra être utiliser pour d'autres copie de résultats
      */
-    public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch);
+    //public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch);
     
-    
+   public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch); 
+
+    public Samples getSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError ;
 
     
     
