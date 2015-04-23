@@ -10,7 +10,6 @@ import entite.Article;
 import entite.Batch;
 import entite.Casefile;
 import entite.Company;
-import entite.Company_;
 import entite.Variety;
 import error.BatchIdNotFindError;
 import error.CasefileWithoutBatchError;

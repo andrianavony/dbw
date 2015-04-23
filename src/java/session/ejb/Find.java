@@ -46,8 +46,8 @@ public class Find {
     
     
     public Find(){
-        //emf=Persistence.createEntityManagerFactory("dbwEJBwsPU");
-        //em=emf.createEntityManager();
+        emf=Persistence.createEntityManagerFactory("dbwEJBwsPU");
+        em=emf.createEntityManager();
          System.out.println("*********** Creation de FIND **************============================================"+em);
          InitialContext ic=null;
          

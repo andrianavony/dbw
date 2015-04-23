@@ -40,9 +40,8 @@ public class AddResultsListener {
     
     //private entite.Results resultatInserted;
     
-    @Inject I_FacadeSaisieResultats facadeSaisieResultats;
-    
-    @Inject 
+   
+    //@Inject 
     //@EJB
              public Find find;
     
@@ -50,24 +49,24 @@ public class AddResultsListener {
     
     
     public AddResultsListener(){
-        System.out.println(" Ceration AddResultsListener =================================================");
+        System.out.println(" Creation AddResultsListener debut =================================================**********************************************"+find);
         
-        /*
+        
         try {
            
-            find = InitialContext.doLookup("java:global/classes/Find");//java:global/classes/Find!session.ejb.Find, java:global/classes/Find
+            find = InitialContext.doLookup("java:global/classes/Find!session.ejb.Find");//java:global/classes/Find!session.ejb.Find, java:global/classes/Find
         } catch (NamingException ex) {
             Logger.getLogger(AddResultsListener.class.getName()).log(Level.SEVERE, null, ex);
         }
-         System.out.println(" Ceration AddResultsListener =========================================="+find);
+         System.out.println(" Creation AddResultsListener FIN =================================================**********************************************"+find);
 //         System.out.println(" Ceration AddResultsListener =========================================="+find.em);
         
-    */
+    
     }
     
     @PostConstruct
     public void log(){
-        System.out.println(" Post creation Ceration AddResultsListener ================================================="+find);
+        System.out.println(" Post creation Ceration AddResultsListener =================================================***************************************"+find);
     }
         
     @PostPersist
@@ -76,10 +75,9 @@ public class AddResultsListener {
         System.out.println(" saisie résultats de "+resultatInserted.getIdresult()+ " avec la valeur " + resultatInserted.getRawresults());
        
 
-        System.out.println(" FInd dans AddResultsListener =====================================================");
-        System.out.println(" FInd dans AddResultsListener=====================================================" + find);
-        System.out.println(" FInd dans AddResultsListener===================================================== facadeSaisieResultats" + facadeSaisieResultats);
-        System.out.println(" FInd dans AddResultsListener=====================================================");
+        System.out.println(" Find dans AddResultsListener =====================================================");
+        System.out.println(" Find dans AddResultsListener=====================================================************************************************" + find);
+        System.out.println(" Find dans AddResultsListener=====================================================");
 
        Batch batch= find.getIdBatch(resultatInserted);
         List<entite.Batch> descendantsList= find.getListBatchDescendants(batch);
