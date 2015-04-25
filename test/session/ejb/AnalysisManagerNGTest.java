@@ -6,6 +6,7 @@
 package session.ejb;
 
 import entite.Analysis;
+import entite.Batch;
 import entite.Method;
 import entite.Modelanalysis;
 import entite.Results;
@@ -60,12 +61,13 @@ public class AnalysisManagerNGTest {
     @Test
     public void testValidation() throws Exception {
         System.out.println("validation");
-        Analysis analyseAValider = new Analysis();
+        Analysis analysisACopier = new Analysis(new BigInteger("64"));
+        analysisACopier.setIdbatch(new Batch((new BigInteger("2730"))));
         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer(); try{
         AnalysisManager instance = (AnalysisManager)container.getContext().lookup("java:global/classes/AnalysisManager");
         Analysis expResult = null;
         //Analysis result = 
-                instance.validation(analyseAValider);
+                instance.validation(analysisACopier);
         //assertEquals(result, expResult);
         } finally {container.close();}
         

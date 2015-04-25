@@ -13,6 +13,7 @@ import entite.Results;
 import entite.Samples;
 import error.AnalysisWithoutSamplesError;
 import error.BatchIdNotFindError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.Date;
@@ -228,10 +229,13 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     
     /****
      * analysisDescendantsBatch a déjà les informations sur les ES, DL et batch
+     * @throws error.ResultsWithoutAnalysisError
      */
     //public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch){
     @Override
-    public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch){
+    public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch) throws ResultsWithoutAnalysisError{
+        
+        System.out.println("Dans Facade analysisDescendantsBatch.getIdsamples() "+analysisDescendantsBatch.getIdsamples());
         analysisManager.setSamplesCurrent(analysisDescendantsBatch.getIdsamples());
         return analysisManager.copierAnalysis(analysisACopier,typeDeCopie,analysisDescendantsBatch);
         
@@ -243,7 +247,8 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     //}
 
     @Override
-    public Samples getSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError {
-       return samplesManager.getSampleCurrent(casefileHeritage);
+    public Samples createOrRetreiveSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError {
+        System.out.println("dans getSampleCurrent casefileHeritage "+casefileHeritage);
+       return samplesManager.createOrRetreiveSampleCurrent(casefileHeritage);
     }
 }

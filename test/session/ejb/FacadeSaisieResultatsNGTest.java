@@ -19,6 +19,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.Constant;
 
 /**
  *
@@ -45,6 +46,72 @@ public class FacadeSaisieResultatsNGTest {
     public void tearDownMethod() throws Exception {
     }
     
+    
+    /**
+     * =>OK
+     * le lot existe déjà et on veut le recuperer.
+     * Cas utilisation : imports des résultats. les lots existe déjà
+     * public entite.Casefile createOrRretriveCasefileForTypeDeCopie(entite.Batch idbatch, Constant.typeDeCopie typeDeCopie){
+     */
+    @Test
+    public void createOrRretrive_CASEFILE_ForTypeDeCopieTest() throws Exception {
+        
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        I_FacadeSaisieResultats instance =  (I_FacadeSaisieResultats)container.getContext().lookup("java:global/classes/FacadeSaisieResultats");
+        
+        try{
+        System.out.println("createBatch");
+        BigInteger idbatch = new BigInteger("3010");
+        Batch batch = new Batch(idbatch) ;
+        batch.setBatchname("F0964W005540NZ");
+        Casefile result = instance.createOrRretriveCasefileForTypeDeCopie(batch, Constant.typeDeCopie.HERITAGE);
+            
+        assertEquals(result.getIdbatch(), batch);
+        assertTrue(result.getCasefiletype().equalsIgnoreCase(Constant.typeDeCopie.HERITAGE.toString()));
+        assertEquals(result.getBatchname(), "F0964W005540NZ");
+        
+        BigInteger idCasefile=result.getIdcasefile();
+        result = instance.createOrRretriveCasefileForTypeDeCopie(batch, Constant.typeDeCopie.HERITAGE);
+            assertTrue(idCasefile.compareTo(result.getIdcasefile())==0);
+        
+            
+        } finally {
+            container.close();
+      }
+    }  
+    
+    
+    /**
+     * =>OK
+     * le lot existe déjà et on veut le recuperer.
+     * Cas utilisation : imports des résultats. les lots existe déjà
+     * public entite.Casefile createOrRretriveCasefileForTypeDeCopie(entite.Batch idbatch, Constant.typeDeCopie typeDeCopie){
+     */
+    @Test
+    public void createOrRetreiveSampleCurrentForTypeDeCopieTest() throws Exception {
+        
+        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        I_FacadeSaisieResultats instance =  (I_FacadeSaisieResultats)container.getContext().lookup("java:global/classes/FacadeSaisieResultats");
+        
+        try{
+        System.out.println("createBatch");
+        Batch b= new Batch(new BigInteger("3010"));
+        BigInteger idCasefile = new BigInteger("22");
+        Casefile casefile=new Casefile(idCasefile);
+        casefile.setBatchname("F0964W005540NZ");
+       casefile.setIdbatch(b); 
+        Samples result = instance.createOrRetreiveSampleCurrent(casefile);
+            
+        
+        assertEquals(result.getIdcasefile(),casefile);
+        assertEquals(result.getBatchname(), "F0964W005540NZ");
+        assertEquals(result.getIdbatch(), b);
+        assertNotNull(result.getIdsamples());
+            
+        } finally {
+            container.close();
+      }
+    }
     
 
     /**

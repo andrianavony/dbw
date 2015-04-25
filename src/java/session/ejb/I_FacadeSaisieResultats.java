@@ -14,6 +14,7 @@ import entite.Samples;
 import error.AnalysisWithoutSamplesError;
 import error.BatchIdNotFindError;
 import error.IdcasefileNotFoundError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.Date;
@@ -116,9 +117,9 @@ public interface I_FacadeSaisieResultats {
      */
     //public entite.Analysis copieResultats(Analysis analysisACopier, Batch descendantsBatch, Constant.typeDeCopie typeDeCopie,Samples samplesDescendantsBatch, Analysis analysisDescendantsBatch);
     
-   public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch); 
+   public entite.Analysis copieResultats(Analysis analysisACopier,  Constant.typeDeCopie typeDeCopie, Analysis analysisDescendantsBatch)throws ResultsWithoutAnalysisError; 
 
-    public Samples getSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError ;
+    public Samples createOrRetreiveSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError ;
 
     
     

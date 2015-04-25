@@ -6,6 +6,10 @@
 package session.ejb.observer;
 
 import entite.Analysis;
+import error.AnalysisWithoutSamplesError;
+import error.SampleWithoutCasefileError;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.TransactionPhase;
@@ -23,9 +27,15 @@ public class AnalysisValidation {
 
     public void onAnalysis(@Observes(during = TransactionPhase.AFTER_SUCCESS) Analysis analysisEvent){
         //analysisManager.doOnAnalysis(event);
-        System.out.println(" dans Facade declenchement evenement " + analysisEvent.getIdanalysis());
-        if(analysisEvent.getHerited()){
+        System.out.println(recopieAnalysis + " dans Facade declenchement evenement " + analysisEvent.getIdanalysis());
+        try {
+            //if(analysisEvent.getHerited()){
             recopieAnalysis.doHeritage(analysisEvent);
+            //}
+        } catch (AnalysisWithoutSamplesError ex) {
+            Logger.getLogger(AnalysisValidation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SampleWithoutCasefileError ex) {
+            Logger.getLogger(AnalysisValidation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

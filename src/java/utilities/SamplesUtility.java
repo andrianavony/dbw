@@ -22,8 +22,9 @@ public class SamplesUtility {
     @Inject SamplesFind samplesFind;
 
     public Samples createOrRetreiveSampleCurrent(Casefile casefileCurrent) throws SampleWithoutCasefileError  {
-        
+        System.out.println("Dans SampleUtility createOrRetreiveSampleCurrent casefileCurrent.getIdBatch "+casefileCurrent.getIdbatch());
         if(null == casefileCurrent){
+            System.out.println(" caseffileCurrente vaut null ====================================<<<<<<<<<<<<<<<<<<");
             throw new SampleWithoutCasefileError("Case File must be provided before creating samples");
         }
         List<Samples>  sampelsList= samplesFind.findSamplesCurrent(casefileCurrent);
@@ -46,6 +47,7 @@ public class SamplesUtility {
         samples.setCreationdate(utilities.DateManager.getNow());
         samples.setStatuslabel("logged");
         samples.setIdbatch(casefile.getIdbatch());
+        System.out.println(casefile.getIdbatch() + " => dans creation samples.setIdbatch ******************************"+samples.getIdbatch());
         samples.setIdcasefile(casefile);
         samples.setIdspecie(casefile.getIdspecie());
         samples.setIdstage(casefile.getIdstage());

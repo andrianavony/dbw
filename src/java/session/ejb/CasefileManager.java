@@ -9,6 +9,7 @@ import entite.Batch;
 import entite.Casefile;
 import error.CasefileWithoutBatchError;
 import error.IdcasefileNotFoundError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.List;
@@ -84,7 +85,7 @@ public class CasefileManager {
         
      
 
-    public entite.Analysis addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) throws SampleWithoutCasefileError {
+    public entite.Analysis addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) throws SampleWithoutCasefileError, ResultsWithoutAnalysisError {
         System.out.println("********************** dans DL manager addResults");
         return samplesManager.addresults(casefileCurrent,idModelanalysis,methodname , mesurename, rawresults);
     }
@@ -112,7 +113,16 @@ public class CasefileManager {
         Casefile c =null;
         setCurrentBatch(idbatch);
         casefileCurrent = casefileUtility.createOrRretriveCasefileForTypeDeCopie(idbatch, typeDeCopie);
-        em.merge(casefileCurrent);
+        /*if(null==casefileCurrent.getIdcasefile()){
+            System.out.println("*****************************************************casefileCurrent avant insertion "+casefileCurrent);
+            
+            em.persist(casefileCurrent);
+            em.flush();
+            System.out.println("*****************************************************casefileCurrent apres insertion "+casefileCurrent);
+        }
+                */
+        em.merge(casefileCurrent);        
+        System.out.println("*****************************************************casefileCurrent vaut "+casefileCurrent);
         return casefileCurrent;
            
     }

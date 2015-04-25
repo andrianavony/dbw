@@ -10,6 +10,7 @@ import entite.Casefile;
 import entite.Samples;
 import entite.Analysis;
 import error.AnalysisWithoutSamplesError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.List;
@@ -43,7 +44,7 @@ public class SamplesManager {
         System.out.println("entrerdans SamplesManager *************");
     }
     
-    public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) throws SampleWithoutCasefileError {
+    public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) throws SampleWithoutCasefileError, ResultsWithoutAnalysisError {
         System.out.println("entrer dans SamplesManager Addresults **************************"+analysisManager);
 
         //setCasefile(casefileCurrent);
@@ -82,11 +83,11 @@ public class SamplesManager {
         return  samplesUtility.createSample(casefileCurrent);
     } 
 
-    public Samples getSampleCurrent(Casefile casefile) throws SampleWithoutCasefileError {
-        setCasefile(casefileCurrent);
-        samplesCurrent=samplesUtility.createOrRetreiveSampleCurrent(casefile);
-        em.merge(casefileCurrent);
-        em.merge(samplesCurrent);
+    public Samples createOrRetreiveSampleCurrent(Casefile casefile) throws SampleWithoutCasefileError {
+        setCasefile(casefile);
+        Samples samples =samplesUtility.createOrRetreiveSampleCurrent(casefile);
+        //em.merge(casefileCurrent);
+        samplesCurrent = em.merge(samples);
         return samplesCurrent; 
     }
 

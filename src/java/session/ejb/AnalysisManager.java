@@ -15,6 +15,7 @@ import entite.Samples;
 import entite.Traca;
 import entite.Wo;
 import error.AnalysisWithoutSamplesError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -123,7 +124,7 @@ public class AnalysisManager {
      * Si c'est la même identifiant limsanalysisid on ajoute sur la même analyse
      * Sinon on crée une autre analyse
     **/
-    public Analysis addresults( BigInteger limsanalysisid, String methodname, String mesureName, String rawresult) throws AnalysisWithoutSamplesError{
+    public Analysis addresults( BigInteger limsanalysisid, String methodname, String mesureName, String rawresult) throws AnalysisWithoutSamplesError, ResultsWithoutAnalysisError{
         if(null==samplesCurrent) {
             throw new AnalysisWithoutSamplesError("No Sample current available ");
         }
@@ -143,7 +144,7 @@ public class AnalysisManager {
         return analysisCurrent;
     }
     
-    public Analysis addresultsToAnalysisCurrent(  String mesureName, String rawresult){
+    public Analysis addresultsToAnalysisCurrent(  String mesureName, String rawresult) throws ResultsWithoutAnalysisError{
         Results r =analysisUtility.addresultsToAnalysis( analysisCurrent, mesureName,  rawresult);
         em.merge(r);
         analysisCurrent.setCopystatus(Constant.HERITAGETODO);
@@ -269,7 +270,7 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
     public void validation(Analysis analyseAValider){
         
         eventOnAnalysis.fire(analyseAValider);
-        System.out.println(" evenement declencher ************");
+        System.out.println(analyseAValider+ " evenement declencher ************ pour <<<<<<<<<<<<<<<<<<<<< "+analyseAValider.getIdbatch());
         //return null;
     }
 
@@ -294,22 +295,9 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
     }
 
 
-    public Batch getIdBatch(Analysis analysis) {        
-        if(analysis == null){
-            return null;
-        }
-        return getBatchByIdbatch(analysis.getIdbatch().getIdbatch());
-    }
+    
 
-    public Batch getBatchByIdbatch(BigInteger bi_idbatch) {
-        Batch idbatch = new Batch(bi_idbatch);
-        TypedQuery<Batch> q =em.createNamedQuery("Batch.findByIdbatch", Batch.class);
-        q.setParameter("idbatch",bi_idbatch );
-        if(q.getResultList().isEmpty()){
-            return null;
-        }
-        return q.getResultList().get(0); 
-    }
+    
     
     /***
      * trouve les lots qui ont été produits a partir du lot du résultats d'analyse
@@ -371,21 +359,28 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
     /****
      * l'analyse est déjà rataccher à un lot, DL, ES
      */
-    public Analysis copierAnalysis(Analysis analysisACopier, Constant.typeDeCopie typeDeCopie, Analysis analyseFille) {
+    public Analysis copierAnalysis(Analysis analysisACopier, Constant.typeDeCopie typeDeCopie, Analysis analyseCopie) throws ResultsWithoutAnalysisError {
+        if(null==analysisACopier){
+            throw new ResultsWithoutAnalysisError(" Demande de creation resultats sans analyses A Copier ");
+        }
+        Analysis analyseFilleTmp=analyseCopie;
         if(typeDeCopie== Constant.typeDeCopie.HERITAGE){
-            analyseFille.setHerited(Boolean.TRUE);
+            analyseFilleTmp.setHerited(Boolean.TRUE);
+            analyseFilleTmp.setCopytype(Constant.HERITAGE);
         }
         
-        analyseFille.setCreationdate(DateManager.getNow());
-        analyseFille.setCopiedfromidbatch(analysisACopier.getIdbatch());
-        analyseFille.setCopiedfromidsample(analysisACopier.getIdsamples());
+        analyseFilleTmp.setCreationdate(DateManager.getNow());
+        analyseFilleTmp.setCopiedfromidbatch(analysisACopier.getIdbatch());
+        analyseFilleTmp.setCopiedfromidsample(analysisACopier.getIdsamples());
         
         List<Results> listResults= analysisUtility.getResultsListFromAnalysis(analysisACopier);
         for(Results resultACopier : listResults){
-            Results c= analysisUtility.copyResultsToAnalysis(analysisCurrent, resultACopier);
-            em.merge(c);
+            Results copyResultTemp= analysisUtility.copyResultsToAnalysis(analyseFilleTmp, resultACopier);
+            Results copyResult = em.merge(copyResultTemp);
+            System.out.println(copyResult.getIdresult() + " merge faite "+copyResult.getIdsamples());
+            
         }
-        analyseFille=em.merge(analyseFille);
+        Analysis analyseFille=em.merge(analyseFilleTmp);
         return analyseFille;
     }
     

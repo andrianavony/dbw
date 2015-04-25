@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,12 +26,14 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import session.ejb.RecopieAnalysis;
 
 /**
  *
  * @author S.ANDRIANAVONY
  */
 @Entity
+@EntityListeners({RecopieAnalysis.class})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT a FROM Analysis a"),
@@ -66,7 +69,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analysis.findByIdsample", query = "SELECT a FROM Analysis a WHERE a.idsamples =:idsamples"),
     @NamedQuery(name = "Analysis.findByIdsampleIdModelanalysis", query = "SELECT a FROM Analysis a WHERE a.idsamples = :idsamples and a.idmodelanalysis.idmodelanalysis=:idmodelanalysis"),
     @NamedQuery(name = "Analysis.findByIdsampleIdModelanalysisIdMethod", query = "SELECT a FROM Analysis a WHERE 1=1 and a.idsamples = :idsamples and a.idmodelanalysis =:idmodelanalysis  and a.idmethod=:idmethod"),
-    @NamedQuery(name = "Analysis.findByLimsanalysisorigrec", query = "SELECT a FROM Analysis a WHERE a.limsanalysisorigrec=:limsanalysisorigrec")
+    @NamedQuery(name = "Analysis.findByCopyStatus", query = "SELECT a FROM Analysis a WHERE a.copystatus=:copystatus"),
+    @NamedQuery(name = "Analysis.findByLimsanalysisorigrec", query = "SELECT a FROM Analysis a WHERE a.limsanalysisorigrec=:limsanalysisorigrec"),
+   
 })
 public class Analysis implements Serializable {
 

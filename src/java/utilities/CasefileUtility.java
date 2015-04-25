@@ -32,13 +32,18 @@ public class CasefileUtility {
     }
     
     public Casefile createOrRretriveFirstElement(List<Casefile> casefilesList, entite.Batch idbatch,Constant.typeDeCopie typeDeCopie){
+        System.out.println(" entrer dans createOrRretriveFirstElement ");
         Casefile c =null;
         if(casefilesList.isEmpty()){
+            System.out.println(" empty createOrRretriveFirstElement ");
             c=createCaseFile(idbatch);
+            System.out.println(" empty apres createOrRretriveFirstElement "+c);
             c.setCasefiletype(typeDeCopie.toString());
+            System.out.println(" empty apres createOrRretriveFirstElement "+c.getCasefiletype());
         } else {
             c=casefilesList.get(0);
         }
+        System.out.println(" createOrRretriveFirstElement "+c.getCasefiletype());
         return c;
     }
     
@@ -126,7 +131,7 @@ public class CasefileUtility {
         casefileCurrent.setIdspecie(batchCurrent.getIdspecie());
         casefileCurrent.setIdstage(batchCurrent.getIdstage());
         casefileCurrent.setLimsbatchid(batchCurrent.getLimsbatchid());
-        casefileCurrent.setLimsfolderno(batchCurrent.getLimsfolderno());
+        casefileCurrent.setLimsfolderno(batchCurrent.getLimsfolderno());       
     }
 
     public Casefile createCaseFile(Batch batch, String limsfolderno, Integer numdemandelims) {

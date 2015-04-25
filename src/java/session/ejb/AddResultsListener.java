@@ -40,8 +40,9 @@ public class AddResultsListener {
     
     //private entite.Results resultatInserted;
     
+    @Inject RecopieAnalysis recopieAnalysis;
    
-    //@Inject 
+    @Inject 
     //@EJB
              public Find find;
     
@@ -51,7 +52,7 @@ public class AddResultsListener {
     public AddResultsListener(){
         System.out.println(" Creation AddResultsListener debut =================================================**********************************************"+find);
         
-        
+        /*
         try {
            
             find = InitialContext.doLookup("java:global/classes/Find!session.ejb.Find");//java:global/classes/Find!session.ejb.Find, java:global/classes/Find
@@ -60,7 +61,7 @@ public class AddResultsListener {
         }
          System.out.println(" Creation AddResultsListener FIN =================================================**********************************************"+find);
 //         System.out.println(" Ceration AddResultsListener =========================================="+find.em);
-        
+       */ 
     
     }
     
@@ -69,15 +70,15 @@ public class AddResultsListener {
         System.out.println(" Post creation Ceration AddResultsListener =================================================***************************************"+find);
     }
         
-    @PostPersist
+    
     public void heritageDesResultats(entite.Results resultatInserted){
         
         System.out.println(" saisie résultats de "+resultatInserted.getIdresult()+ " avec la valeur " + resultatInserted.getRawresults());
        
 
-        System.out.println(" Find dans AddResultsListener =====================================================");
-        System.out.println(" Find dans AddResultsListener=====================================================************************************************" + find);
-        System.out.println(" Find dans AddResultsListener=====================================================");
+        System.out.println(" *************** Saotra Find dans AddResultsListener ====================================================="+em);
+        System.out.println(" *************** Saotra Find dans AddResultsListener=====================================================************************************************" + find);
+        System.out.println(" *************** Saotra Find dans AddResultsListener=====================================================");
 
        Batch batch= find.getIdBatch(resultatInserted);
         List<entite.Batch> descendantsList= find.getListBatchDescendants(batch);

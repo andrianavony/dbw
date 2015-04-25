@@ -11,6 +11,7 @@ import entite.Modelanalysis;
 import entite.Results;
 import entite.Samples;
 import error.AnalysisWithoutSamplesError;
+import error.ResultsWithoutAnalysisError;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -182,6 +183,7 @@ public class AnalysisUtility {
     }
 
     public Analysis createAnalysis(Samples samples, BigInteger limsidanalysis, String methodname) throws AnalysisWithoutSamplesError {
+        System.out.println("dans createAnalysis *************************** "+samples.getIdbatch());
        if(null == samples){
            throw new AnalysisWithoutSamplesError(" Sample cannot be null ");
        }
@@ -258,7 +260,10 @@ public class AnalysisUtility {
             return methodList;
     }  
 
-    public Results addresultsToAnalysis(Analysis analysisCurrent, String mesureName, String rawresult) {
+    public Results addresultsToAnalysis(Analysis analysisCurrent, String mesureName, String rawresult) throws ResultsWithoutAnalysisError {
+        if(null==analysisCurrent){
+            throw new ResultsWithoutAnalysisError(" Demande de creation resultats sans analyses");
+        }
         Results r = new Results();
         r.setDateofentry(DateManager.getNow());
         r.setIdbatch(analysisCurrent.getIdbatch());
@@ -300,6 +305,7 @@ public class AnalysisUtility {
     }
 
     public  Analysis createAnalysis(Samples samplesCurrent, Modelanalysis idmodelanalysis, Method idmethod, BigInteger limsidanalysis ) throws AnalysisWithoutSamplesError {
+        System.out.println("dans createAnalysis samplesCurrent "+samplesCurrent.getIdbatch());
         if(null == samplesCurrent){
             throw new AnalysisWithoutSamplesError("Cannot create a analysis with a null Sample ");
         }
@@ -318,7 +324,10 @@ public class AnalysisUtility {
         return a;
     }
 
-    public Results copyResultsToAnalysis(Analysis analysisCurrent, Results resultACopier) {
+    public Results copyResultsToAnalysis(Analysis analysisCurrent, Results resultACopier) throws ResultsWithoutAnalysisError {
+        if(null==analysisCurrent){
+            throw new ResultsWithoutAnalysisError(" Demande de creation resultats sans analyses");
+        }
         String mesureName=resultACopier.getMeasurename();
         String rawresult=resultACopier.getRawresults();
         return addresultsToAnalysis(analysisCurrent,  mesureName,  rawresult);
