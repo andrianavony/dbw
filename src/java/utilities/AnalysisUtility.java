@@ -37,7 +37,7 @@ public class AnalysisUtility {
     @Inject ResultsUtility resultsUtility;
     
     public AnalysisUtility(){
-        System.out.println("Creation analysis uti =========================================================");
+        //System.out.println("Creation analysis uti =========================================================");
     }
 
      public Analysis createAnalysisViaInfoLims(Samples samplesCurrent, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname,  String methodname, BigInteger limsidseries) 
@@ -58,7 +58,7 @@ public class AnalysisUtility {
      public Analysis setDifferentInfo(Samples samplesCurrent,Method method) {
         Analysis analysis=new Analysis();
         setInfoFromSample(analysis, samplesCurrent);
-        System.out.println(" *************** method.getIdmodelanalysis()  "+method.getIdmodelanalysis());
+        //System.out.println(" *************** method.getIdmodelanalysis()  "+method.getIdmodelanalysis());
         setInfoFromModeleAnalysis(analysis, method.getIdmodelanalysis());
         setInfoFromMethod(analysis,  method);
         //analysisCurrent=em.merge(analysis);
@@ -66,7 +66,7 @@ public class AnalysisUtility {
     }
     
      public Analysis setInfoFromModeleAnalysis(Analysis analysis, Modelanalysis modelanalysis) {
-        System.out.println(" ==<= modelanalysis"+modelanalysis);
+        //System.out.println(" ==<= modelanalysis"+modelanalysis);
         analysis.setIdmodelanalysis(modelanalysis);
         analysis.setAnalysisname(modelanalysis.getAnalysisname());
         analysis.setOfficialename(modelanalysis.getOfficialname());
@@ -75,10 +75,10 @@ public class AnalysisUtility {
     }
      
      public Analysis setInfoFromMethod(Analysis analysis, Method method) {
-         System.out.println(" dans setInfoFromMethod debut "+analysis.getIdsamples() );
+         //System.out.println(" dans setInfoFromMethod debut "+analysis.getIdsamples() );
         analysis.setIdmethod(method);
         analysis.setMethodname(method.getMethodname());
-         System.out.println(" dans setInfoFromMethod avant retour "+analysis.getIdsamples() );
+         //System.out.println(" dans setInfoFromMethod avant retour "+analysis.getIdsamples() );
          analysis.setCreationdate(DateManager.getNow());
         return analysis;
     }
@@ -183,14 +183,14 @@ public class AnalysisUtility {
     }
 
     public Analysis createAnalysis(Samples samples, BigInteger limsidanalysis, String methodname) throws AnalysisWithoutSamplesError {
-        System.out.println("dans createAnalysis *************************** "+samples.getIdbatch());
+        //System.out.println("dans createAnalysis *************************** "+samples.getIdbatch());
        if(null == samples){
            throw new AnalysisWithoutSamplesError(" Sample cannot be null ");
        }
          Method method = createOrRetreiveMethodeFromLims(limsidanalysis, methodname);
-         System.out.println(" dans Analysis Utilitie createAnalysis "+method);
+         //System.out.println(" dans Analysis Utilitie createAnalysis "+method);
          Modelanalysis idmodelanalysis = createOrRetreiveModelanalysisFromLims(limsidanalysis);
-         System.out.println(" dans Analysis Utilitie createAnalysis "+ idmodelanalysis);
+         //System.out.println(" dans Analysis Utilitie createAnalysis "+ idmodelanalysis);
          
          return createAnalysis(samples, idmodelanalysis, method, limsidanalysis);
     }
@@ -200,7 +200,7 @@ public class AnalysisUtility {
         
         //em.merge(modelanalysis);
         
-        System.out.println("modelanalysis ************************* "+modelanalysis.getIdmodelanalysis() );
+        //System.out.println("modelanalysis ************************* "+modelanalysis.getIdmodelanalysis() );
         
         List<Method> methodsList = fingExistingMethodFromLims(limsanalysisid,  methodname);
         
@@ -211,10 +211,10 @@ public class AnalysisUtility {
             method.setLimsanalysisid(limsanalysisid);
             method=em.merge(method);
             em.flush();
-            System.out.println(" ............................ lors de la creation de  la methode Idmethod="+method.getIdmethod()+"    "+method.getIdmodelanalysis().getIdmodelanalysis());
+            //System.out.println(" ............................ lors de la creation de  la methode Idmethod="+method.getIdmethod()+"    "+method.getIdmodelanalysis().getIdmodelanalysis());
             return method;
         }else {
-            System.out.println("****************** "+methodsList.get(0));
+            //System.out.println("****************** "+methodsList.get(0));
             Method methodSansModeleanalyse = methodsList.get(0);
             methodSansModeleanalyse.setIdmodelanalysis(modelanalysis);
             em.merge(methodSansModeleanalyse);
@@ -227,7 +227,7 @@ public class AnalysisUtility {
         if(modelanalysisesList.isEmpty()){
             return createModelAnalysis(limsidanalysis);
         }else{
-            System.out.println(" modelanalysisesList.get(0) "+modelanalysisesList.get(0));
+            //System.out.println(" modelanalysisesList.get(0) "+modelanalysisesList.get(0));
             return modelanalysisesList.get(0);
         }
             
@@ -235,11 +235,11 @@ public class AnalysisUtility {
      public List<Modelanalysis> fingExistingModelanalysisFromLims(BigInteger limsidanalysis){
         TypedQuery<Modelanalysis> query ;
         Contracts.assertNotNull(em);
-        System.out.println("Em not null *********** limsidanalysis "+limsidanalysis);
+        //System.out.println("Em not null *********** limsidanalysis "+limsidanalysis);
         query= em.createNamedQuery("Modelanalysis.findByLimsidanalysis", Modelanalysis.class);
             query.setParameter("limsidanalysis",limsidanalysis);
             List<Modelanalysis> modelanalysisesList =query.getResultList();
-            System.out.println("modelanalysisesList.size "+modelanalysisesList.size());
+            //System.out.println("modelanalysisesList.size "+modelanalysisesList.size());
             return modelanalysisesList;
     }    
     
@@ -248,7 +248,7 @@ public class AnalysisUtility {
         modelanalysis.setLimsidanalysis(limsidanalysis);
         modelanalysis=em.merge(modelanalysis);
         em.flush();
-        System.out.println(modelanalysis.getIdmodelanalysis() + " *********** modelanalysis ******************** "+modelanalysis.getLimsidanalysis());
+        //System.out.println(modelanalysis.getIdmodelanalysis() + " *********** modelanalysis ******************** "+modelanalysis.getLimsidanalysis());
         return modelanalysis;
     }
     public List<Method> fingExistingMethodFromLims(BigInteger limsanalysisid, String methodname){
@@ -270,7 +270,7 @@ public class AnalysisUtility {
         r.setMeasurename(mesureName);
         r.setRawresults(rawresult);
         r.setIdanalysis(analysisCurrent);
-        System.out.println("************ Creation de nouvelle annalyse dans dans addresultsToAnalysis "+r);
+        //System.out.println("************ Creation de nouvelle annalyse dans dans addresultsToAnalysis "+r);
         return r;
     }
     
@@ -279,7 +279,7 @@ public class AnalysisUtility {
         return createAnalysis(samplesCurrent, resultatInserted.getIdmodelanalysis(),resultatInserted.getIdmethod(), limsidanalysis);
         
     }
-  public Results getOrCreateAnalysisViaLimsAnalysisOrigrec(Analysis analysisCurrent, String measurename, BigInteger limsmeasureid, String rawresults, String formated, Short repetition, String username, Date dateofentry, String statutsLabel) {
+  public Results createResultViaLimsAnalysisOrigrec(Analysis analysisCurrent, String measurename, BigInteger limsmeasureid, String rawresults, String formated, Short repetition, String username, Date dateofentry, String statutsLabel) {
         
         entite.Results r = new Results();
         r.setIdanalysis(analysisCurrent);
@@ -305,12 +305,12 @@ public class AnalysisUtility {
     }
 
     public  Analysis createAnalysis(Samples samplesCurrent, Modelanalysis idmodelanalysis, Method idmethod, BigInteger limsidanalysis ) throws AnalysisWithoutSamplesError {
-        System.out.println("dans createAnalysis samplesCurrent "+samplesCurrent.getIdbatch());
+        //System.out.println("dans createAnalysis samplesCurrent "+samplesCurrent.getIdbatch());
         if(null == samplesCurrent){
             throw new AnalysisWithoutSamplesError("Cannot create a analysis with a null Sample ");
         }
         Analysis a =new Analysis();
-        System.out.println(" dans Analysis Utilitie createAnalysis a (null OK) "+a.getIdsamples());
+        //System.out.println(" dans Analysis Utilitie createAnalysis a (null OK) "+a.getIdsamples());
         
         a=setInfoFromSample(a , samplesCurrent);
         System.out.println(" dans Analysis Utilitie createAnalysis a "+a.getIdsamples());

@@ -73,8 +73,8 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     
     @Override
     public Batch createOrRetrieveBatch(String batchname, String articlename, String idcompany, BigInteger limsbatchid) {
-        Batch b=batchManager.createOrRetrieveBatch(batchname, articlename, idcompany, limsbatchid);       
-        b=em.merge(b);
+        Batch bTemp=batchManager.createOrRetrieveBatch(batchname, articlename, idcompany, limsbatchid);       
+        Batch b=em.merge(bTemp);
         return b;
     }
     
@@ -86,35 +86,36 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
     
     @Override
     public Batch createOrRetrieveBatch(String batchname, Article idarticle, String idcompany, BigInteger limsbatchid) {
-        Batch b=batchManager.createOrRetrieveBatch( batchname,  idarticle,  idcompany,  limsbatchid);
-        return em.merge(b);
+        Batch bTemp =batchManager.createOrRetrieveBatch( batchname,  idarticle,  idcompany,  limsbatchid);
+        Batch b=em.merge(bTemp);
+        return b;
     }
 
     @Override
     public Casefile retrieveCasefile(BigInteger idcasefile) {
-        Casefile c=null;
+        Casefile cTemp=null;
         
         if(idcasefile==null){
             return null;
         }
         
-        c=caseFileFind.findExistingCasefile (idcasefile);
+        cTemp=caseFileFind.findExistingCasefile (idcasefile);
         
-        if(null==c){
+        if(null==cTemp){
             return null;
         }
         
-        c=em.merge(c);
+        Casefile c=em.merge(cTemp);
         return c;
     }
     
     @Override
     public entite.Casefile createOrRretriveCasefileForTypeDeCopie(entite.Batch idbatch, Constant.typeDeCopie typeDeCopie){
-        Casefile c=null;
+        Casefile cTemp=null;
         casefileManager.setCurrentBatch(idbatch);
-        c= casefileManager.createOrRretriveCasefileForTypeDeCopie(idbatch,typeDeCopie);
-        c.setCasefiletype(typeDeCopie.toString());
-        c=em.merge(c);
+        cTemp= casefileManager.createOrRretriveCasefileForTypeDeCopie(idbatch,typeDeCopie);
+        cTemp.setCasefiletype(typeDeCopie.toString());
+        Casefile c=em.merge(cTemp);
         return c;
     }
 
@@ -125,9 +126,11 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
 
     @Override
     public Samples createSample(Casefile idcasefile, String limssampleid) throws SampleWithoutCasefileError {
-        Samples s =null;
+        Samples sTemp =null;
+        System.out.println(idcasefile + " creation sample avec idcasefile "+ limssampleid);
         samplesManager.setCasefile(idcasefile);
-        s =samplesManager.createSamples(limssampleid);
+        sTemp =samplesManager.createSamples(limssampleid);
+        Samples s = em.merge(sTemp);
         return s;
     }
     
@@ -177,6 +180,7 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
      * il faut que l analyse existe déjà
      */
     public entite.Analysis saisirResultatIssusLims(entite.Analysis idanalysis, BigInteger limsanalysisorigrec, String measurename, BigInteger limsmeasureid , String rawresults,String formated, Short repetition,  String username, Date dateofentry, String statutsLabel){
+        System.out.println(" ***************************** dans saisirResultatIssusLims "+idanalysis.getIdanalysis()+" measurename "+ measurename+ " rawresults "+rawresults);
         Analysis a=idanalysis;
         if(null==idanalysis){
             a=analysisManager.getAnalysisViaLimsAnalysisOrigrec( limsanalysisorigrec);
@@ -251,4 +255,16 @@ public class FacadeSaisieResultats implements I_FacadeSaisieResultats{
         System.out.println("dans getSampleCurrent casefileHeritage "+casefileHeritage);
        return samplesManager.createOrRetreiveSampleCurrent(casefileHeritage);
     }
+    
+    @Override
+    public void doHeritage() {
+        System.out.println(" dans facade demande de do heritage");
+        analysisManager.validation();
+    }
+    
+    @Override
+    public entite.Analysis getAnalysisCurrent(){
+        return analysisManager.analysisCurrent;
+    }
+    
 }

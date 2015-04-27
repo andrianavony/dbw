@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package session.ejb;
+package objet.metier.creation;
 
 import entite.Article;
 import entite.Batch;
@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.ejb.BatchManager;
 import utilities.ForItem;
 
 /**

@@ -13,6 +13,7 @@ import entite.Company;
 import entite.Variety;
 import error.BatchIdNotFindError;
 import error.CasefileWithoutBatchError;
+import error.ResultsWithoutAnalysisError;
 import error.SampleWithoutCasefileError;
 import java.math.BigInteger;
 import java.util.List;
@@ -91,7 +92,7 @@ public class BatchManager {
 
     public Batch createOrUpdateBatch(String idvariety, String stageLabel, String idgeneration, String batchName, String compagnyName) {    
         Article article=articleUtility.getArticleByVarietyStageLagel(idvariety, stageLabel, idgeneration);
-        System.out.println(stageLabel + " stageLabel => "+article);
+        //System.out.println(stageLabel + " stageLabel => "+article);
         if(null==article){
             return null;
         }
@@ -128,7 +129,7 @@ public class BatchManager {
         return batchCurrent;
     }
 
-    public entite.Analysis addresults( BigInteger idModelanalysis,String methodname, String mesurename, String rawresults) throws SampleWithoutCasefileError, CasefileWithoutBatchError {
+    public entite.Analysis addresults( BigInteger idModelanalysis,String methodname, String mesurename, String rawresults) throws SampleWithoutCasefileError, CasefileWithoutBatchError, ResultsWithoutAnalysisError {
         entite.Casefile casefile= createOrRetriveCaseFileCurrent(); 
         return casefileManagerCurrent.addresults( idModelanalysis, methodname, mesurename, rawresults);
     }

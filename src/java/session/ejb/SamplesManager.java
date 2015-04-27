@@ -41,17 +41,15 @@ public class SamplesManager {
     Casefile casefileCurrent;
             
     public SamplesManager (){
-        System.out.println("entrerdans SamplesManager *************");
+        //System.out.println("entrerdans SamplesManager *************");
     }
     
     public entite.Analysis addresults(Casefile casefileCurrent, BigInteger idModelanalysis, String methodname, String mesureName, String rawresult) throws SampleWithoutCasefileError, ResultsWithoutAnalysisError {
-        System.out.println("entrer dans SamplesManager Addresults **************************"+analysisManager);
-
+        
         //setCasefile(casefileCurrent);
         if(null==samplesCurrent){
             samplesCurrent=samplesUtility.createOrRetreiveSampleCurrent(casefileCurrent);
         }
-        System.out.println(" SamplesManager Addresults ****************************************"+samplesCurrent);
         analysisManager.setSamplesCurrent(samplesCurrent);
         Analysis a =null;
         try {
@@ -68,14 +66,16 @@ public class SamplesManager {
     }
     
     public Samples createSamples(String limssampleid) throws SampleWithoutCasefileError {
-        System.out.println("Dans create sample ******************************");
-        samplesCurrent = createSamplesWithLimssampleid(limssampleid);
-        return em.merge(samplesCurrent);
+        Samples samples = createSamplesWithLimssampleid(limssampleid);
+         samplesCurrent = em.merge(samples);
+         //System.out.println(samplesCurrent +" on retourne pour "+samplesCurrent.getLimssampleid());
+         return samplesCurrent;
     }
     
     public Samples createSamplesWithLimssampleid(String limssampleid) throws SampleWithoutCasefileError {
         Samples s =createSamples();
         s.setLimssampleid(limssampleid);
+        em.persist(s);
         return s;
     }
         

@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import objet.metier.excel.TC;
 import entite.Article;
 import entite.Generation;
 import entite.Specie;

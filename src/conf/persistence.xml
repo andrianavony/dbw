@@ -5,9 +5,9 @@
     <jta-data-source>ticketJDBCResource</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <!--property name="eclipselink.logging.level.sql" value="FINE"/>
       <property name="eclipselink.logging.parameters" value="true"/>
-      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.show_sql" value="true"/-->
     </properties>
   </persistence-unit>
 </persistence>

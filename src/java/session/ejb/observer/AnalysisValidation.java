@@ -27,7 +27,7 @@ public class AnalysisValidation {
 
     public void onAnalysis(@Observes(during = TransactionPhase.AFTER_SUCCESS) Analysis analysisEvent){
         //analysisManager.doOnAnalysis(event);
-        System.out.println(recopieAnalysis + " dans Facade declenchement evenement " + analysisEvent.getIdanalysis());
+        //System.out.println(recopieAnalysis + " dans Facade declenchement evenement " + analysisEvent.getIdanalysis());
         try {
             //if(analysisEvent.getHerited()){
             recopieAnalysis.doHeritage(analysisEvent);

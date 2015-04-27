@@ -67,7 +67,8 @@ public class AnalysisManagerNGTest {
         AnalysisManager instance = (AnalysisManager)container.getContext().lookup("java:global/classes/AnalysisManager");
         Analysis expResult = null;
         //Analysis result = 
-                instance.validation(analysisACopier);
+        instance.setAnalysis(analysisACopier);
+                instance.validation();
         //assertEquals(result, expResult);
         } finally {container.close();}
         

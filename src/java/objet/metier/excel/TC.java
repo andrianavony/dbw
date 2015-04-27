@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package session.ejb;
+package objet.metier.excel;
 
 import utilities.ArticleUtility;
 import entite.Article;

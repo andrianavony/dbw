@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import objet.metier.excel.TracaBean;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import static org.testng.Assert.*;

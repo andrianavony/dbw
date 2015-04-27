@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import objet.metier.creation.LectureResultesTemp;
 import javax.ejb.embeddable.EJBContainer;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;

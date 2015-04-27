@@ -10,7 +10,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import session.ejb.TC;
+import objet.metier.excel.TC;
 
 /**
  *

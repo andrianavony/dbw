@@ -54,14 +54,14 @@ public class CasefileManager {
     }
     
     public Casefile createCaseFilexxx() {
-        System.out.println("passe dans creation DL ******************");
+        //System.out.println("passe dans creation DL ******************");
         casefileCurrent=new Casefile();
         setInfoFromBatchCurrent();
         /*
         casefileCurrent =em.merge(casefileCurrent);
         samplesManager.setCasefile(casefileCurrent);
         //em.flush();
-        System.out.println("casefileCurrent "+casefileCurrent.getIdcasefile());
+        //System.out.println("casefileCurrent "+casefileCurrent.getIdcasefile());
         */        
         return merge ();
     }
@@ -86,7 +86,7 @@ public class CasefileManager {
      
 
     public entite.Analysis addresults(BigInteger idModelanalysis, String methodname, String mesurename, String rawresults) throws SampleWithoutCasefileError, ResultsWithoutAnalysisError {
-        System.out.println("********************** dans DL manager addResults");
+        //System.out.println("********************** dans DL manager addResults");
         return samplesManager.addresults(casefileCurrent,idModelanalysis,methodname , mesurename, rawresults);
     }
 
@@ -114,15 +114,15 @@ public class CasefileManager {
         setCurrentBatch(idbatch);
         casefileCurrent = casefileUtility.createOrRretriveCasefileForTypeDeCopie(idbatch, typeDeCopie);
         /*if(null==casefileCurrent.getIdcasefile()){
-            System.out.println("*****************************************************casefileCurrent avant insertion "+casefileCurrent);
+            //System.out.println("*****************************************************casefileCurrent avant insertion "+casefileCurrent);
             
             em.persist(casefileCurrent);
             em.flush();
-            System.out.println("*****************************************************casefileCurrent apres insertion "+casefileCurrent);
+            //System.out.println("*****************************************************casefileCurrent apres insertion "+casefileCurrent);
         }
                 */
         em.merge(casefileCurrent);        
-        System.out.println("*****************************************************casefileCurrent vaut "+casefileCurrent);
+        //System.out.println("*****************************************************casefileCurrent vaut "+casefileCurrent);
         return casefileCurrent;
            
     }

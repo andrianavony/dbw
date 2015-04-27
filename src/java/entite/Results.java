@@ -33,7 +33,7 @@ import session.ejb.AddResultsListener;
  *
  * @author S.ANDRIANAVONY
  */
-@EntityListeners({AddResultsListener.class})
+//@EntityListeners({AddResultsListener.class})
 @Entity
 @Table(name = "results")
 @XmlRootElement

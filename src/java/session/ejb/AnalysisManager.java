@@ -114,7 +114,7 @@ public class AnalysisManager {
         } catch (AnalysisWithoutSamplesError ex) {
             throw new AnalysisWithoutSamplesError("Sample Current is null");
         }
-        System.out.println(" dans createAnalysis ***************** " +a);
+        //System.out.println(" dans createAnalysis ***************** " +a);
         return em.merge(a);
     }
     
@@ -130,12 +130,12 @@ public class AnalysisManager {
         }
         
         if(null==analysisCurrent){
-            System.out.println("Creation nouvelle analyses analyses car null ");
+            //System.out.println("Creation nouvelle analyses analyses car null ");
             analysisCurrent = createAnalysis(limsanalysisid, methodname);
             
         }else{
             if(! (limsanalysisid.compareTo(analysisCurrent.getLimsidanalysis())==0)){
-                System.out.println(limsanalysisid +" Creation nouvelle analyses analyses car différente "+analysisCurrent.getLimsidanalysis());
+                //System.out.println(limsanalysisid +" Creation nouvelle analyses analyses car différente "+analysisCurrent.getLimsidanalysis());
                 analysisCurrent = createAnalysis(limsanalysisid, methodname);
             }
         }
@@ -237,7 +237,6 @@ public class AnalysisManager {
 
     public void setAnalysis(Analysis analysis) {
         samplesCurrent=analysis.getIdsamples();
-        Contracts.assertNotNull(samplesCurrent);
         analysisCurrent=analysis;
     }
 
@@ -254,24 +253,26 @@ public class AnalysisManager {
 public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname, String methodname, BigInteger limsidseries) throws AnalysisWithoutSamplesError {
         
         Analysis a= analysisUtility.getOrCreateAnalysisViaLimsAnalysisOrigrec(idsamples, limsanalysisorigrec, limsanalysisid, analysisname, methodname, limsidseries);
-        
-        return em.merge(a);           
+        analysisCurrent=em.merge(a);
+        return analysisCurrent;            
         }
 
     public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(String measurename, BigInteger limsmeasureid, String rawresults, String formated, Short repetition, String username, Date dateofentry, String statutsLabel) {
-        Results r = analysisUtility.getOrCreateAnalysisViaLimsAnalysisOrigrec(analysisCurrent, measurename, limsmeasureid, rawresults, formated, repetition, username, dateofentry, statutsLabel);
-        em.merge(r);
-        return em.merge(analysisCurrent);
+        Results r = analysisUtility.createResultViaLimsAnalysisOrigrec(analysisCurrent, measurename, limsmeasureid, rawresults, formated, repetition, username, dateofentry, statutsLabel);
+        em.persist(r);
+        Analysis a = em.merge(analysisCurrent);
+        return a;
         
     }
 
     
     
-    public void validation(Analysis analyseAValider){
-        
-        eventOnAnalysis.fire(analyseAValider);
-        System.out.println(analyseAValider+ " evenement declencher ************ pour <<<<<<<<<<<<<<<<<<<<< "+analyseAValider.getIdbatch());
-        //return null;
+    public void validation(){
+                
+        //em.flush();
+        System.out.println(" dans analyse manager fire event on analysisCurrent + "+analysisCurrent.getIdanalysis());
+        eventOnAnalysis.fire(analysisCurrent);
+        System.out.println("dans analyse manager APRES fire event on analysisCurrent  ");
     }
 
     public Analysis createAnalysisViaInfoLims(Samples idsamples, BigInteger limsanalysisorigrec, BigInteger limsanalysisid, String analysisname, String methodname, BigInteger limsidseries) 
@@ -280,18 +281,24 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
         if(null== idsamples){
             throw new AnalysisWithoutSamplesError("Dans Creation Analysis Via Info LIMS sample is null ");
         }
-        return analysisUtility.createAnalysisViaInfoLims(samplesCurrent, limsanalysisorigrec, limsanalysisid, analysisname, methodname, limsidseries);
+        analysisCurrent = analysisUtility.createAnalysisViaInfoLims(samplesCurrent, limsanalysisorigrec, limsanalysisid, analysisname, methodname, limsidseries);
+        em.persist(analysisCurrent);
+        em.flush();
+        return analysisCurrent;
     }
 
      public Analysis createAnalysisFromResults(Samples sample, Results resultatInserted) throws AnalysisWithoutSamplesError {
         samplesCurrent = sample;
-        Analysis a =analysisUtility.createAnalysisFromResults(samplesCurrent, resultatInserted, resultatInserted.getLimsidanalysis());
-        return em.merge(a);
+        analysisCurrent =analysisUtility.createAnalysisFromResults(samplesCurrent, resultatInserted, resultatInserted.getLimsidanalysis());
+        em.persist(analysisCurrent);
+        
+        return analysisCurrent;
     }
      
      public Analysis getAnalysisViaLimsAnalysisOrigrec( BigInteger limsanalysisorigrec){
-        Analysis a = analysisUtility.getAnalysisViaLimsAnalysisOrigrec(limsanalysisorigrec);
-        return em.merge(a);
+        analysisCurrent = analysisUtility.getAnalysisViaLimsAnalysisOrigrec(limsanalysisorigrec);
+        em.persist(analysisCurrent);
+        return analysisCurrent;
     }
 
 
@@ -304,8 +311,7 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
      * OF028712
      **/
     public List<entite.Batch> getListBatchDescendants(Batch lotParent){
-         System.out.println("*********** Dans FIND **************============================================"+em);
-        List<entite.Traca> woProduction = listeWoProduction (lotParent);
+         List<entite.Traca> woProduction = listeWoProduction (lotParent);
         if(null==woProduction){
             return null;
         }
@@ -315,28 +321,28 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
         
         List<entite.Batch> descendants = null; //new ArrayList<>(woProduction.size());
         for(entite.Traca traca : woProduction){
-            System.out.println(" traca trouver "+traca );
+            //System.out.println(" traca trouver "+traca );
             descendants=getBatchFromTraca(traca);
-            System.out.println("descendants "+descendants.size());
+            
         }
         
         return descendants;
     }
     
     public List<entite.Traca> listeWoProduction(Batch batchProduit) {
-        System.out.println("*********** Dans FIND **************============================================"+em);
+        
         if(null == batchProduit){
             return null;
         }
         Wo idWo= batchProduit.getIdwo();
         Company idcompany =batchProduit.getIdcompany();
-        System.out.println("idWo "+idWo);
-        System.out.println("idcompany"+idcompany);
+        //System.out.println("idWo "+idWo);
+        //System.out.println("idcompany"+idcompany);
         TypedQuery<entite.Traca> q = em.createNamedQuery("Traca.findByIdwo_Production", entite.Traca.class);
         q.setParameter("idwo", idWo); 
         q.setParameter("idcompany", idcompany.getIdcompany());
         List<entite.Traca> tmp=q.getResultList();
-        System.out.println("q "+q);
+        //System.out.println("q "+q);
         return tmp;
         
     }
@@ -347,7 +353,7 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
         q.setParameter("idarticle", traca.getIdarticle()); 
         q.setParameter("idcompany", traca.getIdcompany());
         String idwo =traca.getIdwo().getWoPK().getIdwo();
-        System.out.println("idwo "+idwo);
+        //System.out.println("idwo "+idwo);
         q.setParameter("idwo", traca.getIdwo());
         
         return q.getResultList(); 
@@ -377,7 +383,7 @@ public Analysis getOrCreateAnalysisViaLimsAnalysisOrigrec(Samples idsamples, Big
         for(Results resultACopier : listResults){
             Results copyResultTemp= analysisUtility.copyResultsToAnalysis(analyseFilleTmp, resultACopier);
             Results copyResult = em.merge(copyResultTemp);
-            System.out.println(copyResult.getIdresult() + " merge faite "+copyResult.getIdsamples());
+            //System.out.println(copyResult.getIdresult() + " merge faite "+copyResult.getIdsamples());
             
         }
         Analysis analyseFille=em.merge(analyseFilleTmp);

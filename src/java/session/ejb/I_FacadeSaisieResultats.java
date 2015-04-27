@@ -121,6 +121,13 @@ public interface I_FacadeSaisieResultats {
 
     public Samples createOrRetreiveSampleCurrent(Casefile casefileHeritage) throws SampleWithoutCasefileError ;
 
+    /****
+     * facade saisie resultat a une analyse courrante qu'on demande de faire l heritage
+     */
+    public void doHeritage();
+
+    public Analysis getAnalysisCurrent();
+
     
     
 }

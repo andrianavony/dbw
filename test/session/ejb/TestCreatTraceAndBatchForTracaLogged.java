@@ -5,6 +5,7 @@
  */
 package session.ejb;
 
+import objet.metier.creation.CreateTracaLogged;
 import entite.Article;
 import javax.ejb.embeddable.EJBContainer;
 import static org.testng.Assert.*;

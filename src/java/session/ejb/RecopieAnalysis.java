@@ -57,7 +57,7 @@ public class RecopieAnalysis {
             Logger.getLogger(RecopieAnalysis.class.getName()).log(Level.SEVERE, null, ex);
         }
         for(Analysis a : analysisesList){
-            System.out.println(" Insertion faite pour "+a);
+            //System.out.println(" Insertion faite pour "+a);
         }
         
     }
@@ -89,18 +89,18 @@ public class RecopieAnalysis {
     
     public Samples createCasefileSample(Batch batch) throws SampleWithoutCasefileError {
         Samples samplesCurrentDLBatchDescendants = null;
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Insertion heritage dans "+batch);
+        //System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        //System.out.println("Insertion heritage dans "+batch);
         entite.Casefile casefileHeritageTmp = facadeSaisieResultats.createOrRretriveCasefileForTypeDeCopie(batch, Constant.typeDeCopie.HERITAGE);
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<<<<<<<<<<<<<<<<<<<<< AVANT MERGE");
+        //System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<<<<<<<<<<<<<<<<<<<<< AVANT MERGE");
         entite.Casefile casefileHeritage= em.merge(casefileHeritageTmp);
-        System.out.println(casefileHeritage.getIdcasefile() + " case file Heritage "+casefileHeritage.getIdbatch());
-        System.out.println(casefileHeritageTmp.getIdcasefile() + " case file HeritageTMp "+casefileHeritageTmp.getIdbatch());
+        //System.out.println(casefileHeritage.getIdcasefile() + " case file Heritage "+casefileHeritage.getIdbatch());
+        //System.out.println(casefileHeritageTmp.getIdcasefile() + " case file HeritageTMp "+casefileHeritageTmp.getIdbatch());
         
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<<<<<<<<<<<<<<<<<<<<< AVANT createOrRetreiveSampleCurrent");
+        //System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<<<<<<<<<<<<<<<<<<<<< AVANT createOrRetreiveSampleCurrent");
         Samples samplesCurrentDLBatchDescendantsTmp = facadeSaisieResultats.createOrRetreiveSampleCurrent(casefileHeritage);
-        System.out.println(" Veriufication Sample "+samplesCurrentDLBatchDescendantsTmp.getIdbatch());
-        System.out.println("  "+samplesCurrentDLBatchDescendantsTmp.getCreationdate());
+        //System.out.println(" Veriufication Sample "+samplesCurrentDLBatchDescendantsTmp.getIdbatch());
+        //System.out.println("  "+samplesCurrentDLBatchDescendantsTmp.getCreationdate());
         samplesCurrentDLBatchDescendants=em.merge(samplesCurrentDLBatchDescendantsTmp);
         
         return samplesCurrentDLBatchDescendants;
@@ -111,7 +111,7 @@ public class RecopieAnalysis {
      * @throws il n'est pas normale qu'on ne puisse pas ajouter DL, un ES ou une analyses sue le DL
      */  
     public List<Analysis> doHeritage(Analysis analysisACopier) throws AnalysisWithoutSamplesError, SampleWithoutCasefileError {
-        System.out.println("**************************Heritage "+analysisACopier);
+        //System.out.println("**************************Heritage "+analysisACopier);
         List<Analysis> analyseHerited = new ArrayList<>();
          Batch batchACopier= getIdBatch(analysisACopier);
         List<entite.Batch> descendantsList= getListBatchDescendants(batchACopier);
@@ -122,12 +122,13 @@ public class RecopieAnalysis {
         for (entite.Batch descendantsBatch: descendantsList ){
             Samples samplesCurrentDLBatchDescendants=createCasefileSample(descendantsBatch);
           
-            System.out.println(" samplesCurrentDLBatchDescendants<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< "+samplesCurrentDLBatchDescendants.getIdsamples());
+            //System.out.println(" samplesCurrentDLBatchDescendants<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< "+samplesCurrentDLBatchDescendants.getIdsamples());
             BigInteger limsidanalysis=analysisACopier.getLimsidanalysis();
             String methodName = analysisACopier.getMethodname();
            
             Analysis analysisDescendantsBatchCreation= analysisUtility.createAnalysis(samplesCurrentDLBatchDescendants,limsidanalysis , methodName);
-            //Analysis analysisDescendantsBatch=em.merge(analysisDescendantsBatchTmp);            
+            //Analysis analysisDescendantsBatch=em.merge(analysisDescendantsBatchTmp); 
+            /*
             System.out.println("******************************************************************************************************************");
             System.out.println("******************************************************************************************************************"+analysisACopier);
             System.out.println("******************************************************************************************************************"+analysisACopier.getIdbatch());
@@ -136,7 +137,7 @@ public class RecopieAnalysis {
             System.out.println("******************************************************************************************************************"+analysisDescendantsBatchCreation.getIdbatch());
             System.out.println("******************************************************************************************************************");
             System.out.println("******************************************************************************************************************" +analysisDescendantsBatchCreation.getIdsamples());
-           
+           */
             
             
             Analysis analysisDescendantsBatchTmp=null;
@@ -145,7 +146,7 @@ public class RecopieAnalysis {
             } catch (ResultsWithoutAnalysisError ex) {
                 Logger.getLogger(RecopieAnalysis.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("******************************************************************************************************************" +analysisDescendantsBatchTmp.getIdsamples());
+            //System.out.println("******************************************************************************************************************" +analysisDescendantsBatchTmp.getIdsamples());
             Analysis analysisDescendantsBatch=em.merge(analysisDescendantsBatchTmp);
             analyseHerited.add(analysisDescendantsBatch);
             analysisACopier.setCopystatus(0);
@@ -159,7 +160,7 @@ public class RecopieAnalysis {
      * OF028712
      **/
     public List<entite.Batch> getListBatchDescendants(Batch lotParent){
-         System.out.println("*********** Dans FIND **************============================================"+em);
+        // System.out.println("*********** Dans FIND **************============================================"+em);
         List<entite.Traca> woProduction = listeWoProduction (lotParent);
         if(null==woProduction){
             return null;
@@ -170,28 +171,28 @@ public class RecopieAnalysis {
         
         List<entite.Batch> descendants = null; //new ArrayList<>(woProduction.size());
         for(entite.Traca traca : woProduction){
-            System.out.println(" traca trouver "+traca );
+            //System.out.println(" traca trouver "+traca );
             descendants=getBatchFromTraca(traca);
-            System.out.println("descendants "+descendants.size());
+            //System.out.println("descendants "+descendants.size());
         }
         
         return descendants;
     }
     
     public List<entite.Traca> listeWoProduction(Batch batchProduit) {
-        System.out.println("*********** Dans FIND **************============================================"+em);
+        //System.out.println("*********** Dans FIND **************============================================"+em);
         if(null == batchProduit){
             return null;
         }
         Wo idWo= batchProduit.getIdwo();
         Company idcompany =batchProduit.getIdcompany();
-        System.out.println("idWo "+idWo);
-        System.out.println("idcompany"+idcompany);
+        //System.out.println("idWo "+idWo);
+        //System.out.println("idcompany"+idcompany);
         TypedQuery<entite.Traca> q = em.createNamedQuery("Traca.findByIdwo_Production", entite.Traca.class);
         q.setParameter("idwo", idWo); 
         q.setParameter("idcompany", idcompany.getIdcompany());
         List<entite.Traca> tmp=q.getResultList();
-        System.out.println("q "+q);
+        //System.out.println("q "+q);
         return tmp;
         
     }
@@ -202,7 +203,7 @@ public class RecopieAnalysis {
         q.setParameter("idarticle", traca.getIdarticle()); 
         q.setParameter("idcompany", traca.getIdcompany());
         String idwo =traca.getIdwo().getWoPK().getIdwo();
-        System.out.println("idwo "+idwo);
+        //System.out.println("idwo "+idwo);
         q.setParameter("idwo", traca.getIdwo());
         
         return q.getResultList(); 

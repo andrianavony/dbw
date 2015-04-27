@@ -86,6 +86,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Resultstemp.findByMethodname", query = "SELECT r FROM Resultstemp r WHERE r.methodname = :methodname"),
     @NamedQuery(name = "Resultstemp.findByCopiedfrom", query = "SELECT r FROM Resultstemp r WHERE r.copiedfrom = :copiedfrom"),
     @NamedQuery(name = "Resultstemp.findByIsresultsinserted", query = "SELECT r FROM Resultstemp r WHERE r.isresultsinserted = :isresultsinserted"),
+    @NamedQuery(name = "Resultstemp.findByIsresultsinsertedMinIdBatch", query = "SELECT r FROM Resultstemp r WHERE r.isresultsinserted = :isresultsinserted and r.limsbatchid = (select min(rmin.limsbatchid) FROM Resultstemp rmin where rmin.isresultsinserted = :isresultsinsertedmin  )"),
     @NamedQuery(name = "Resultstemp.findByLimsanalysisorigrec", query = "SELECT r FROM Resultstemp r WHERE r.limsanalysisorigrec = :limsanalysisorigrec")})
 public class Resultstemp implements Serializable {
     private static final long serialVersionUID = 1L;
